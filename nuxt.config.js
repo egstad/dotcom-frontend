@@ -1,5 +1,6 @@
+import getRoutes from './nuxtRoutes'
+
 export default {
-  mode: 'universal',
   /*
    ** Headers of the page
    */
