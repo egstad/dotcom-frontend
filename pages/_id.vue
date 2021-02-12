@@ -5,7 +5,7 @@
       <pre>_id.vue</pre>
       page.
     </h1>
-    <pre>{{ document }}</pre>
+    <pre v-if="document">{{ document }}</pre>
   </div>
 </template>
 
@@ -13,12 +13,20 @@
 import { groq } from '@nuxtjs/sanity'
 
 export default {
-  async asyncData({ $sanity, params }) {
+  async asyncData({ $sanity, params, isDev, error }) {
     const uid = params.id
-    const query = groq`{"document": *[_type == "page" && slug.current == "${uid}"][0]}`
-    const data = await $sanity.fetch(query)
+    const query = groq`*[_type == "page" && slug.current == "${uid}"][0]`
+    const data = await $sanity.fetch(query).then((res) => {
+      if (!res) {
+        error({ statusCode: 404, message: `Document '${uid}' doesn't exist` })
+      } else {
+        return res
+      }
+    })
 
-    return data
+    return {
+      document: data
+    }
   }
 }
 </script>
