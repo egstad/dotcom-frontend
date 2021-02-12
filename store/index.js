@@ -16,7 +16,7 @@ export const actions = {
 
       commit('navigation/setPrimary', settings[0].primaryNavigation)
     } catch (e) {
-      console.warn('error in fetchSiteSettings', e)
+      // console.warn('error in fetchSiteSettings', e)
     }
   }
 }
