@@ -2,7 +2,7 @@
   <nav>
     <ul>
       <li v-for="link in links" :key="link.title">
-        <nuxt-link :to="link.route">{{ link.title }}</nuxt-link>
+        <nuxt-link :to="{ path: link.route }">{{ link.title }}</nuxt-link>
       </li>
     </ul>
   </nav>
@@ -14,16 +14,16 @@ export default {
     return {
       links: [
         {
-          title: 'index',
+          title: 'Index',
           route: '/'
         },
         {
-          title: 'profile',
-          route: 'profile'
+          title: 'Profile',
+          route: '/profile'
         },
         {
-          title: 'contact',
-          route: 'contact'
+          title: 'Contact',
+          route: '/contact'
         }
       ]
     }
