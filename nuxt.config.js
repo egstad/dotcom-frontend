@@ -1,6 +1,5 @@
-import getRoutes from './nuxtRoutes'
-
 export default {
+  target: 'static',
   /*
    ** Headers of the page
    */
@@ -40,6 +39,10 @@ export default {
     // Doc: https://sanity.nuxtjs.org/
     '@nuxtjs/sanity'
   ],
+
+  sanity: {
+    minimal: true
+  },
   /*
    ** Nuxt.js modules
    */
