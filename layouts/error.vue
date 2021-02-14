@@ -12,7 +12,7 @@ export default {
   // you can set a custom layout for the error page
   layout: 'default',
   beforeMount() {
-    this.handleMemeGenerator()
+    // this.handleMemeGenerator()
   },
   methods: {
     handleMemeGenerator() {
