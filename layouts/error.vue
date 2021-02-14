@@ -11,6 +11,23 @@
 export default {
   // you can set a custom layout for the error page
   layout: 'default',
+  beforeMount() {
+    this.handleMemeGenerator()
+  },
+  methods: {
+    handleMemeGenerator() {
+      const isMemeRoute = this.$route.fullPath.startsWith('/is/')
+
+      if (isMemeRoute) {
+        const route = this.$route.fullPath
+          .replace('/is/', '')
+          .split('/')
+          .join('-')
+
+        this.$router.push({ path: `/is/${route}` })
+      }
+    }
+  },
   props: {
     error: {
       type: Object,
