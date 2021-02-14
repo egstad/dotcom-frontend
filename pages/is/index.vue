@@ -8,40 +8,12 @@
 
 <script>
 export default {
-  asyncData({ route }) {
-    // get message from route path
-    const path = route.path
-      .replace('/is/', '')
-      // remove empty spaces character
-      .replace(/%20/g, ' ')
-      // remove hyphens
-      .split('-')
-      // with spaces
-      .join(' ')
-
-    // split message
-    const message = () => {
-      const s = path
-
-      let middle = Math.floor(s.length / 2)
-      const before = s.lastIndexOf(' ', middle)
-      const after = s.indexOf(' ', middle + 1)
-
-      // This code assumes that there actually are spaces on both sides of the middle.
-      if (middle - before < after - middle) {
-        middle = before
-      } else {
-        middle = after
-      }
-
-      return {
-        topText: s.substr(0, middle).toUpperCase(),
-        bottomText: s.substr(middle + 1).toUpperCase()
-      }
-    }
-
+  asyncData() {
     return {
-      message: message()
+      message: {
+        topText: 'Write insult in url',
+        bottomText: "After 'egstad.com/is/'"
+      }
     }
   },
   data() {
