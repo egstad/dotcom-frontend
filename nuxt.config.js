@@ -52,11 +52,18 @@ export default {
         from: '/home',
         to: '/'
       },
-      {
-        from: '/is/*',
-        to: '/is',
-        status: 200
-      }
+      // {
+      //   from: '/is/*',
+      //   to: '/is/*',
+      //   status: 200
+      // },
+      // {
+      //   from: '/store',
+      //   to: '/blog/:id',
+      //   query: {
+      //     id: ':id'
+      //   }
+      // },
     ]
   },
   /*
