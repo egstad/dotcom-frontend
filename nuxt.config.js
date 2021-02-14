@@ -38,33 +38,10 @@ export default {
     '@nuxtjs/stylelint-module',
     // Doc: https://sanity.nuxtjs.org/
     '@nuxtjs/sanity',
-    // Doc: https://github.com/juliomrqz/nuxt-netlify
-    '@aceforth/nuxt-netlify'
   ],
 
   sanity: {
     minimal: true
-  },
-
-  netlify: { 
-    redirects: [
-      {
-        from: '/home',
-        to: '/'
-      },
-      // {
-      //   from: '/is/*',
-      //   to: '/is/*',
-      //   status: 200
-      // },
-      // {
-      //   from: '/store',
-      //   to: '/blog/:id',
-      //   query: {
-      //     id: ':id'
-      //   }
-      // },
-    ]
   },
   /*
    ** Nuxt.js modules
