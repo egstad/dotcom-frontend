@@ -1,8 +1,8 @@
 {
   "name": "egstad-dotcom",
   "version": "1.0.0",
-  "description": "my little corner of the internet",
-  "author": "jordan egstad",
+  "description": "My little corner of the internet",
+  "author": "Jordan Egstad",
   "private": true,
   "scripts": {
     "dev": "nuxt",
