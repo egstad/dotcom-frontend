@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/is/:splat"
+  to = "/is/?a=:splat"
+  status = 301

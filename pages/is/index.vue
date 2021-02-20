@@ -8,42 +8,6 @@
 
 <script>
 export default {
-  asyncData({ route, $axios }) {
-    // get message from route path
-    const path = route.path
-      .replace('/is/', '')
-      // remove empty spaces character
-      .replace(/%20/g, ' ')
-      // remove hyphens
-      .split('-')
-      // with spaces
-      .join(' ')
-
-    // split message
-    const message = () => {
-      const s = path
-
-      let middle = Math.floor(s.length / 2)
-      const before = s.lastIndexOf(' ', middle)
-      const after = s.indexOf(' ', middle + 1)
-
-      // This code assumes that there actually are spaces on both sides of the middle.
-      if (middle - before < after - middle) {
-        middle = before
-      } else {
-        middle = after
-      }
-
-      return {
-        topText: s.substr(0, middle).toUpperCase(),
-        bottomText: s.substr(middle + 1).toUpperCase()
-      }
-    }
-
-    return {
-      message: message()
-    }
-  },
   data() {
     return {
       global_width: 1080,
@@ -70,6 +34,7 @@ export default {
     this.ctx = this.canvas.getContext('2d')
     this.image = this.$refs.image
 
+    this.handleIt()
     this.setRandomImage()
     window.addEventListener('keyup', this.nextImage)
   },
@@ -77,6 +42,44 @@ export default {
     window.removeEventListener('keyup', this.nextImage)
   },
   methods: {
+    handleIt() {
+      // split message
+      const createMessage = () => {
+        // get message from route path
+        const s = this.$route.query.a
+          // remove empty spaces character
+          .replace(/%20/g, ' ')
+          // remove hyphens
+          .split('-')
+          // with spaces
+          .join(' ')
+
+        let middle = Math.floor(s.length / 2)
+        const before = s.lastIndexOf(' ', middle)
+        const after = s.indexOf(' ', middle + 1)
+
+        // This code assumes that there actually are spaces on both sides of the middle.
+        if (middle - before < after - middle) {
+          middle = before
+        } else {
+          middle = after
+        }
+
+        return {
+          topText: s.substr(0, middle).toUpperCase(),
+          bottomText: s.substr(middle + 1).toUpperCase()
+        }
+      }
+
+      const defaultMessage = () => {
+        return {
+          topText: 'top',
+          bottomText: 'bottom'
+        }
+      }
+
+      this.message = this.$route.query.a ? createMessage() : defaultMessage()
+    },
     setRandomImage() {
       const randomNumber = Math.floor(Math.random() * this.images.length)
       this.$refs.image.src = `/memer/${this.images[randomNumber]}`
@@ -92,10 +95,10 @@ export default {
     draw() {
       this.ctx.save()
 
-      const ratio = this.ratio * 0.18
-      this.canvas.setAttribute('width', this.global_width * ratio)
-      this.canvas.setAttribute('height', this.global_height * ratio)
-      this.ctx.scale(ratio * 0.5, ratio * 0.5)
+      const ratio = this.ratio * 0.3
+      this.canvas.setAttribute('width', Math.round(this.global_width * ratio))
+      this.canvas.setAttribute('height', Math.round(this.global_height * ratio))
+      this.ctx.scale(ratio * 0.535, ratio * 0.535)
 
       // this.canvas.setAttribute('width', this.global_width * this.ratio)
       // this.canvas.setAttribute('height', this.global_height * this.ratio)
@@ -166,7 +169,7 @@ export default {
     },
     download() {
       const link = document.createElement('a')
-      link.download = 'filename.png'
+      link.download = `${this.$route.query.a}.png`
       link.href = this.canvas.toDataURL('image/jpeg')
       link.click()
     },
@@ -180,12 +183,6 @@ export default {
 
 <style scoped>
 canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: 100vw;
-  height: 100vh;
   object-fit: contain;
 }
 </style>

@@ -78,7 +78,7 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     // Doc: https://sanity.nuxtjs.org/
-    '@nuxtjs/sanity'
+    '@nuxtjs/sanity',
   ],
 
   sanity: {
@@ -96,5 +96,9 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {}
+  },
+  generate: {
+    crawler: true,
+    exclude: ['/is/*']
   }
 }
