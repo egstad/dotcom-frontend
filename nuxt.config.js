@@ -58,8 +58,6 @@ export default {
   },
   generate: {
     crawler: true,
-    routes: [
-      '/is'
-    ]
+    exclude: ['/is']
   }
 }

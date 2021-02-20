@@ -1,4 +1,4 @@
 [[redirects]]
   from = "/is/*"
-  to = "/is"
-  status = 302
+  to = "/"
+  status = 200
