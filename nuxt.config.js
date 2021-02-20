@@ -22,7 +22,7 @@ export default {
       {
         hid: `twitter:card`,
         property: 'twitter:card',
-        content: `summary`
+        content: `summary_large_image`
       },
       {
         hid: `twitter:site`,
@@ -33,6 +33,21 @@ export default {
         hid: `twitter:creator`,
         property: 'twitter:creator',
         content: `@jordanegstad`
+      },
+      {
+        hid: `twitter:title`,
+        property: 'twitter:title',
+        content: `Egstad`
+      },
+      {
+        hid: `twitter:description`,
+        property: 'twitter:description',
+        content: `Jordan Egstad is a graphic designer and web developer creating expressive and enduring brand identities and websites.`
+      },
+      {
+        hid: `twitter:image`,
+        property: 'twitter:image',
+        content: `https://cdn.sanity.io/images/sjl79kwi/production/baeaf1ae8651b1dd53b2885caf459c45556d9cb2-1080x720.jpg?rect=0,77,1080,564&w=1200&h=627&fit=clip&auto=format`
       },
       {
         hid: `og:title`,
@@ -52,7 +67,7 @@ export default {
       {
         hid: `og:image`,
         property: 'og:image',
-        content: `TODO:IMAGE_URL_HERE`
+        content: `https://cdn.sanity.io/images/sjl79kwi/production/baeaf1ae8651b1dd53b2885caf459c45556d9cb2-1080x720.jpg?rect=0,77,1080,564&w=1200&h=627&fit=clip&auto=format`
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
@@ -78,7 +93,7 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     // Doc: https://sanity.nuxtjs.org/
-    '@nuxtjs/sanity',
+    '@nuxtjs/sanity'
   ],
 
   sanity: {

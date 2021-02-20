@@ -18,6 +18,12 @@ export default ({ app }, inject) => {
         property: 'og:title',
         content: pageTitle
       })
+
+      pageMeta.push({
+        hid: `twitter:title`,
+        property: 'twitter:title',
+        content: pageTitle
+      })
     }
 
     // Description for social
@@ -33,6 +39,12 @@ export default ({ app }, inject) => {
         property: 'og:description',
         content: pageDesc
       })
+
+      pageMeta.push({
+        hid: `twitter:description`,
+        property: 'twitter:description',
+        content: pageDesc
+      })
     }
 
     // Image for social
@@ -40,6 +52,17 @@ export default ({ app }, inject) => {
       pageMeta.push({
         hid: `og:image`,
         property: 'og:image',
+        content: app
+          .$urlFor(pageImage)
+          .fit('clip')
+          .width(1200)
+          .height(627)
+          .url()
+      })
+
+      pageMeta.push({
+        hid: `twitter:image`,
+        property: 'twitter:image',
         content: app
           .$urlFor(pageImage)
           .fit('clip')
