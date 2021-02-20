@@ -1,5 +1,5 @@
 [[redirects]]
   from = "/is/*"
-  to = "/is/:splat"
+  to = "/is"
   status = 302
   query = {is= ":splat"}
