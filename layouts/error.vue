@@ -11,6 +11,12 @@
 export default {
   // you can set a custom layout for the error page
   layout: 'default',
+  props: {
+    error: {
+      type: Object,
+      required: true
+    }
+  },
   beforeMount() {
     this.handleMemeGenerator()
   },
@@ -26,12 +32,6 @@ export default {
 
         this.$router.push({ path: `/is/${route}` })
       }
-    }
-  },
-  props: {
-    error: {
-      type: Object,
-      required: true
     }
   }
 }

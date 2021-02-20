@@ -4,14 +4,55 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Egstad',
     meta: [
+      // Basic metadata
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
+        hid: 'apple-mobile-web-app-title',
+        name: 'apple-mobile-web-app-title',
+        content: 'Egstad'
+      },
+      {
+        hid: `og:site_name`,
+        property: 'og:site_name',
+        content: `Egstad`
+      },
+      {
+        hid: `twitter:card`,
+        property: 'twitter:card',
+        content: `summary`
+      },
+      {
+        hid: `twitter:site`,
+        property: 'twitter:site',
+        content: `@jordanegstad`
+      },
+      {
+        hid: `twitter:creator`,
+        property: 'twitter:creator',
+        content: `@jordanegstad`
+      },
+      {
+        hid: `og:title`,
+        property: 'og:title',
+        content: `Egstad`
+      },
+      {
         hid: 'description',
         name: 'description',
-        content: process.env.npm_package_description || ''
+        content: `Jordan Egstad is a graphic designer and web developer creating expressive and enduring brand identities and websites.`
+      },
+      {
+        hid: `og:description`,
+        property: 'og:description',
+        content: `Jordan Egstad is a graphic designer and web developer creating expressive and enduring brand identities and websites.`
+      },
+      {
+        hid: `og:image`,
+        property: 'og:image',
+        content: `TODO:IMAGE_URL_HERE`
       }
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
@@ -27,7 +68,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['@/plugins/SanityImageBuilder.js', '@/plugins/PageMetadata.js'],
   /*
    ** Nuxt.js dev-modules
    */
