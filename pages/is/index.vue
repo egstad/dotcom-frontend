@@ -8,14 +8,6 @@
 
 <script>
 export default {
-  asyncData() {
-    return {
-      message: {
-        topText: 'Write insult in url',
-        bottomText: "After 'egstad.com/is/'"
-      }
-    }
-  },
   data() {
     return {
       global_width: 1080,
@@ -42,6 +34,7 @@ export default {
     this.ctx = this.canvas.getContext('2d')
     this.image = this.$refs.image
 
+    this.handleIt()
     this.setRandomImage()
     window.addEventListener('keyup', this.nextImage)
   },
@@ -49,6 +42,46 @@ export default {
     window.removeEventListener('keyup', this.nextImage)
   },
   methods: {
+    handleIt() {
+      // split message
+      const createMessage = () => {
+        // get message from route path
+        const s = this.$route.query.a
+          // remove empty spaces character
+          .replace(/%20/g, ' ')
+          // remove hyphens
+          .split('-')
+          // with spaces
+          .join(' ')
+
+        let middle = Math.floor(s.length / 2)
+        const before = s.lastIndexOf(' ', middle)
+        const after = s.indexOf(' ', middle + 1)
+
+        // This code assumes that there actually are spaces on both sides of the middle.
+        if (middle - before < after - middle) {
+          middle = before
+        } else {
+          middle = after
+        }
+
+        return {
+          topText: s.substr(0, middle).toUpperCase(),
+          bottomText: s.substr(middle + 1).toUpperCase()
+        }
+      }
+
+      const defaultMessage = () => {
+        return {
+          topText: 'top',
+          bottomText: 'bottom'
+        }
+      }
+
+      console.log(this.$route.query)
+
+      this.message = this.$route.query.a ? createMessage() : defaultMessage()
+    },
     setRandomImage() {
       const randomNumber = Math.floor(Math.random() * this.images.length)
       this.$refs.image.src = `/memer/${this.images[randomNumber]}`

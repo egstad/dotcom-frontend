@@ -16,24 +16,21 @@ export default {
       type: Object,
       required: true
     }
-  },
-  beforeMount() {
-    this.handleMemeGenerator()
-  },
-  methods: {
-    handleMemeGenerator() {
-      const isMemeRoute = this.$route.fullPath.startsWith('/is/')
-
-      if (isMemeRoute) {
-        const route = this.$route.fullPath
-          .replace('/is/', '')
-          .split('/')
-          .join('-')
-
-        this.$router.push({ path: `/is/${route}` })
-        // this.$router.push({ path: `/is`, query: { route } })
-      }
-    }
   }
+  // beforeMount() {
+  //   this.handleMemeGenerator()
+  // },
+  // methods: {
+  //   handleMemeGenerator() {
+  //     const isMemeRoute = this.$route.fullPath.startsWith('/is/')
+  //     if (isMemeRoute) {
+  //       const route = this.$route.fullPath
+  //         .replace('/is/', '')
+  //         .split('/')
+  //         .join('-')
+  //       this.$router.push({ path: `/is/${route}` })
+  //     }
+  //   }
+  // }
 }
 </script>
