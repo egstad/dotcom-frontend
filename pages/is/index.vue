@@ -78,8 +78,6 @@ export default {
         }
       }
 
-      console.log(this.$route.query)
-
       this.message = this.$route.query.a ? createMessage() : defaultMessage()
     },
     setRandomImage() {
@@ -97,10 +95,10 @@ export default {
     draw() {
       this.ctx.save()
 
-      const ratio = this.ratio * 0.18
-      this.canvas.setAttribute('width', this.global_width * ratio)
-      this.canvas.setAttribute('height', this.global_height * ratio)
-      this.ctx.scale(ratio * 0.5, ratio * 0.5)
+      const ratio = this.ratio * 0.3
+      this.canvas.setAttribute('width', Math.round(this.global_width * ratio))
+      this.canvas.setAttribute('height', Math.round(this.global_height * ratio))
+      this.ctx.scale(ratio * 0.535, ratio * 0.535)
 
       // this.canvas.setAttribute('width', this.global_width * this.ratio)
       // this.canvas.setAttribute('height', this.global_height * this.ratio)
@@ -171,7 +169,7 @@ export default {
     },
     download() {
       const link = document.createElement('a')
-      link.download = 'filename.png'
+      link.download = `${this.$route.query.a}.png`
       link.href = this.canvas.toDataURL('image/jpeg')
       link.click()
     },
@@ -185,12 +183,6 @@ export default {
 
 <style scoped>
 canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: 100vw;
-  height: 100vh;
   object-fit: contain;
 }
 </style>
