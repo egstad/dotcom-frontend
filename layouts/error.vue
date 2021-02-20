@@ -11,6 +11,12 @@
 export default {
   // you can set a custom layout for the error page
   layout: 'default',
+  props: {
+    error: {
+      type: Object,
+      required: true
+    }
+  },
   beforeMount() {
     this.handleMemeGenerator()
   },
@@ -24,15 +30,9 @@ export default {
           .split('/')
           .join('-')
 
-        // this.$router.push({ path: `/is/${route}` })
-        this.$router.push({ path: `/is`, query: { meme: route } })
+        this.$router.push({ path: `/is/${route}` })
+        // this.$router.push({ path: `/is`, query: { route } })
       }
-    }
-  },
-  props: {
-    error: {
-      type: Object,
-      required: true
     }
   }
 }

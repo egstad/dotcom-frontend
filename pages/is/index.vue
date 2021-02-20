@@ -44,7 +44,6 @@ export default {
 
     this.setRandomImage()
     window.addEventListener('keyup', this.nextImage)
-    console.log(this.message, this.$route)
   },
   beforeDestroy() {
     window.removeEventListener('keyup', this.nextImage)
