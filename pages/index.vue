@@ -18,9 +18,9 @@ export default {
     const query = groq`{ "document": *[_type == "piece"][0] }`
 
     return $sanity.fetch(query)
+  },
+  head() {
+    return this.$setPageMetadata(this.document.content)
   }
-  // head() {
-  //   return this.$setPageMetadata(this.document.content)
-  // }
 }
 </script>

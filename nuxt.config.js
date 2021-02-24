@@ -79,13 +79,11 @@ export default {
   /*
    ** Global CSS
    */
-  css: [
-    '@/assets/css/reset.css'
-  ],
+  css: ['@/assets/css/reset.css'],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/SanityImageBuilder.js', '@/plugins/PageMetadata.js'],
+  plugins: ['@/plugins/PageMetadata.js'],
   /*
    ** Nuxt.js dev-modules
    */

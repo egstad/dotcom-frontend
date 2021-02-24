@@ -14,7 +14,7 @@
   "dependencies": {
     "@nuxtjs/pwa": "^3.0.0-0",
     "@nuxtjs/sanity": "^0.7.0",
-    "@sanity/image-url": "^0.140.22",
+    "@sanity/asset-utils": "^1.1.2",
     "nuxt": "^2.0.0"
   },
   "devDependencies": {

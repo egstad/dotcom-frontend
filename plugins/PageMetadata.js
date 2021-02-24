@@ -1,3 +1,5 @@
+import { getImageAsset } from '@sanity/asset-utils'
+
 export default ({ app }, inject) => {
   inject('setPageMetadata', (content) => {
     const pageMeta = []
@@ -49,26 +51,22 @@ export default ({ app }, inject) => {
 
     // Image for social
     if (pageImage) {
+      const imageAsset = getImageAsset(pageImage, {
+        projectId: app.$sanity.config.projectId,
+        dataset: app.$sanity.config.dataset
+      })
+      const croppedImage = `${imageAsset.url}?w=1200&height=627&auto=format&fit=clip`
+
       pageMeta.push({
         hid: `og:image`,
         property: 'og:image',
-        content: app
-          .$urlFor(pageImage)
-          .fit('clip')
-          .width(1200)
-          .height(627)
-          .url()
+        content: croppedImage
       })
 
       pageMeta.push({
         hid: `twitter:image`,
         property: 'twitter:image',
-        content: app
-          .$urlFor(pageImage)
-          .fit('clip')
-          .width(1200)
-          .height(627)
-          .url()
+        content: croppedImage
       })
     }
 

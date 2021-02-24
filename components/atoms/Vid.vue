@@ -33,7 +33,7 @@
 <script>
 export default {
   props: {
-    url: {
+    asset: {
       type: String,
       required: true
     },
@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     source() {
-      return `https://egstad.link/${this.url}`
+      return `https://egstad.link/${this.asset}`
     },
     autoplay() {
       return this.config.autoplay ? this.config.autoplay : false
@@ -82,10 +82,6 @@ export default {
   mounted() {
     this.registerObserver()
     this.observer.observe(this.$refs.video)
-
-    if (this.config.controls) {
-      this.$refs.video.controls = false
-    }
   },
   beforeDestroy() {
     this.unobserve()
