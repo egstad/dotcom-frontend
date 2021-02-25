@@ -79,11 +79,11 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['@/assets/css/reset.css'],
+  css: ['@/assets/css/_vars.css', '@/assets/css/reset.css'],
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/PageMetadata.js'],
+  plugins: ['@/plugins/PageMetadata.js', '@/plugins/ThemeChanger.js'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -93,7 +93,9 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     // Doc: https://sanity.nuxtjs.org/
-    '@nuxtjs/sanity'
+    '@nuxtjs/sanity',
+    // https://www.npmjs.com/package/nuxt-gsap
+    'nuxt-gsap'
   ],
 
   sanity: {
@@ -102,7 +104,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/pwa'],
+  modules: ['@nuxtjs/pwa', 'nuxt-gsap'],
   /*
    ** Build configuration
    */

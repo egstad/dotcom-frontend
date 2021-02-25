@@ -15,7 +15,9 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "@nuxtjs/sanity": "^0.7.0",
     "@sanity/asset-utils": "^1.1.2",
-    "nuxt": "^2.0.0"
+    "gsap": "^3.6.0",
+    "nuxt": "^2.0.0",
+    "nuxt-gsap": "^0.1.4"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^5.0.0",

@@ -70,7 +70,7 @@ export default {
       return this.config.loop ? this.config.loop : false
     },
     muted() {
-      return this.config.muted ? this.config.muted : false
+      return this.config.mute ? this.config.mute : false
     },
     controls() {
       return this.config.controls ? this.config.controls : false
@@ -154,7 +154,7 @@ export default {
 
 <style>
 .vid {
-  transition: opacity 500ms ease-out;
+  transition: opacity var(--time) var(--ease);
   display: block;
   max-width: 100%;
   height: auto;

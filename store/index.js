@@ -1,11 +1,33 @@
 import { groq } from '@nuxtjs/sanity'
+import ThemeChanger from '@/plugins/ThemeChanger'
 
 export const state = () => ({
-  primary: null
+  isTransitioning: false,
+  theme: {
+    background: 'black',
+    foreground: 'white',
+    accent: 'blue'
+  }
 })
 
 export const mutations = {
-  setPrimary(state, links) {}
+  setTransitionState(state, val) {
+    state.isTransitioning = val
+  },
+  setTheme(state, val) {
+    if (val.background) {
+      state.theme.background = val.background
+    }
+    if (val.foreground) {
+      state.theme.foreground = val.foreground
+    }
+    if (val.accent) {
+      state.theme.accent = val.accent
+    }
+
+    // update it boi!
+    ThemeChanger.updateColor(state.theme)
+  }
 }
 
 export const actions = {

@@ -1,6 +1,6 @@
 <template>
   <img
-    class="img"
+    class="pic"
     :class="[
       { 'is-loading': !hasLoaded && !hasErrored },
       { 'has-loaded': hasLoaded },
@@ -93,16 +93,16 @@ export default {
 </script>
 
 <style>
-.img {
-  transition: opacity 400ms ease-out;
+.pic {
+  transition: opacity var(--time) var(--ease);
   display: block;
   width: 100%;
   height: auto;
 }
-.img.is-loading {
+.pic.is-loading {
   opacity: 0;
 }
 
-/* .img.has-errored {} */
-/* .img.has-loaded {} */
+/* .pic.has-errored {} */
+/* .pic.has-loaded {} */
 </style>

@@ -116,7 +116,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
   content: none;
 }
 
@@ -134,7 +134,7 @@ table {
   -webkit-touch-callout: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "kern" 1, "pnum" 1, "liga" 1;
+  font-feature-settings: 'kern' 1, 'pnum' 1, 'liga' 1;
   font-kerning: normal;
   font-synthesis: none;
   box-sizing: border-box;
@@ -158,18 +158,21 @@ html {
   overflow-x: hidden;
   overflow-y: scroll;
   position: relative;
+  background: var(--background);
+  color: var(--foreground);
+  /* transition: background var(--time) var(--ease), color var(--time) var(--ease); */
 }
 
-a[href]:not([tabindex="-1"]),
-area[href]:not([tabindex="-1"]),
-input:not([disabled]):not([tabindex="-1"]),
-select:not([disabled]):not([tabindex="-1"]),
-textarea:not([disabled]):not([tabindex="-1"]),
-button:not([disabled]):not([tabindex="-1"]),
-video:not([disabled]):not([tabindex="-1"]),
+a[href]:not([tabindex='-1']),
+area[href]:not([tabindex='-1']),
+input:not([disabled]):not([tabindex='-1']),
+select:not([disabled]):not([tabindex='-1']),
+textarea:not([disabled]):not([tabindex='-1']),
+button:not([disabled]):not([tabindex='-1']),
+video:not([disabled]):not([tabindex='-1']),
 iframe,
 [tabindex],
-[contentEditable="true"] {
+[contentEditable='true'] {
   outline-color: var(--accent);
 }
 

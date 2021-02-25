@@ -8,12 +8,12 @@
           :asset="slice.url"
           :config="slice.settings"
         />
-        <!-- <pre :key="'hi' + slice._key">{{ slice.settings }}</pre> -->
+        <!-- <pre :key="slice._key">{{ slice }}</pre> -->
       </template>
 
       <template v-else-if="slice._type === 'picture'">
         <Pic :key="slice._key" :alt="slice.alt" :asset="slice.asset._ref" />
-        <pre :key="'hi' + slice._key">{{ slice }}</pre>
+        <!-- <pre :key="slice._key">{{ slice }}</pre> -->
       </template>
     </template>
   </section>

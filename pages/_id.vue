@@ -11,8 +11,10 @@
 
 <script>
 import { groq } from '@nuxtjs/sanity'
+import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
 
 export default {
+  mixins: [routeTransitionFade],
   async asyncData({ $sanity, params, isDev, error }) {
     const uid = params.id
     const query = groq`*[_type == "page" && content.slug.current == "${uid}"][0]`
@@ -27,6 +29,13 @@ export default {
     return {
       document: data
     }
+  },
+  created() {
+    this.$store.commit('setTheme', {
+      background: '#0000ff',
+      foreground: '#ffffff',
+      accent: '#ffffff'
+    })
   }
 }
 </script>
