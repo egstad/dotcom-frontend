@@ -22,18 +22,15 @@ export default {
 
     return $sanity.fetch(query)
   },
-  head() {
-    return this.$setPageMetadata(this.document.content)
-  },
-  created() {
+  fetch() {
     this.$store.commit('setTheme', {
-      background: '#ffffff',
-      foreground: '#000000',
-      accent: '#000000'
+      background: '#000000',
+      foreground: '#ffffff',
+      accent: '#ffffff'
     })
   },
-  mounted() {
-    // console.log()
+  head() {
+    return this.$setPageMetadata(this.document.content)
   }
 }
 </script>

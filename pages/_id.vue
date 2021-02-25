@@ -30,7 +30,7 @@ export default {
       document: data
     }
   },
-  created() {
+  fetch() {
     this.$store.commit('setTheme', {
       background: '#0000ff',
       foreground: '#ffffff',

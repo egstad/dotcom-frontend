@@ -11,13 +11,13 @@ export const routeTransitionFade = {
       })
     },
     enter(el, done) {
-      this.$gsap.to('html', {
-        '--background': this.$store.state.theme.background,
-        '--foreground': this.$store.state.theme.foreground,
-        '--accent': this.$store.state.theme.accent,
-        duration: 0.7,
-        ease: 'Power2.easeOut'
-      })
+      // this.$gsap.to('html', {
+      //   '--background': this.$store.state.theme.background,
+      //   '--foreground': this.$store.state.theme.foreground,
+      //   '--accent': this.$store.state.theme.accent,
+      //   duration: 0.7,
+      //   ease: 'Power2.easeOut'
+      // })
 
       this.$gsap.to(el, {
         ease: 'Power2.easeOut',
