@@ -42,10 +42,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .scroll-to-theme {
   display: block;
-  height: 0px;
+  height: 10px;
   width: 100%;
+  background: red;
 }
 </style>

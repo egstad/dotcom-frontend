@@ -1,7 +1,5 @@
 <template>
   <div class="container">
-    <h1>Hello World, it me</h1>
-
     <Slices :slices="document.content.slices"></Slices>
   </div>
 </template>
@@ -23,14 +21,18 @@ export default {
     return $sanity.fetch(query)
   },
   fetch() {
+    const theme = this.document.content.theme
     this.$store.commit('setTheme', {
-      background: '#000000',
-      foreground: '#ffffff',
-      accent: '#ffffff'
+      background: theme.background,
+      foreground: theme.foreground,
+      accent: theme.accent
     })
   },
   head() {
     return this.$setPageMetadata(this.document.content)
+  },
+  mounted() {
+    this.$nuxt.$emit('page::mounted')
   }
 }
 </script>

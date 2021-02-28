@@ -1,19 +1,18 @@
 <template>
   <div class="container">
-    <h1>
-      Hello World, i'm the
-      <pre>_id.vue</pre>
-      page.
-    </h1>
-    <pre v-if="document">{{ document }}</pre>
+    <Slices :slices="document.content.slices"></Slices>
   </div>
 </template>
 
 <script>
 import { groq } from '@nuxtjs/sanity'
+import Slices from '@/components/templates/Slices'
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
 
 export default {
+  components: {
+    Slices
+  },
   mixins: [routeTransitionFade],
   async asyncData({ $sanity, params, isDev, error }) {
     const uid = params.id
@@ -31,11 +30,15 @@ export default {
     }
   },
   fetch() {
+    const theme = this.document.content.theme
     this.$store.commit('setTheme', {
-      background: '#0000ff',
-      foreground: '#ffffff',
-      accent: '#ffffff'
+      background: theme.background,
+      foreground: theme.foreground,
+      accent: theme.accent
     })
+  },
+  mounted() {
+    this.$nuxt.$emit('page::mounted')
   }
 }
 </script>

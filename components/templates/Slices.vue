@@ -15,6 +15,15 @@
         <Pic :key="slice._key" :alt="slice.alt" :asset="slice.asset._ref" />
         <!-- <pre :key="slice._key">{{ slice }}</pre> -->
       </template>
+
+      <template v-else-if="slice._type === 'themeScroller'">
+        <Theme
+          :key="slice._key"
+          :colors="slice"
+          :fade-target="slice.target ? slice.target : 'middle'"
+        />
+        <!-- <pre :key="'pre-' + slice._key">{{ slice }}</pre> -->
+      </template>
     </template>
   </section>
 </template>
@@ -22,11 +31,13 @@
 <script>
 import Pic from '@/components/atoms/Pic'
 import Vid from '@/components/atoms/Vid'
+import Theme from '@/components/atoms/Theme'
 
 export default {
   components: {
     Pic,
-    Vid
+    Vid,
+    Theme
   },
   props: {
     slices: {

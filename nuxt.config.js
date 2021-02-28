@@ -83,7 +83,11 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/PageMetadata.js', '@/plugins/ThemeChanger.js'],
+  plugins: [
+    '@/plugins/PageMetadata.js',
+    '@/plugins/ThemeChanger.js',
+    '@/plugins/ThemeScroller.js'
+  ],
   /*
    ** Nuxt.js dev-modules
    */
