@@ -16,7 +16,26 @@ export default {
   mixins: [routeTransitionFade],
   async asyncData({ $sanity, params, isDev, error }) {
     const uid = params.id
-    const query = groq`*[_type == "page" && content.slug.current == "${uid}"][0]`
+    // query looks so odd because we're fetching internal link slugs
+    const query = groq`*[content.slug.current == "${uid}"][0]{
+      ...,
+      content {
+        ...,
+        slices[] {
+          ...,
+          content[] {
+            ...,
+            markDefs[] {
+              ...,
+              _type == "internalLink" => {
+                ...,
+                "slug": @.item->content.slug
+              }
+            }
+          }
+        }
+      }
+    }`
     const data = await $sanity.fetch(query).then((res) => {
       if (!res) {
         error({ statusCode: 404, message: `Document '${uid}' doesn't exist` })

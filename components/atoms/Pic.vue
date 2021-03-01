@@ -98,7 +98,6 @@ export default {
   display: block;
   width: 100%;
   height: auto;
-  opacity: 0.4;
 }
 .pic.is-loading {
   opacity: 0;

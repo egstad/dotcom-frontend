@@ -38,10 +38,10 @@ export default {
   list-style-type: none;
   display: flex;
   padding: 0.4em;
-  position: fixed;
+  /* position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 1000; */
 }
 
 .nav-primary__link {

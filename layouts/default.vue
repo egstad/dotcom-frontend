@@ -17,11 +17,6 @@ export default {
     $route(to, from) {
       // tell plugins to teardown/restart
       this.$nuxt.$emit('route::updated')
-      // tell the store about the new change
-      // this.$store.commit('updateActivePage', {
-      //   name: to.name,
-      //   path: to.fullPath,
-      // })
     }
   }
   // async middleware({ store, $sanity }) {

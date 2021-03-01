@@ -156,7 +156,7 @@ export default {
 .vid {
   transition: opacity var(--time) var(--ease);
   display: block;
-  max-width: 100%;
+  width: 100%;
   height: auto;
 }
 

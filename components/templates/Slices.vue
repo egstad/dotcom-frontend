@@ -24,6 +24,10 @@
         />
         <!-- <pre :key="'pre-' + slice._key">{{ slice }}</pre> -->
       </template>
+
+      <template v-else-if="slice._type === 'richText'">
+        <Copy :key="slice._key" :blocks="slice.content" />
+      </template>
     </template>
   </section>
 </template>
@@ -32,12 +36,14 @@
 import Pic from '@/components/atoms/Pic'
 import Vid from '@/components/atoms/Vid'
 import Theme from '@/components/atoms/Theme'
+import Copy from '@/components/atoms/Copy/Copy'
 
 export default {
   components: {
     Pic,
     Vid,
-    Theme
+    Theme,
+    Copy
   },
   props: {
     slices: {

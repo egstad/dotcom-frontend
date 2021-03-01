@@ -98,12 +98,14 @@ export default {
     '@nuxtjs/stylelint-module',
     // Doc: https://sanity.nuxtjs.org/
     '@nuxtjs/sanity',
-    // https://www.npmjs.com/package/nuxt-gsap
+    // Doc: https://www.npmjs.com/package/nuxt-gsap
     'nuxt-gsap'
   ],
 
   sanity: {
-    minimal: true
+    // Doc: https://sanity.nuxtjs.org/configuration
+    minimal: true,
+    contentHelper: false
   },
   /*
    ** Nuxt.js modules
