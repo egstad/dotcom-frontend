@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="site-wrapper">
     <PrimaryNavigation />
     <nuxt />
   </div>
@@ -24,3 +24,9 @@ export default {
   // }
 }
 </script>
+
+<style>
+.site-wrapper {
+  max-width: 1024px;
+}
+</style>

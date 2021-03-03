@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <Slices :slices="document.content.slices"></Slices>
+    <Slices
+      v-for="piece in pieces"
+      :key="piece._id"
+      :slices="piece.content.slices"
+    ></Slices>
   </div>
 </template>
 
@@ -15,13 +19,17 @@ export default {
     Slices
   },
   mixins: [routeTransitionFade],
-  asyncData({ $sanity }) {
-    const query = groq`{ "document": *[_type == "piece"][0] }`
+  async asyncData({ $sanity }) {
+    const queryPieces = groq`*[_type == "piece"] | order(order desc) { _id, content }`
+    const queryIndex = groq`*[_type=='page' && content.slug.current=='index'][0]`
 
-    return $sanity.fetch(query)
+    return {
+      page: await $sanity.fetch(queryIndex),
+      pieces: await $sanity.fetch(queryPieces)
+    }
   },
   fetch() {
-    const theme = this.document.content.theme
+    const theme = this.page.content.theme
     this.$store.commit('setTheme', {
       background: theme.background,
       foreground: theme.foreground,
@@ -29,7 +37,7 @@ export default {
     })
   },
   head() {
-    return this.$setPageMetadata(this.document.content)
+    return this.$setPageMetadata(this.page.content)
   },
   mounted() {
     this.$nuxt.$emit('page::mounted')

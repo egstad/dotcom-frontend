@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <SanityContent :blocks="blocks" :serializers="serializers" class="copy" />
-  </div>
+  <SanityContent :blocks="blocks" :serializers="serializers" class="copy" />
 </template>
 
 <script>
@@ -26,15 +24,22 @@ export default {
           internalLink: CopyLinkInternal
         },
         styles: {
-          h1: CopyHeadline,
-          h2: CopyHeadline,
-          h3: CopyHeadline,
-          h4: CopyHeadline,
-          normal: CopyHeadline,
-          blockquote: CopyHeadline
+          h1: CopyHeadline
+          // h2: CopyHeadline,
+          // h3: CopyHeadline,
+          // h4: CopyHeadline,
+          // normal: CopyHeadline,
+          // blockquote: CopyHeadline
         }
       }
     }
   }
 }
 </script>
+
+<style scoped>
+.copy {
+  font-size: clamp(16px, 4vw, 32px);
+  max-width: 800px;
+}
+</style>
