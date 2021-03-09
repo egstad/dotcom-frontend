@@ -1,11 +1,12 @@
 <template>
-  <section class="slices">
+  <div>
     <template v-for="slice in slices">
       <template v-if="slice._type === 'video'">
         <Vid
           :key="slice._key"
           :alt="slice.alt"
           :asset="slice.url"
+          :poster="slice.poster"
           :config="slice.settings"
         />
         <!-- <pre :key="slice._key">{{ slice }}</pre> -->
@@ -29,7 +30,7 @@
         <Copy :key="slice._key" :blocks="slice.content" />
       </template>
     </template>
-  </section>
+  </div>
 </template>
 
 <script>

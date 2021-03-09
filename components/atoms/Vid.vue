@@ -16,6 +16,7 @@
     :playsinline="playsinline"
     :width="width"
     :height="height"
+    :poster="posterSource"
     tabindex="1"
     preload="metadata"
     @keydown.space.prevent="!controls ? playToggle() : null"
@@ -31,11 +32,20 @@
 </template>
 
 <script>
+import { getImageAsset } from '@sanity/asset-utils'
+
 export default {
   props: {
     asset: {
       type: String,
       required: true
+    },
+    poster: {
+      type: Object,
+      required: false,
+      default() {
+        return {}
+      }
     },
     alt: {
       type: String,
@@ -77,6 +87,13 @@ export default {
     },
     playsinline() {
       return this.config.playsinline ? this.config.playsinline : true
+    },
+    posterSource() {
+      const imageAsset = getImageAsset(this.poster.asset, {
+        projectId: this.$nuxt.$sanity.config.projectId,
+        dataset: this.$nuxt.$sanity.config.dataset
+      })
+      return `${imageAsset.url}?q=60&auto=format`
     }
   },
   mounted() {

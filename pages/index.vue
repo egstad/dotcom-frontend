@@ -1,26 +1,22 @@
 <template>
   <div class="container">
-    <Slices
-      v-for="piece in pieces"
-      :key="piece._id"
-      :slices="piece.content.slices"
-    ></Slices>
+    <Pieces :pieces="pieces" />
   </div>
 </template>
 
 <script>
 import { groq } from '@nuxtjs/sanity'
-import Slices from '@/components/templates/Slices'
+import Pieces from '@/components/templates/Pieces'
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
 // import gsap from gsap;
 
 export default {
   components: {
-    Slices
+    Pieces
   },
   mixins: [routeTransitionFade],
   async asyncData({ $sanity }) {
-    const queryPieces = groq`*[_type == "piece"] | order(order desc) { _id, content }`
+    const queryPieces = groq`*[_type == "piece"] | order(order asc) { _id, content }`
     const queryIndex = groq`*[_type=='page' && content.slug.current=='index'][0]`
 
     return {

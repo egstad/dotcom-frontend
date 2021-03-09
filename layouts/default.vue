@@ -24,9 +24,3 @@ export default {
   // }
 }
 </script>
-
-<style>
-.site-wrapper {
-  max-width: 1024px;
-}
-</style>
