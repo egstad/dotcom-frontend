@@ -79,14 +79,14 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['@/assets/css/_vars.css', '@/assets/css/reset.css'],
+  css: ['~/assets/css/_vars.css', '~/assets/css/reset.css'],
   /*
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '@/plugins/PageMetadata.js',
-    '@/plugins/ThemeChanger.js',
-    '@/plugins/ThemeScroller.js'
+    '~/plugins/PageMetadata.js',
+    '~/plugins/ThemeChanger.js',
+    '~/plugins/ThemeScroller.js'
   ],
   /*
    ** Nuxt.js dev-modules
@@ -97,9 +97,7 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     // Doc: https://sanity.nuxtjs.org/
-    '@nuxtjs/sanity',
-    // Doc: https://www.npmjs.com/package/nuxt-gsap
-    'nuxt-gsap'
+    '@nuxtjs/sanity'
   ],
 
   sanity: {
@@ -110,7 +108,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/pwa', 'nuxt-gsap'],
+  modules: ['@nuxtjs/pwa'],
   /*
    ** Build configuration
    */
@@ -118,7 +116,8 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {}
+    extend(config, ctx) {},
+    transpile: ['gsap']
   },
   generate: {
     crawler: true,
