@@ -7,7 +7,6 @@
       { 'has-errored': hasErrored }
     ]"
     :alt="alt"
-    :src="image.url + '?w=320&auto=format&fit=max'"
     :width="image.metadata.dimensions.width"
     :height="image.metadata.dimensions.height"
     @load="onLoad($event)"
@@ -74,14 +73,21 @@ export default {
       this.$emit('error', ev)
     },
     registerObserver() {
-      this.observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            this.$el.srcset = this.srcSet
-            this.unobserve()
-          }
-        })
-      })
+      this.observer = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              this.$el.src = `${this.image.url}?w=${this.sizes[0]}&auto=format&fit=max`
+              this.$el.srcset = this.srcSet
+              this.unobserve()
+            }
+          })
+        },
+        {
+          rootMargin: `${window.innerHeight}px 0px`,
+          threshold: 0
+        }
+      )
     },
     unobserve() {
       this.observer.unobserve(this.$el)

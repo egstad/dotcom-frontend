@@ -41,11 +41,11 @@ export default {
 
 /* wrapper for slices */
 .piece >>> .piece__content {
-  display: flex;
+  /* display: flex; */
   /* width: 100%; */
   /* height: 70vh; */
-  min-height: 50vw;
-  padding-top: 44px;
+  /* min-height: 50vw; */
+  /* padding-top: 44px; */
 }
 
 /* .piece >>> .pic,
