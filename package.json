@@ -14,22 +14,22 @@
   "dependencies": {
     "@nuxtjs/pwa": "^3.0.0-0",
     "@nuxtjs/sanity": "^0.7.0",
-    "@sanity/asset-utils": "^1.1.2",
+    "@sanity/asset-utils": "^1.1.4",
     "gsap": "^3.6.1",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.15.4"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^5.0.0",
     "@nuxtjs/eslint-module": "^3.0.2",
     "@nuxtjs/stylelint-module": "^3.1.0",
     "babel-eslint": "^10.0.1",
-    "eslint": "^7.19.0",
+    "eslint": "^7.24.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-nuxt": ">=0.4.2",
-    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-prettier": "^3.4.0",
     "fibers": "^5.0.0",
     "prettier": "^1.19.1",
-    "sass": "^1.32.8",
+    "sass": "^1.32.11",
     "sass-loader": "^10.1.1",
     "stylelint": "^13.12.0"
   }
