@@ -84,9 +84,10 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '~/plugins/PageMetadata.js',
-    '~/plugins/ThemeChanger.js',
-    '~/plugins/ThemeScroller.js'
+    { src: '~/plugins/PageMetadata.js' },
+    { src: '~/plugins/ThemeChanger.js' },
+    { src: '~/plugins/ThemeScroller.js' },
+    { src: '~/plugins/Device.client.js' }
   ],
   /*
    ** Nuxt.js dev-modules
@@ -97,7 +98,7 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     // Doc: https://sanity.nuxtjs.org/
-    '@nuxtjs/sanity'
+    '@nuxtjs/sanity/module'
   ],
 
   sanity: {

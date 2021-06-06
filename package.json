@@ -12,8 +12,11 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
+    "@egstad/detect-motion": "^1.0.4",
+    "@egstad/detect-scroll": "^1.0.5",
+    "@egstad/detect-theme": "^1.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
-    "@nuxtjs/sanity": "^0.7.0",
+    "@nuxtjs/sanity": "^0.9.4",
     "@sanity/asset-utils": "^1.1.4",
     "gsap": "^3.6.1",
     "nuxt": "^2.15.4"
