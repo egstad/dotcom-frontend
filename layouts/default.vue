@@ -1,16 +1,19 @@
 <template>
   <div class="site-wrapper">
     <PrimaryNavigation />
+    <Debug />
     <nuxt />
   </div>
 </template>
 
 <script>
 import PrimaryNavigation from '@/components/organisms/PrimaryNavigation'
+import Debug from '@/components/templates/Debug'
 
 export default {
   components: {
-    PrimaryNavigation
+    PrimaryNavigation,
+    Debug
   },
   watch: {
     // fired when route changes
