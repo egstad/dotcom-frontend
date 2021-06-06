@@ -6,6 +6,7 @@
           link.title
         }}</nuxt-link>
       </li>
+      <li>{{ this.height }}</li>
     </ul>
   </nav>
 </template>
@@ -14,6 +15,9 @@
 export default {
   data() {
     return {
+      height: null,
+      scrollSpeedOffset: 4,
+      posY: undefined,
       links: [
         {
           title: 'Index',
@@ -29,11 +33,40 @@ export default {
         }
       ]
     }
+  },
+  mounted() {
+    this.height = this.setHeight()
+
+    window.addEventListener('scrollY', this.scrollY)
+  },
+  methods: {
+    scrollY(ev) {
+      if (ev.detail) this.scrollY = ev.detail.y
+
+      if (this.scrollY < this.height) {
+        this.posY = Math.round(this.scrollY)
+        this.$el.style.transform = this.setTransform(this.posY)
+      }
+    },
+    setTransform(y) {
+      return `translate3d(0,-${this.posY * 0.5}px,0)`
+    },
+    setHeight() {
+      return Math.round(
+        this.$el.getBoundingClientRect().height * this.scrollSpeedOffset
+      )
+    }
   }
 }
 </script>
 
 <style>
+.nav-primary {
+  position: fixed;
+  /* transition: transform 100ms ease-out; */
+  font-size: 1em;
+}
+
 .nav-primary__list {
   list-style-type: none;
   display: flex;
