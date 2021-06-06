@@ -39,3 +39,25 @@ export const mutations = {
     state.scrollDirection = val
   }
 }
+
+export const actions = {
+  updateScrollDirection({ commit }, direction) {
+    let eventName = null
+
+    switch (direction) {
+      case 'up':
+        eventName = 'scrollUp'
+        break
+
+      case 'down':
+        eventName = 'scrollDown'
+        break
+
+      default:
+        break
+    }
+
+    window.$nuxt.$emit(`window::${eventName}`)
+    commit('setScrollingDirection', direction)
+  }
+}

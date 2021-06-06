@@ -88,6 +88,7 @@ export default {
     { src: '~/plugins/ThemeChanger.js' },
     { src: '~/plugins/ThemeScroller.js' },
     { src: '~/plugins/Device.client.js' }
+    // { src: '~/plugins/Scroll.client.js' }
   ],
   /*
    ** Nuxt.js dev-modules

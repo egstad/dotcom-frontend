@@ -14,7 +14,7 @@ const windowResize = {
 
       setTimeout(() => {
         this.throttled = false
-        window.$nuxt.$emit('window::resized')
+        window.$nuxt.$emit('window::resize')
         windowDimensions.set()
       }, this.delay)
     }

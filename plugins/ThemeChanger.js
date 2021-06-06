@@ -45,8 +45,6 @@ const theme = {
       //   duration: 0.7,
       //   ease: 'Power2.easeOut'
       // })
-
-      console.log(options)
     }
   }
 }

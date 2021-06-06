@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@egstad/detect-motion": "^1.0.4",
-    "@egstad/detect-scroll": "^1.0.5",
+    "@egstad/detect-scroll": "^1.0.8",
     "@egstad/detect-theme": "^1.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
     "@nuxtjs/sanity": "^0.9.4",
