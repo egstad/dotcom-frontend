@@ -28,14 +28,14 @@ const theme = {
       // }
 
       document.documentElement.style.setProperty(
-        'background',
+        '--background',
         options.background
       )
       document.documentElement.style.setProperty(
-        'foreground',
+        '--foreground',
         options.foreground
       )
-      document.documentElement.style.setProperty('accent', options.accent)
+      document.documentElement.style.setProperty('--accent', options.accent)
 
       // change theme with javascript
       // window.$nuxt.$gsap.to('html', {
