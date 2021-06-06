@@ -6,12 +6,19 @@ export const state = () => ({
   winHeight: null,
   docWidth: null,
   docHeight: null,
-  prefersReducedMotion: false
+  hideAnimations: null,
+  preferredTheme: null,
+  dpi: null,
+  isScrolling: null,
+  scrollDirection: undefined
 })
 
 export const mutations = {
+  setPreferredTheme(state, boolean) {
+    state.preferredTheme = boolean
+  },
   setPrefersReducedMotion(state, boolean) {
-    state.prefersReducedMotion = boolean
+    state.hideAnimations = boolean
   },
   setDimensions(state, val) {
     state.winWidth = val.winWidth
@@ -23,5 +30,12 @@ export const mutations = {
     state.isTouch = val.isTouch
     state.isCursor = val.isCursor
     state.isMobile = val.isMobile
+    state.dpi = val.dpi
+  },
+  setScrollingState(state, boolean) {
+    state.isScrolling = boolean
+  },
+  setScrollingDirection(state, val) {
+    state.scrollDirection = val
   }
 }
