@@ -1,5 +1,5 @@
 <template>
-  <article class="piece">
+  <article class="piece" :data-title="piece.content.title">
     <header class="piece__header">
       <h2>{{ piece.content.title }}</h2>
     </header>
@@ -22,6 +22,47 @@ export default {
     piece: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      observer: null,
+      observerOptions: null
+    }
+  },
+  mounted() {
+    this.observerSetup()
+    this.$nuxt.$on('window::resize', this.handleResize)
+  },
+  beforeDestroy() {
+    this.observerDestroy()
+  },
+  methods: {
+    handleResize() {
+      this.observerDestroy()
+      this.observerSetup()
+    },
+    observerSetup() {
+      this.observerOptions = {
+        rootMargin: `0px 0px ${this.$store.state.device.winWidth * 0.5}px  0px`,
+        threshold: 0.5 // half of item height
+      }
+      this.observer = new IntersectionObserver(
+        this.observerHandler,
+        this.observerOptions
+      )
+
+      this.observer.observe(this.$el)
+    },
+    observerDestroy() {
+      this.observer.unobserve(this.$el)
+    },
+    observerHandler(entries) {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.$nuxt.$emit('nav::updateActiveItem', entry.target.dataset.title)
+        }
+      })
     }
   }
 }

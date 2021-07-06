@@ -3,6 +3,7 @@ import ThemeChanger from '@/plugins/ThemeChanger'
 
 export const state = () => ({
   isTransitioning: false,
+  showScrim: true,
   theme: {
     background: 'black',
     foreground: 'white',
@@ -11,6 +12,9 @@ export const state = () => ({
 })
 
 export const mutations = {
+  showScrim(state, val) {
+    state.showScrim = val
+  },
   setTransitionState(state, val) {
     state.isTransitioning = val
   },

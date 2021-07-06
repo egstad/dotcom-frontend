@@ -2,12 +2,11 @@
   <div class="debugger">
     <ul class="table">
       <li v-for="(value, prop) in $store.state.device" :key="prop" class="item">
-        <div class="prop">{{ prop }}</div>
-        <div class="val">{{ value }}</div>
-      </li>
-      <li v-for="(value, prop) in $store.state.theme" :key="prop" class="item">
-        <div class="prop">{{ prop }}</div>
-        <div class="val">{{ value }}</div>
+        <div class="content">
+          <div class="prop">{{ prop }}</div>
+          <div class="val">{{ value }}</div>
+        </div>
+        <div class="square"></div>
       </li>
     </ul>
   </div>
@@ -19,14 +18,34 @@
 
   .table {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(10rem, 100%), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     grid-gap: 4px;
   }
 
   .item {
+    position: relative;
     text-align: center;
     border: 1px solid;
-    padding: clamp(20px, 4vmin, 40px) 0;
+
+    &::after {
+      display: block;
+      content: '';
+      width: 100%;
+      height: 0;
+      padding-bottom: 100%;
+    }
+  }
+
+  .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
   }
 
   .prop {

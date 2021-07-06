@@ -6,11 +6,12 @@ export const routeTransitionFade = {
     mode: 'out-in',
     css: false,
     beforeEnter(el) {
-      this.$store.commit('setTransitionState', 'true')
       gsap.set(el, {
         opacity: 0,
-        y: 15
+        y: 25
       })
+      this.$store.commit('setTransitionState', 'true')
+      this.$nuxt.$emit('scrim::show')
     },
     enter(el, done) {
       // gsap.to('html', {
@@ -35,8 +36,11 @@ export const routeTransitionFade = {
         ease: 'Power2.easeIn',
         duration: 0.3,
         opacity: 0,
-        y: 15,
-        onComplete: done
+        y: 25,
+        onComplete: () => {
+          this.$nuxt.$emit('scrim::hide')
+          done()
+        }
       })
     },
     afterLeave() {

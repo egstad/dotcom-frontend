@@ -6,7 +6,7 @@ const scroll = {
     this.scrollUp = this.scrollUp.bind(this)
     this.scrollDown = this.scrollDown.bind(this)
     this.scrollStop = this.scrollStop.bind(this)
-    this.instance = new DetectScroll(window, {
+    window.detectScroll = new DetectScroll(window, {
       // debugMode: true,
       horizontal: false,
       vertical: true,
@@ -22,8 +22,7 @@ const scroll = {
     })
   },
   scrollY(ev) {
-    if (!ev.detail) return
-    window.$nuxt.$emit('window::scrollY', ev.detail.y)
+    window.$nuxt.$emit('window::scrollY')
   },
   scrollUp(ev) {
     window.$nuxt.$emit('window::scrollUp', ev.detail.y)
@@ -37,11 +36,11 @@ const scroll = {
     window.$nuxt.$store.commit('device/setScrollingState', true)
   },
   scrollStop(ev) {
-    window.$nuxt.$emit('window::scrollStop', this.instance.y)
+    window.$nuxt.$emit('window::scrollStop', window.detectScroll.y)
     window.$nuxt.$store.commit('device/setScrollingState', false)
   },
   destroy() {
-    this.instance.destroy()
+    window.detectScroll.destroy()
   }
 }
 

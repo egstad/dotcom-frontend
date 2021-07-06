@@ -37,6 +37,7 @@ export default {
     this.handleIt()
     this.setRandomImage()
     window.addEventListener('keyup', this.nextImage)
+    this.$nuxt.$emit('page::mounted')
   },
   beforeDestroy() {
     window.removeEventListener('keyup', this.nextImage)

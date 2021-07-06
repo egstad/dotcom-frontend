@@ -2,11 +2,12 @@
   <nav class="nav-primary" :class="{ 'is-hidden': navIsHidden }">
     <ul class="nav-primary__list">
       <li v-for="link in links" :key="link.title" class="nav-primary__item">
-        <nuxt-link class="nav-primary__link" :to="{ path: link.route }">{{
-          link.title
-        }}</nuxt-link>
+        <nuxt-link class="nav-primary__link" :to="{ path: link.route }">
+          {{ link.title }}</nuxt-link
+        >
       </li>
     </ul>
+    <p v-if="activeItem">active: {{ activeItem }}</p>
   </nav>
 </template>
 
@@ -14,7 +15,8 @@
 export default {
   data() {
     return {
-      navIsHidden: true,
+      activeItem: null,
+      navIsHidden: false,
       lastY: 0,
       links: [
         {
@@ -37,6 +39,7 @@ export default {
     this.$nuxt.$on('window::scrollStop', this.scrollStop)
     this.$nuxt.$on('window::scrollUp', this.scrollDirectionChange)
     this.$nuxt.$on('window::scrollDown', this.scrollDirectionChange)
+    this.$nuxt.$on('nav::updateActiveItem', this.updateActiveItem)
 
     this.scrollHandler(0)
   },
@@ -45,6 +48,7 @@ export default {
     this.$nuxt.$off('window::scrollStop', this.scrollStop)
     this.$nuxt.$off('window::scrollUp', this.scrollDirectionChange)
     this.$nuxt.$off('window::scrollDown', this.scrollDirectionChange)
+    this.$nuxt.$off('nav::updateActiveItem', this.updateActiveItem)
   },
   methods: {
     scrollDirectionChange(y) {
@@ -53,7 +57,9 @@ export default {
     scrollStop(y) {
       this.lastY = Math.round(y)
     },
-    scrollHandler(y) {
+    scrollHandler() {
+      if (!window.detectScroll) return
+      const y = window.detectScroll.y
       const scrollDiff = this.lastY - y
       const scrollOffset = 50
       const hasScrolledDown = -scrollDiff > 0 && -scrollDiff > scrollOffset
@@ -69,6 +75,9 @@ export default {
     },
     hideNav() {
       this.navIsHidden = 1
+    },
+    updateActiveItem(val) {
+      this.activeItem = val
     }
   }
 }
