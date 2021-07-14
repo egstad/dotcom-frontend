@@ -10,7 +10,8 @@ export const state = () => ({
   preferredTheme: null,
   dpi: null,
   isScrolling: null,
-  scrollDirection: undefined
+  scrollDirection: undefined,
+  breakpoint: null
 })
 
 export const mutations = {
@@ -37,6 +38,9 @@ export const mutations = {
   },
   setScrollingDirection(state, val) {
     state.scrollDirection = val
+  },
+  setBreakpoint(state, val) {
+    state.breakpoint = val
   }
 }
 

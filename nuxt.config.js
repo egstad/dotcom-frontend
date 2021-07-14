@@ -79,7 +79,7 @@ export default {
   /*
    ** Global CSS
    */
-  css: ['~/assets/css/_vars.css', '~/assets/css/reset.css'],
+  css: ['~/assets/styles/reset.css'],
   /*
    ** Plugins to load before mounting the App
    */
@@ -87,7 +87,9 @@ export default {
     { src: '~/plugins/PageMetadata.js' },
     { src: '~/plugins/ThemeChanger.js' },
     { src: '~/plugins/ThemeScroller.js' },
-    { src: '~/plugins/Device.client.js' }
+    { src: '~/plugins/Device.client.js' },
+    { src: '~/plugins/Grid.js' },
+    { src: '~/plugins/Type.js' }
     // { src: '~/plugins/Scroll.client.js' }
   ],
   /*
@@ -99,8 +101,15 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     // Doc: https://sanity.nuxtjs.org/
-    '@nuxtjs/sanity/module'
+    '@nuxtjs/sanity/module',
+    // Doc: https://github.com/nuxt-community/style-resources-module
+    '@nuxtjs/style-resources'
   ],
+
+  styleResources: {
+    hoistUseStatements: true,
+    scss: ['~/assets/styles/_vars.scss']
+  },
 
   sanity: {
     // Doc: https://sanity.nuxtjs.org/configuration

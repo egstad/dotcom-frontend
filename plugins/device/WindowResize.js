@@ -1,4 +1,5 @@
 import windowDimensions from '~/plugins/device/WindowDimensions'
+import windowBreakpoints from '~/plugins/device/WindowBreakpoints'
 
 const windowResize = {
   init() {
@@ -16,6 +17,7 @@ const windowResize = {
         this.throttled = false
         window.$nuxt.$emit('window::resize')
         windowDimensions.set()
+        windowBreakpoints.set()
       }, this.delay)
     }
   }

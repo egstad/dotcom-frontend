@@ -3,20 +3,17 @@
     <header class="piece__header">
       <h2>{{ piece.content.title }}</h2>
     </header>
-    <Slices :slices="piece.content.slices" class="piece__content"></Slices>
 
-    <!-- <Theme :colors="piece.content.theme" fade-target="middle" /> -->
+    <Slices :slices="piece.content.slices" class="piece__content"></Slices>
   </article>
 </template>
 
 <script>
 import Slices from '@/components/templates/Slices'
-// import Theme from '@/components/atoms/Theme'
 
 export default {
   components: {
     Slices
-    // Theme
   },
   props: {
     piece: {

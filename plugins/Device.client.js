@@ -1,6 +1,7 @@
 import deviceInfo from '~/plugins/device/DeviceInfo'
 import windowResize from '~/plugins/device/WindowResize'
 import windowDimensions from '~/plugins/device/WindowDimensions'
+import windowBreakpoints from '~/plugins/device/WindowBreakpoints'
 import windowScroll from '~/plugins/device/WindowScroll'
 import preferredTheme from '~/plugins/device/PreferredTheme'
 import preferredMotion from '~/plugins/device/PreferredMotion'
@@ -12,6 +13,7 @@ const device = {
     preferredMotion.init()
     windowResize.init()
     windowDimensions.init()
+    windowBreakpoints.init()
     windowScroll.init()
     // this.scrollHistory()
   },

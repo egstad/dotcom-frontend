@@ -1,6 +1,6 @@
 <template>
   <div class="site-wrapper">
-    <PrimaryNavigation />
+    <SiteHeader />
 
     <main class="site-main">
       <nuxt />
@@ -11,13 +11,13 @@
 </template>
 
 <script>
-import PrimaryNavigation from '@/components/organisms/PrimaryNavigation'
+import SiteHeader from '@/components/organisms/SiteHeader'
 import Debug from '@/components/templates/Debug'
 // import Scrim from '@/components/templates/Scrim'
 
 export default {
   components: {
-    PrimaryNavigation,
+    SiteHeader,
     Debug
     // Scrim
   },
@@ -78,7 +78,7 @@ export default {
 <style lang="scss" scoped>
 .site {
   &-main {
-    padding: 20vw 20px;
+    padding: 20vw 0;
   }
 }
 </style>
