@@ -1,31 +1,33 @@
 <template>
   <div class="debugger">
-    <ul class="table">
-      <li v-for="(value, prop) in $store.state.device" :key="prop" class="item">
+    <Grid tag="ul" class="table">
+      <Column
+        v-for="(value, prop) in $store.state.device"
+        :key="prop"
+        tag="li"
+        class="item"
+        :sm="6"
+        :md="4"
+        :lg="3"
+        :xl="2"
+      >
         <div class="content">
-          <div class="prop">{{ prop }}</div>
-          <div class="val">{{ value }}</div>
+          <Type class="prop">{{ prop }}</Type>
+          <Type class="val">{{ value }}</Type>
         </div>
         <div class="square"></div>
-      </li>
-    </ul>
+      </Column>
+    </Grid>
   </div>
 </template>
 
 <style lang="scss">
 .debugger {
-  padding: clamp(1em, 10vh, 4em) clamp(20px, 4vmin, 40px);
-
-  .table {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-gap: 4px;
-  }
-
   .item {
     position: relative;
     text-align: center;
-    border: 1px solid;
+    border-radius: 0.3em;
+    overflow: hidden;
 
     &::after {
       display: block;
@@ -33,6 +35,8 @@
       width: 100%;
       height: 0;
       padding-bottom: 100%;
+      background: var(--foreground);
+      opacity: 0.15;
     }
   }
 
@@ -46,6 +50,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    padding: 0 1em;
   }
 
   .prop {
@@ -62,6 +67,10 @@
     display: inline-block;
     padding: 0 0.2em;
     border-radius: 0.2em;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 </style>

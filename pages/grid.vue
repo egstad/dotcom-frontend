@@ -1,7 +1,7 @@
 <template>
   <Grid>
     <Column>
-      <!-- <Grid align-items="baseline">
+      <Grid align-items="baseline">
         <Column v-for="i in 6" :key="i" :xs="2">
           <Type :size="i">Aa</Type>
         </Column>
@@ -10,7 +10,7 @@
         <Column v-for="i in 6" :key="i" :xs="2" class="border">
           <Type :size="0">ts{{ i }}</Type>
         </Column>
-      </Grid> -->
+      </Grid>
 
       <Grid align-items="baseline">
         <template v-for="i in 6">
@@ -26,6 +26,19 @@
           </Column>
         </template>
       </Grid>
+
+      <!-- <Grid align-items="baseline">
+        <template v-for="i in 6">
+          <Column :key="i" class="spacer" :lg="4">
+            <Type :size="i"
+              >Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Blanditiis error animi ipsum delectus dolorem commodi, quisquam
+              beatae minima voluptates sit architecto quis. Eius dolores
+              necessitatibus esse quasi voluptates recusandae impedit?</Type
+            >
+          </Column>
+        </template>
+      </Grid> -->
     </Column>
   </Grid>
 </template>

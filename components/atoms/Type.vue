@@ -25,7 +25,7 @@ $scale: 1.5;
 $baseline: 16;
 $sizes: (
   1: 13,
-  2: 19,
+  2: 16,
   3: 27,
   4: 35,
   5: 44,
@@ -37,18 +37,22 @@ $sizes: (
     $size: map-get($sizes, $i);
     $leading: $baseline;
     $increment: ($i * 0.5) + ($scale - 1);
-    font-family: 'Univers Next Pro';
+    font-family: 'Lars Light';
     // font-family: sans-serif;
 
     @if $i > 1 {
       $leading: $baseline * $increment;
     }
 
+    @if $i > 2 {
+      font-family: 'Lars Regular';
+    }
+
     font-size: $size + px;
     line-height: $leading + px;
 
-    @media (min-width: $xl) {
-      font-size: calc-vw($size, $xl);
+    @media (min-width: $xx) {
+      font-size: calc-vw($size, $xx);
       line-height: calc-leading($leading, $size);
     }
   }
@@ -58,12 +62,12 @@ $sizes: (
   letter-spacing: 0.02em;
 }
 
-.ts-2 {
-  letter-spacing: 0.01em;
-}
+// .ts-2 {
+//   letter-spacing: 0.01em;
+// }
 
-.ts-3 {
-}
+// .ts-3 {
+// }
 
 .ts-4 {
   letter-spacing: -0.01em;
@@ -71,5 +75,9 @@ $sizes: (
 
 .ts-5 {
   letter-spacing: -0.02em;
+}
+
+.ts-6 {
+  letter-spacing: -0.03em;
 }
 </style>

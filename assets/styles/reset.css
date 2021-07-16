@@ -140,10 +140,7 @@ table {
   box-sizing: border-box;
 }
 
-*::before {
-  box-sizing: border-box;
-}
-
+*::before,
 *::after {
   box-sizing: border-box;
 }
@@ -151,6 +148,17 @@ table {
 ::selection {
   background: var(--foreground);
   color: var(--background);
+}
+
+html,
+body,
+#__nuxt,
+#__layout,
+.site-wrapper,
+.site-content {
+  min-height: 100%;
+  height: 100%;
+  margin: 0;
 }
 
 html {

@@ -1,37 +1,48 @@
 <template>
-  <header class="site-header">
-    <Grid :xs-columns="2">
-      <SiteHeaderLogo style="order:2" />
-      <SiteHeaderNavSecondary
-        class="nav-secondary"
-        :class="{ 'is-hidden': !navIsHidden }"
-        @mouseenter.native="showNav"
-      />
+  <Grid
+    tag="header"
+    class="site-header"
+    :class="{ navIsHidden }"
+    @mouseenter.native="showNav"
+  >
+    <Column class="header-nav__wrap" :md="6">
+      <SiteHeaderLogo />
+      <SiteHeaderNavPrimary class="shy" />
+    </Column>
+    <Column :md="6">
+      <SiteHeaderMeta class="shy" />
+    </Column>
 
-      <SiteHeaderNavPrimary
-        class="nav-primary"
-        :class="{ 'is-hidden': navIsHidden }"
-      />
-    </Grid>
-  </header>
+    <SiteHeaderBackground :hidden="navIsHidden" />
+  </Grid>
 </template>
 
 <script>
-import SiteHeaderLogo from '~/components/organisms/SiteHeaderLogo.vue'
-import SiteHeaderNavPrimary from '~/components/organisms/SiteHeaderNavPrimary.vue'
-import SiteHeaderNavSecondary from '~/components/organisms/SiteHeaderNavSecondary.vue'
+import SiteHeaderLogo from '~/components/organisms/site-header/SiteHeaderLogo.vue'
+import SiteHeaderNavPrimary from '~/components/organisms/site-header/SiteHeaderNavPrimary.vue'
+import SiteHeaderMeta from '~/components/organisms/site-header/SiteHeaderMeta.vue'
+import SiteHeaderBackground from '~/components/organisms/site-header/SiteHeaderBackground.vue'
 
 export default {
   components: {
     SiteHeaderLogo,
     SiteHeaderNavPrimary,
-    SiteHeaderNavSecondary
+    SiteHeaderMeta,
+    SiteHeaderBackground
   },
   data() {
     return {
       activeItem: null,
-      navIsHidden: false,
+      navIsHidden: 0,
       lastY: 0
+    }
+  },
+  computed: {
+    docHeight() {
+      return this.$store.state.device.docHeight
+    },
+    winHeight() {
+      return this.$store.state.device.winHeight
     }
   },
   mounted() {
@@ -65,14 +76,16 @@ export default {
       const hasScrolledDown = -scrollDiff > 0 && -scrollDiff > scrollOffset
       const hasScrolledUp = scrollDiff > 0 && scrollDiff > scrollOffset
       const nearTop = y < scrollOffset
+      const nearBottomOffset = 50
+      const nearBottom = this.winHeight + y + nearBottomOffset >= this.docHeight
 
       if (hasScrolledUp && this.navIsHidden) this.showNav()
       if (hasScrolledDown && !this.navIsHidden) this.hideNav()
       if (nearTop && this.navIsHidden) this.showNav()
+      if (nearBottom && this.navIsHidden) this.showNav()
     },
     showNav() {
       this.navIsHidden = 0
-      console.log('hi')
     },
     hideNav() {
       this.navIsHidden = 1
@@ -85,39 +98,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$dimHeight: 20vw;
+$blur: 2vw;
+
 .site-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  padding-top: 14px;
+  z-index: 20;
 
-  .egstad-logo {
-    order: 2;
-  }
+  &.navIsHidden {
+    &::after {
+      transform: translate3d(0, -3vw, 0);
+    }
 
-  .nav-primary {
-    position: fixed;
-    z-index: 1;
-    // transform: translate3d(0, 0, 0);
-    // transition: transform calc(var(--time) * 0.5) var(--ease);
-    opacity: 1;
-    transition: opacity calc(var(--time) * 0.5) var(--ease);
-
-    &.is-hidden {
-      // transform: translate3d(0, -200%, 0);
+    .shy {
       opacity: 0;
+      pointer-events: none;
     }
   }
 
-  .nav-secondary {
-    opacity: 1;
-    z-index: 2;
+  .shy {
+    pointer-events: auto;
     transition: opacity calc(var(--time) * 0.5) var(--ease);
+  }
 
-    &.is-hidden {
-      z-index: -1;
-      opacity: 0;
+  .egstad-logo,
+  .header-nav {
+    display: inline-block;
+  }
+
+  .header-nav {
+    &__wrap {
+      display: flex;
     }
   }
 }

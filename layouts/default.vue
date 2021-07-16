@@ -2,23 +2,31 @@
   <div class="site-wrapper">
     <SiteHeader />
 
-    <main class="site-main">
-      <nuxt />
-    </main>
-    <Debug />
+    <div class="site-content" :style="mainStyle">
+      <main class="site-main">
+        <nuxt />
+      </main>
+
+      <SiteFooter />
+    </div>
+
+    <!-- <Debug /> -->
     <!-- <Scrim /> -->
   </div>
 </template>
 
 <script>
-import SiteHeader from '@/components/organisms/SiteHeader'
-import Debug from '@/components/templates/Debug'
+import SiteHeader from '@/components/organisms/site-header/SiteHeader'
+import SiteFooter from '@/components/organisms/site-footer/SiteFooter'
+
+// import Debug from '@/components/templates/Debug'
 // import Scrim from '@/components/templates/Scrim'
 
 export default {
   components: {
     SiteHeader,
-    Debug
+    SiteFooter
+    // Debug
     // Scrim
   },
   computed: {
@@ -30,6 +38,14 @@ export default {
     },
     isMobile() {
       return this.$store.state.device.isMobile
+    },
+    winHeight() {
+      return this.$store.state.device.winHeight
+    },
+    mainStyle() {
+      return {
+        minHeight: `${this.winHeight}px`
+      }
     }
   },
   watch: {
@@ -77,8 +93,12 @@ export default {
 
 <style lang="scss" scoped>
 .site {
+  &-content {
+    display: flex;
+    flex-direction: column;
+  }
   &-main {
-    padding: 20vw 0;
+    flex: 1 0 auto;
   }
 }
 </style>

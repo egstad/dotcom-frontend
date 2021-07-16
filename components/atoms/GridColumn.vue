@@ -162,3 +162,10 @@ export default {
   // }
 }
 </script>
+
+<style lang="scss" scoped>
+// span all by default
+.grid__col {
+  grid-column: auto;
+}
+</style>

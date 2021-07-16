@@ -18,6 +18,7 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "@nuxtjs/sanity": "^0.9.4",
     "@sanity/asset-utils": "^1.1.4",
+    "dayjs": "^1.10.6",
     "gsap": "^3.6.1",
     "nuxt": "^2.15.4"
   },

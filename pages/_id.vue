@@ -61,3 +61,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.container {
+  margin-top: calc(10vmax + 10vmin);
+}
+</style>

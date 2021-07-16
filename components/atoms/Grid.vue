@@ -126,17 +126,14 @@ $grid-gap: 16px;
   box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-column-gap: math.div($grid-gap, 2);
+  grid-gap: math.div($grid-gap, 2);
   padding-left: $grid-gap;
   padding-right: $grid-gap;
 
-  @include bp($sm) {
-    padding-left: calc-vw($grid-gap, $sm);
-    padding-right: calc-vw($grid-gap, $sm);
-    grid-column-gap: calc-vw(math.div($grid-gap, 2), $sm);
-    // grid-gap: clamp(#{math.div($grid-gap, 2)}, 2vw, #{$grid-gap * 1.5});
-    // padding-left: clamp(#{$grid-gap * 2}, 4vw, 64px);
-    // padding-right: clamp(#{$grid-gap * 2}, 4vw, 64px);
+  @include bp($md) {
+    padding-left: calc-vw($grid-gap, $md);
+    padding-right: calc-vw($grid-gap, $md);
+    grid-gap: calc-vw(math.div($grid-gap, 2), $md);
   }
 }
 
