@@ -8,8 +8,10 @@
 # install dependencies
 $ npm install
 
+# switch to proper node version (requires nvm)
+$ nvm use
+
 # serve with hot reload at localhost:3000
-$ npm run dev
 $ npm start
 
 # build for production and launch server
