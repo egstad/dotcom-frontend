@@ -37,4 +37,4 @@ $ npm run generate
 
 ## Typography
 
-All type on the Site should be fed through the `<Type>` component. This component is responsible for handling the size and style of all letterforms. The typographic scale across all sizes is generated mathmatically using pixel values. For `xx` machines and above, those absolute (`px`) values are converted to relative (`vw`) units and scale fluidly.
+All type on the Site should be fed through the `<Type>` component. This component is responsible for handling the size and style of all letterforms. The typographic scale across all sizes is generated mathmatically using pixel values. For `xx` machines and above, those absolute (`px`) values are converted to relative (`vw`) units and scale fluidly!
