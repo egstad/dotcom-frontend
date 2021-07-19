@@ -9,11 +9,11 @@
       <SiteHeaderLogo />
       <SiteHeaderNavPrimary class="shy" />
     </Column>
-    <Column :md="6">
+    <Column :md="6" class="hide-mobile">
       <SiteHeaderMeta class="shy" />
     </Column>
 
-    <SiteHeaderBackground :hidden="navIsHidden" />
+    <!-- <SiteHeaderBackground :hidden="navIsHidden" /> -->
   </Grid>
 </template>
 
@@ -21,14 +21,14 @@
 import SiteHeaderLogo from '~/components/organisms/site-header/SiteHeaderLogo.vue'
 import SiteHeaderNavPrimary from '~/components/organisms/site-header/SiteHeaderNavPrimary.vue'
 import SiteHeaderMeta from '~/components/organisms/site-header/SiteHeaderMeta.vue'
-import SiteHeaderBackground from '~/components/organisms/site-header/SiteHeaderBackground.vue'
+// import SiteHeaderBackground from '~/components/organisms/site-header/SiteHeaderBackground.vue'
 
 export default {
   components: {
     SiteHeaderLogo,
     SiteHeaderNavPrimary,
-    SiteHeaderMeta,
-    SiteHeaderBackground
+    SiteHeaderMeta
+    // SiteHeaderBackground
   },
   data() {
     return {

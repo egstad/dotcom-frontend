@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" :style="style" class="grid">
+  <component :is="tag" :style="style" :class="['grid', { padded: padding }]">
     <slot />
   </component>
 </template>
@@ -11,6 +11,10 @@ export default {
     tag: {
       type: String,
       default: 'div'
+    },
+    padding: {
+      type: Boolean,
+      default: true
     },
     xsColumns: {
       type: Number,
@@ -127,13 +131,19 @@ $grid-gap: 16px;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-gap: math.div($grid-gap, 2);
-  padding-left: $grid-gap;
-  padding-right: $grid-gap;
 
   @include bp($md) {
-    padding-left: calc-vw($grid-gap, $md);
-    padding-right: calc-vw($grid-gap, $md);
     grid-gap: calc-vw(math.div($grid-gap, 2), $md);
+  }
+
+  &.padded {
+    padding-left: $grid-gap;
+    padding-right: $grid-gap;
+
+    @include bp($md) {
+      padding-left: calc-vw($grid-gap, $md);
+      padding-right: calc-vw($grid-gap, $md);
+    }
   }
 }
 

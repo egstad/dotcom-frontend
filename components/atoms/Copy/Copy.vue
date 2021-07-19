@@ -98,8 +98,8 @@ export default {
     li:before {
       content: counter(item);
       font-feature-settings: 'ss04';
-      font-size: 150%;
-      top: -0.2em;
+      font-size: 1.5em;
+      top: 0;
       left: 0;
     }
   }

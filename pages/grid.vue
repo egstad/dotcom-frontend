@@ -1,7 +1,53 @@
 <template>
-  <Grid>
+  <div>
+    <div style="margin-top: 40vw">
+      <!-- full -->
+      <Grid :padding="false">
+        <Column
+          style="background: black;padding-bottom: 50%; color: white;margin-top: 1em"
+          >fl</Column
+        >
+      </Grid>
+
+      <!-- xl -->
+      <Grid>
+        <Column
+          style="background: black;padding-bottom: 50%; color: white;margin-top: 1em"
+          >xl</Column
+        >
+      </Grid>
+
+      <!-- lg -->
+      <Grid>
+        <Column
+          :sm="10"
+          style="background: black;padding-bottom: 50%; color: white;margin-top: 1em"
+          >lg</Column
+        >
+      </Grid>
+
+      <!-- md -->
+      <Grid>
+        <Column
+          :sm="8"
+          style="background: black;padding-bottom: 100%; color: white;margin-top: 1em"
+          >md</Column
+        >
+      </Grid>
+
+      <!-- sm -->
+      <Grid>
+        <Column
+          :sm="6"
+          :xx="3"
+          style="background: black;padding-bottom: 100%; color: white;margin-top: 1em"
+          >sm</Column
+        >
+      </Grid>
+    </div>
+
     <Column>
-      <Grid align-items="baseline">
+      <!-- <Grid align-items="baseline">
         <Column v-for="i in 6" :key="i" :xs="2">
           <Type :size="i">Aa</Type>
         </Column>
@@ -10,9 +56,9 @@
         <Column v-for="i in 6" :key="i" :xs="2" class="border">
           <Type :size="0">ts{{ i }}</Type>
         </Column>
-      </Grid>
+      </Grid> -->
 
-      <Grid align-items="baseline">
+      <!-- <Grid align-items="baseline">
         <template v-for="i in 6">
           <Column :key="i" class="spacer">
             <Type :size="0">ts{{ i }}</Type>
@@ -25,7 +71,7 @@
             >
           </Column>
         </template>
-      </Grid>
+      </Grid> -->
 
       <!-- <Grid align-items="baseline">
         <template v-for="i in 6">
@@ -40,7 +86,7 @@
         </template>
       </Grid> -->
     </Column>
-  </Grid>
+  </div>
 </template>
 
 <script>
