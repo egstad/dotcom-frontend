@@ -166,9 +166,9 @@ html {
   overflow-x: hidden;
   overflow-y: scroll;
   position: relative;
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  transition: background var(--time) var(--ease), color var(--time) var(--ease);
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
 }
 
 a[href]:not([tabindex='-1']),

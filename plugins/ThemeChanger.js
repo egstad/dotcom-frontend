@@ -1,63 +1,43 @@
-// import { hexToRgb } from '@/assets/js/utils/Color'
-
 const theme = {
-  updateColor(options) {
-    if (process.client) {
-      // if (options.background) {
-      //   const color = hexToRgb(options.background)
-      //   document.documentElement.style.setProperty(
-      //     'background',
-      //     `${color.r}, ${color.g}, ${color.b}`
-      //   )
-      // }
+  updateColor(colors) {
+    const root = document.documentElement.style
+    const background = colors.background
+    const foreground = colors.foreground
+    const accent = colors.accent
 
-      // if (options.foreground) {
-      //   const color = hexToRgb(options.foreground)
-      //   document.documentElement.style.setProperty(
-      //     '--color-foreground',
-      //     `${color.r}, ${color.g}, ${color.b}`
-      //   )
-      // }
+    if (background) {
+      root.setProperty('--bH', background[0])
+      root.setProperty('--bS', background[1])
+      root.setProperty('--bL', background[2])
+      root.setProperty('--bA', background[3])
+    }
 
-      // if (options.accent) {
-      //   const color = hexToRgb(options.accent)
-      //   document.documentElement.style.setProperty(
-      //     '--color-accent',
-      //     `${color.r}, ${color.g}, ${color.b}`
-      //   )
-      // }
+    if (foreground) {
+      root.setProperty('--fH', foreground[0])
+      root.setProperty('--fS', foreground[1])
+      root.setProperty('--fL', foreground[2])
+      root.setProperty('--fA', foreground[3])
+    }
 
-      document.documentElement.style.setProperty(
-        '--background',
-        options.background
-      )
-      document.documentElement.style.setProperty(
-        '--foreground',
-        options.foreground
-      )
-      document.documentElement.style.setProperty('--accent', options.accent)
-
-      // change theme with javascript
-      // window.$nuxt.$gsap.to('html', {
-      //   '--background': window.$nuxt.$store.state.theme.background,
-      //   '--foreground': window.$nuxt.$store.state.theme.foreground,
-      //   '--accent': window.$nuxt.$store.state.theme.accent,
-      //   duration: 0.7,
-      //   ease: 'Power2.easeOut'
-      // })
+    if (accent) {
+      root.setProperty('--aH', accent[0])
+      root.setProperty('--aS', accent[1])
+      root.setProperty('--aL', accent[2])
+      root.setProperty('--aA', accent[3])
     }
   }
 }
 
-if (process.client) {
-  window.onNuxtReady((app) => {
-    theme.updateColor({
-      background: window.$nuxt.$store.state.theme.background,
-      foreground: window.$nuxt.$store.state.theme.foreground,
-      accent: window.$nuxt.$store.state.theme.accent
-    })
-    window.$nuxt.$on('theme::update', theme.updateColor)
-  })
-}
+// if (process.client) {
+//   window.onNuxtReady((app) => {
+//     console.log(app.$store.state)
+//     // theme.updateColor({
+//     //   background: window.$nuxt.$store.state.theme.background,
+//     //   foreground: window.$nuxt.$store.state.theme.foreground,
+//     //   accent: window.$nuxt.$store.state.theme.accent
+//     // })
+//     // window.$nuxt.$on('theme::update', theme.updateColor)
+//   })
+// }
 
 export default theme

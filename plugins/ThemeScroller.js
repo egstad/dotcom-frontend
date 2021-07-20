@@ -33,14 +33,16 @@ const colorWash = {
     this.onResize = this.onResize.bind(this)
 
     // check position on scroll
-    window.addEventListener('scroll', this.onScroll)
+    window.$nuxt.$on('window::scrollY', this.onScroll)
 
     // update target position on resize
-    window.addEventListener('resize', this.onResize)
+    window.$nuxt.$on('window::resize', this.onResize)
+    window.$nuxt.$on('window::scrollStop', this.onResize)
   },
   destroy() {
-    window.removeEventListener('scroll', this.onScroll)
-    window.removeEventListener('resize', this.onResize)
+    window.$nuxt.$off('window::scrollY', this.onScroll)
+    window.$nuxt.$off('window::resize', this.onResize)
+    window.$nuxt.$off('window::scrollStop', this.onResize)
   },
   getTargetPositions() {
     this.targetPositions = []
@@ -95,29 +97,41 @@ const colorWash = {
 
     // update color
     if (index >= 0) {
+      this.aboveFirstEl = false
       this.activeTheme = {
         accent: window.$nuxt.$store.state.theme.accent,
         background: window.$nuxt.$store.state.theme.background,
         foreground: window.$nuxt.$store.state.theme.foreground
       }
       this.thisTheme = {
-        accent: currEl.dataset.accent,
-        background: currEl.dataset.background,
-        foreground: currEl.dataset.foreground
+        accent: currEl.dataset.accent ? currEl.dataset.accent : null,
+        background: currEl.dataset.background
+          ? currEl.dataset.background
+          : null,
+        foreground: currEl.dataset.foreground ? currEl.dataset.foreground : null
+      }
+
+      const themesMatch =
+        JSON.stringify(this.thisTheme) === JSON.stringify(this.activeTheme)
+
+      // if color isn't right, update it
+      if (!themesMatch && this.activeTheme) {
+        this.updateTheme(this.thisTheme)
       }
     }
     // revert to default
     else {
       this.thisTheme = this.cachedTheme
-    }
 
-    const themesMatch =
-      JSON.stringify(this.thisTheme) === JSON.stringify(this.activeTheme)
-
-    // if color isn't right, update it
-    if (!themesMatch && this.activeTheme) {
-      window.$nuxt.$store.commit('setTheme', this.thisTheme)
+      // this condition is set so updateTheme doesn't fire more than once on scroll
+      if (!this.aboveFirstEl) {
+        this.aboveFirstEl = true
+        this.updateTheme(this.thisTheme)
+      }
     }
+  },
+  updateTheme(theme) {
+    window.$nuxt.$store.dispatch('updateTheme', theme)
   },
   onResize() {
     this.getTargetPositions()
