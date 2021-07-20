@@ -38,15 +38,3 @@
     </Grid> -->
   </section>
 </template>
-
-<script>
-export default {
-  fetch() {
-    this.$store.commit('setTheme', {
-      background: '#f9f9f9',
-      foreground: '#050505',
-      accent: '#0000ff'
-    })
-  }
-}
-</script>

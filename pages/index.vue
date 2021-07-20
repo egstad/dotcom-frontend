@@ -8,6 +8,8 @@
 import { groq } from '@nuxtjs/sanity'
 import Pieces from '@/components/templates/Pieces'
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
+import { hsla } from '@/assets/js/utils/SanityHSL'
+
 // import gsap from gsap;
 
 export default {
@@ -24,16 +26,18 @@ export default {
       pieces: await $sanity.fetch(queryPieces)
     }
   },
-  fetch() {
-    const theme = this.page.content.theme
-    this.$store.commit('setTheme', {
-      background: theme.background,
-      foreground: theme.foreground,
-      accent: theme.accent
-    })
-  },
   head() {
     return this.$setPageMetadata(this.page.content)
+  },
+  created() {
+    if (process.client) {
+      const theme = this.page.content.theme
+      this.$store.dispatch('updateTheme', {
+        background: hsla(theme.background.hsl),
+        foreground: hsla(theme.foreground.hsl),
+        accent: hsla(theme.accent.hsl)
+      })
+    }
   },
   mounted() {
     this.$nuxt.$emit('page::mounted')

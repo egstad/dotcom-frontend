@@ -19,15 +19,17 @@
 -->
 <template>
   <div
-    :data-background="colors.background"
-    :data-foreground="colors.foreground"
+    :data-background="background"
+    :data-foreground="foreground"
+    :data-accent="accent"
     :data-target="fadeTarget"
-    :data-accent="colors.accent"
     class="scroll-to-theme"
   ></div>
 </template>
 
 <script>
+import { hsla } from '@/assets/js/utils/SanityHSL'
+
 export default {
   props: {
     colors: {
@@ -37,6 +39,17 @@ export default {
     fadeTarget: {
       type: String,
       required: true
+    }
+  },
+  computed: {
+    background() {
+      return hsla(this.colors.background.hsl)
+    },
+    foreground() {
+      return hsla(this.colors.foreground.hsl)
+    },
+    accent() {
+      return hsla(this.colors.accent.hsl)
     }
   }
 }

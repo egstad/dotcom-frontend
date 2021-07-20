@@ -30,6 +30,8 @@
       <Grid>
         <Column
           :sm="8"
+          :xl="7"
+          :xx="6"
           style="background: black;padding-bottom: 100%; color: white;margin-top: 1em"
           >md</Column
         >
@@ -39,11 +41,22 @@
       <Grid>
         <Column
           :sm="6"
-          :xx="3"
+          :xl="5"
+          :xx="4"
           style="background: black;padding-bottom: 100%; color: white;margin-top: 1em"
           >sm</Column
         >
       </Grid>
+
+      <!-- xs -->
+      <!-- <Grid>
+        <Column
+          :sm="8"
+          :md="4"
+          style="background: black;padding-bottom: 100%; color: white;margin-top: 1em"
+          >xs</Column
+        >
+      </Grid> -->
     </div>
 
     <Column>
@@ -88,18 +101,6 @@
     </Column>
   </div>
 </template>
-
-<script>
-export default {
-  fetch() {
-    this.$store.commit('setTheme', {
-      background: '#f9f9f9',
-      foreground: '#050505',
-      accent: '#0000ff'
-    })
-  }
-}
-</script>
 
 <style lang="scss" scoped>
 .border,
