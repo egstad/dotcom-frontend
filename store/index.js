@@ -44,9 +44,9 @@ export const mutations = {
 export const actions = {
   updateTheme({ commit }, colors) {
     ThemeChanger.updateColor({
-      background: hslaBreak(colors.background),
-      foreground: hslaBreak(colors.foreground),
-      accent: hslaBreak(colors.accent)
+      background: colors.background ? hslaBreak(colors.background) : null,
+      foreground: colors.foreground ? hslaBreak(colors.foreground) : null,
+      accent: colors.accent ? hslaBreak(colors.accent) : null
     })
 
     commit('setBackground', colors.background)

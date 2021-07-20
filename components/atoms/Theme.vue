@@ -44,13 +44,13 @@ export default {
 
   computed: {
     background() {
-      return hsla(this.colors.background.hsl)
+      return this.colors.background ? hsla(this.colors.background.hsl) : null
     },
     foreground() {
-      return hsla(this.colors.foreground.hsl)
+      return this.colors.foreground ? hsla(this.colors.foreground.hsl) : null
     },
     accent() {
-      return hsla(this.colors.accent.hsl)
+      return this.colors.accent ? hsla(this.colors.accent.hsl) : null
     }
   }
 }

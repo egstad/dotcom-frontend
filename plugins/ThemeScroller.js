@@ -104,9 +104,11 @@ const colorWash = {
         foreground: window.$nuxt.$store.state.theme.foreground
       }
       this.thisTheme = {
-        accent: currEl.dataset.accent,
-        background: currEl.dataset.background,
-        foreground: currEl.dataset.foreground
+        accent: currEl.dataset.accent ? currEl.dataset.accent : null,
+        background: currEl.dataset.background
+          ? currEl.dataset.background
+          : null,
+        foreground: currEl.dataset.foreground ? currEl.dataset.foreground : null
       }
 
       const themesMatch =
