@@ -41,6 +41,7 @@ export default {
       required: true
     }
   },
+
   computed: {
     background() {
       return hsla(this.colors.background.hsl)

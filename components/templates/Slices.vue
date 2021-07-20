@@ -20,7 +20,7 @@
       <template v-else-if="slice._type === 'themeScroller'">
         <Theme
           :key="slice._key"
-          :colors="slice"
+          :colors="slice.theme"
           :fade-target="slice.target ? slice.target : 'middle'"
         />
         <!-- <pre :key="'pre-' + slice._key">{{ slice }}</pre> -->
