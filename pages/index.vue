@@ -1,8 +1,6 @@
 <template>
   <div class="container">
     <Pieces :pieces="pieces" />
-    <!-- <pre>{{ pieces }}</pre> -->
-    <button @click="fetchNextPage">next</button>
   </div>
 </template>
 
@@ -11,7 +9,6 @@ import { groq } from '@nuxtjs/sanity'
 import Pieces from '@/components/templates/Pieces'
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
 import { hsla } from '@/assets/js/utils/SanityHSL'
-
 // import gsap from gsap;
 
 export default {
@@ -34,7 +31,8 @@ export default {
   data() {
     return {
       nextQuery: 0,
-      currentlyFetching: false
+      currentlyFetching: false,
+      hasMorePostsToLoad: true
     }
   },
   head() {
@@ -62,23 +60,25 @@ export default {
       if (!this.currentlyFetching) this.fetchNextPage()
     },
     async fetchNextPage() {
-      console.log('fetch')
-      // update vars for next query
-      this.lastQuery = this.pieces.length
-      this.nextQuery = this.lastQuery + this.queryLength
-      this.currentlyFetching = true
-      // console.log(this.);
-      // fetch items from sanity
-      const query = groq`
+      if (this.hasMorePostsToLoad) {
+        this.lastQuery = this.pieces.length
+        this.nextQuery = this.lastQuery + this.queryLength
+        this.currentlyFetching = true
+
+        // fetch items from sanity
+        const query = groq`
         *[_type == "piece"] | order(order asc)
           [${this.lastQuery}...${this.nextQuery}]
           { _id, content }`
-      const nextPosts = await this.$sanity.fetch(query)
+        const nextPosts = await this.$sanity.fetch(query)
 
-      // add items to array
-      this.pieces.push(...nextPosts)
-      this.currentlyFetching = false
-      console.log('fetched', this.pieces.length)
+        // add items to array
+        this.pieces.push(...nextPosts)
+        this.currentlyFetching = false
+
+        // determine if there are more posts to load or not
+        if (nextPosts.length < this.queryLength) this.hasMorePostsToLoad = false
+      }
     }
   }
 }
