@@ -22,6 +22,15 @@ const scroll = {
     })
   },
   scrollY(ev) {
+    const y = ev.detail.y
+    const h = document.documentElement.scrollHeight
+    const w = this.$nuxt.$store.state.device.winHeight
+    const o = w
+
+    // if near bottom
+    if (y + w + o > h) {
+      window.$nuxt.$emit('window::scrollNearBottom')
+    }
     window.$nuxt.$emit('window::scrollY')
   },
   scrollUp(ev) {
