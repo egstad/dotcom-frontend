@@ -1,6 +1,8 @@
 <template>
   <div class="container">
     <Pieces :pieces="pieces" />
+    <!-- <pre>{{ pieces }}</pre> -->
+    <button @click="fetchNextPage">next</button>
   </div>
 </template>
 
@@ -18,12 +20,21 @@ export default {
   },
   mixins: [routeTransitionFade],
   async asyncData({ $sanity }) {
-    const queryPieces = groq`*[_type == "piece"] | order(order asc) { _id, content }`
+    const queryLength = 5
+    const queryPieces = groq`*[_type == "piece"] | order(order asc)[0...${queryLength}] { _id, content }`
     const queryIndex = groq`*[_type=='page' && content.slug.current=='index'][0]`
 
     return {
+      queryLength,
+      lastQuery: queryLength,
       page: await $sanity.fetch(queryIndex),
       pieces: await $sanity.fetch(queryPieces)
+    }
+  },
+  data() {
+    return {
+      nextQuery: 0,
+      currentlyFetching: false
     }
   },
   head() {
@@ -40,7 +51,35 @@ export default {
     }
   },
   mounted() {
+    this.$nuxt.$on('window::scrollNearBottom', this.scrollHandler)
     this.$nuxt.$emit('page::mounted')
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('window::scrollNearBottom', this.scrollHandler)
+  },
+  methods: {
+    scrollHandler(ev) {
+      if (!this.currentlyFetching) this.fetchNextPage()
+    },
+    async fetchNextPage() {
+      console.log('fetch')
+      // update vars for next query
+      this.lastQuery = this.pieces.length
+      this.nextQuery = this.lastQuery + this.queryLength
+      this.currentlyFetching = true
+      // console.log(this.);
+      // fetch items from sanity
+      const query = groq`
+        *[_type == "piece"] | order(order asc)
+          [${this.lastQuery}...${this.nextQuery}]
+          { _id, content }`
+      const nextPosts = await this.$sanity.fetch(query)
+
+      // add items to array
+      this.pieces.push(...nextPosts)
+      this.currentlyFetching = false
+      console.log('fetched', this.pieces.length)
+    }
   }
 }
 </script>

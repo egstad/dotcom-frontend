@@ -28,11 +28,11 @@ export default {
     }
   },
   mounted() {
-    this.observerSetup()
+    // this.observerSetup()
     this.$nuxt.$on('window::resize', this.handleResize)
   },
   beforeDestroy() {
-    this.observerDestroy()
+    // this.observerDestroy()
   },
   methods: {
     handleResize() {
