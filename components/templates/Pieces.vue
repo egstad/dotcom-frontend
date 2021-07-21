@@ -1,16 +1,10 @@
 <template>
   <section class="pieces">
-    <Grid class="pieces__list" tag="ul">
-      <Column
-        v-for="piece in pieces"
-        :key="piece._id"
-        class="piece"
-        tag="li"
-        :xs="3"
-      >
+    <ul class="pieces__list">
+      <li v-for="piece in pieces" :key="piece._id" class="piece">
         <Piece :piece="piece" />
-      </Column>
-    </Grid>
+      </li>
+    </ul>
   </section>
 </template>
 
