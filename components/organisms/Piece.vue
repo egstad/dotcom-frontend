@@ -1,11 +1,12 @@
 <template>
-  <article class="piece">
-    <header class="piece__header">
-      <h2>{{ piece.content.title }}</h2>
-    </header>
-
-    <Slices :slices="piece.content.slices" class="piece__content"></Slices>
-  </article>
+  <Grid tag="article" class="piece">
+    <Column v-bind="sizeProps" class="piece__wrap">
+      <header class="piece__header">
+        <Type tag="h2" :size="1" class="piece__title">{{ piece.title }}</Type>
+      </header>
+      <Slices :slices="[content]" class="piece__content"></Slices>
+    </Column>
+  </Grid>
 </template>
 
 <script>
@@ -20,19 +21,73 @@ export default {
       type: Object,
       required: true
     }
+  },
+  computed: {
+    size() {
+      return this.piece.size
+    },
+    content() {
+      return this.piece.content
+    },
+    sizeProps() {
+      switch (this.size) {
+        case 'small':
+          return {
+            sm: 6,
+            xl: 5,
+            xx: 4
+          }
+        case 'medium':
+          return {
+            sm: 8,
+            xl: 7,
+            xx: 6
+          }
+        case 'large':
+          return {
+            sm: 10,
+            xl: 5,
+            xx: 4
+          }
+        case 'xlarge':
+          return {
+            sm: 12
+          }
+        case 'full':
+          return {
+            padding: false
+          }
+        default:
+          break
+      }
+
+      return null
+    }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 .piece {
   position: relative;
-  border-bottom: 1px solid #000;
-  display: grid;
-  grid-template-rows: 1fr 44px;
-}
 
-.piece__header {
-  order: 2;
+  &__wrap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__header {
+    order: 2;
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &::before {
+      content: counter(piece);
+    }
+  }
 }
 </style>

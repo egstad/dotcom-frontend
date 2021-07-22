@@ -1,20 +1,20 @@
 import { getImageAsset } from '@sanity/asset-utils'
 
 export default ({ app }, inject) => {
-  inject('setPageMetadata', (content) => {
+  inject('setPageMetadata', (payload) => {
     const pageMeta = []
-    const pageImage = content.socialImage
-    const pageDesc = content.socialDescription
-    const pageTitle = content.socialTitle
-      ? `Egstad • ${content.socialTitle}`
-      : `Egstad • ${content.title}`
+    const pageImage = payload.socialImage
+    const pageDesc = payload.socialDescription
+    const pageTitle = payload.socialTitle
+      ? `Egstad • ${payload.socialTitle}`
+      : `Egstad • ${payload.title}`
 
-    if (content === undefined) {
+    if (payload === undefined) {
       return
     }
 
     // If social title is created
-    if (content.socialTitle) {
+    if (payload.socialTitle) {
       pageMeta.push({
         hid: `og:title`,
         property: 'og:title',

@@ -1,7 +1,7 @@
 <template>
   <section class="pieces">
     <ul class="pieces__list">
-      <li v-for="piece in pieces" :key="piece._id" class="piece">
+      <li v-for="piece in pieces" :key="piece._id" class="piece__">
         <Piece :piece="piece" />
       </li>
     </ul>
@@ -23,3 +23,17 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+// initialize css counter
+// tick for every list item
+// for more, check out <Piece/>
+.pieces {
+  &__list {
+    counter-reset: pieces;
+    li {
+      counter-increment: piece;
+    }
+  }
+}
+</style>

@@ -48,7 +48,7 @@ export default {
     if (process.client) {
       this.interval = setInterval(() => {
         this.setTime()
-      }, 1000)
+      }, 10000)
     }
   },
   beforeDestroy() {

@@ -19,11 +19,11 @@ export default {
       links: [
         {
           title: 'Work',
-          route: '/'
+          route: 'work'
         },
         {
           title: 'Profile',
-          route: '/profile'
+          route: 'profile'
         }
       ]
     }
