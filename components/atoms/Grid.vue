@@ -122,7 +122,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 $grid-gap: 16px;
 
 .grid {
@@ -135,21 +135,21 @@ $grid-gap: 16px;
   @include bp($md) {
     grid-gap: calc-vw(math.div($grid-gap, 2), $md);
   }
-
-  &.padded {
-    padding-left: $grid-gap;
-    padding-right: $grid-gap;
-
-    @include bp($md) {
-      padding-left: calc-vw($grid-gap, $md);
-      padding-right: calc-vw($grid-gap, $md);
-    }
-  }
 }
 
 // remove child padding
 .grid .grid {
   padding-left: 0;
   padding-right: 0;
+}
+
+.padded {
+  padding-left: $grid-gap;
+  padding-right: $grid-gap;
+
+  @include bp($md) {
+    padding-left: calc-vw($grid-gap, $md);
+    padding-right: calc-vw($grid-gap, $md);
+  }
 }
 </style>

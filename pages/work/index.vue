@@ -30,9 +30,11 @@ export default {
         social,
         content {
           pieces[] {
-            title,
+            ...,
+            "title": data->title,
+            "titleOverride": title,
             size,
-            "content": data->content[0]
+            "content": data->content[0],
           }
         }
       }`

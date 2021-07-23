@@ -60,6 +60,7 @@ $sizes: (
 
 .ts-1 {
   letter-spacing: 0.02em;
+  font-family: 'lars medium';
 }
 
 // .ts-2 {

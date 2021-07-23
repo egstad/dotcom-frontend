@@ -1,8 +1,8 @@
 <template>
-  <Grid tag="article" class="piece">
-    <Column v-bind="sizeProps" class="piece__wrap">
-      <header class="piece__header">
-        <Type tag="h2" :size="1" class="piece__title">{{ piece.title }}</Type>
+  <Grid tag="article" class="piece" v-bind="gridProps">
+    <Column v-bind="colProps" class="piece__wrap" tabindex="0">
+      <header class="piece__header" :class="headerClasses">
+        <Type tag="h2" :size="1" class="piece__title">{{ title }}</Type>
       </header>
       <Slices :slices="[content]" class="piece__content"></Slices>
     </Column>
@@ -29,7 +29,12 @@ export default {
     content() {
       return this.piece.content
     },
-    sizeProps() {
+    title() {
+      return this.piece.titleOverride
+        ? this.piece.titleOverride
+        : this.piece.title
+    },
+    colProps() {
       switch (this.size) {
         case 'small':
           return {
@@ -45,14 +50,10 @@ export default {
           }
         case 'large':
           return {
-            sm: 10,
-            xl: 5,
-            xx: 4
+            sm: 10
           }
         case 'xlarge':
-          return {
-            sm: 12
-          }
+          return {}
         case 'full':
           return {
             padding: false
@@ -62,6 +63,12 @@ export default {
       }
 
       return null
+    },
+    gridProps() {
+      return this.size === 'full' ? { padding: false } : null
+    },
+    headerClasses() {
+      return this.size === 'full' ? 'padded' : null
     }
   }
 }
