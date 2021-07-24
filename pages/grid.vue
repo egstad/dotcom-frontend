@@ -1,6 +1,8 @@
 <template>
   <div>
     <div style="margin-top: 40vw">
+      <Slideshow />
+
       <!-- full -->
       <Grid :padding="false">
         <Column
@@ -102,14 +104,12 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-.border,
-hr {
-  border: 0;
-  border-top: 1px solid #000;
-  height: 0;
+<script>
+import Slideshow from '@/components/organisms/Slideshow.vue'
+
+export default {
+  components: {
+    Slideshow
+  }
 }
-.spacer {
-  margin-top: 10vw;
-}
-</style>
+</script>
