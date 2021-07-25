@@ -24,11 +24,17 @@
 
       <Flickity ref="gallery" class="slideshow__slides" :options="options">
         <Pic
-          v-for="slide in slides"
+          v-for="(slide, index) in slides"
           :key="slide._key"
           ref="slide"
           :alt="slide.alt"
           :asset="slide.asset._ref"
+          class="slideshow__slide"
+          :class="[
+            { 'is-next': index === nextIndex },
+            { 'is-prev': index === prevIndex },
+            { 'is-selected': index === selectedIndex }
+          ]"
         />
       </Flickity>
     </div>
@@ -53,9 +59,11 @@ export default {
   },
   data() {
     return {
-      observer: null,
-      observerOptions: null,
       flickity: null,
+      selectedIndex: null,
+      maxIndex: null,
+      nextIndex: null,
+      prevIndex: null,
       options: {
         selectedAttraction: 1,
         friction: 1,
@@ -65,7 +73,11 @@ export default {
         resize: true,
         wrapAround: true,
         pageDots: false,
-        fade: true
+        fade: true,
+        on: {
+          ready: this.onReady,
+          change: this.onChange
+        }
         // autoPlay: 8000,
         // cellAlign: 'left',
         // freeScroll: false,
@@ -74,7 +86,10 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => (this.flickity = this.$refs.gallery.$flickity))
+    this.$nextTick(() => {
+      this.flickity = this.$refs.gallery.$flickity
+      this.maxIndex = this.$refs.slide.length - 1
+    })
   },
   methods: {
     next() {
@@ -96,6 +111,23 @@ export default {
       } else if (mouseAwayFrom === 'previous') {
         this.flickity.viewport.classList.remove('is-hovered-prev')
       }
+    },
+    onChange(index) {
+      this.handleIndex(index)
+    },
+    onReady() {
+      this.handleIndex(0)
+    },
+    handleIndex(index) {
+      this.selectedIndex = index
+      this.setPrevIndex(index)
+      this.setNextIndex(index)
+    },
+    setNextIndex(index) {
+      this.nextIndex = index < this.maxIndex ? index + 1 : 0
+    },
+    setPrevIndex(index) {
+      this.prevIndex = index === 0 ? this.maxIndex : index - 1
     }
   }
 }
@@ -122,6 +154,7 @@ export default {
       appearance: none;
       background: 0;
       border: 0;
+      cursor: pointer;
 
       &.--prev {
         order: 1;
@@ -130,6 +163,41 @@ export default {
       &.--next {
         order: 2;
       }
+    }
+  }
+
+  .is-selected {
+    z-index: 1;
+    transition: mask-position 400ms ease-in-out;
+    mask-size: 200% 100%;
+    mask-position: 50% 0%;
+    mask-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 15%,
+      rgba(0, 0, 0, 1) 85%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+
+  .is-hovered-next {
+    .is-selected {
+      z-index: 1;
+      mask-position: 100% 0%;
+    }
+
+    .is-next {
+      opacity: 1 !important;
+    }
+  }
+  .is-hovered-prev {
+    .is-selected {
+      z-index: 1;
+      mask-position: 0% 0%;
+    }
+
+    .is-prev {
+      opacity: 1 !important;
     }
   }
 }
