@@ -25,8 +25,11 @@
     "dayjs": "^1.10.6",
     "flickity": "^2.2.2",
     "flickity-fade": "^1.0.0",
+    "flickity-imagesloaded": "^2.0.0",
     "gsap": "^3.6.1",
-    "nuxt": "^2.15.4"
+    "imagesloaded": "^4.1.4",
+    "nuxt": "^2.15.4",
+    "vue-flickity": "^1.2.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^5.0.0",

@@ -1,5 +1,10 @@
 <template>
-  <component :is="tag" :style="style" :class="['grid', { padded: padding }]">
+  <component
+    :is="tag"
+    v-if="ready"
+    :style="style"
+    :class="['grid', { padded: padding }]"
+  >
     <slot />
   </component>
 </template>
@@ -77,6 +82,11 @@ export default {
         ].includes(prop)
     }
   },
+  data() {
+    return {
+      ready: false
+    }
+  },
   computed: {
     breakpoint() {
       return this.$store.state.device.breakpoint
@@ -89,6 +99,11 @@ export default {
 
       return styles
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.ready = true
+    })
   },
   methods: {
     getGridColumns() {

@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" :style="style" class="grid__col">
+  <component :is="tag" v-if="ready" :style="style" class="grid__col">
     <slot />
   </component>
 </template>
@@ -7,6 +7,7 @@
 <script>
 export default {
   name: 'Col',
+
   props: {
     tag: {
       type: String,
@@ -99,7 +100,8 @@ export default {
   },
   data() {
     return {
-      width: null
+      width: null,
+      ready: false
     }
   },
   computed: {
@@ -148,6 +150,11 @@ export default {
 
       return styles
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.ready = true
+    })
   }
   // mounted() {
   //   this.setWidth()

@@ -21,8 +21,13 @@
         <Theme
           :key="slice._key"
           :colors="slice.theme"
-          :fade-target="slice.target ? slice.target : 'middle'"
+          :fade-target="slice.target"
         />
+        <!-- <pre :key="'pre-' + slice._key">{{ slice }}</pre> -->
+      </template>
+
+      <template v-else-if="slice._type === 'slideshow'">
+        <Slideshow :key="slice._key" :slides="slice.slides" />
         <!-- <pre :key="'pre-' + slice._key">{{ slice }}</pre> -->
       </template>
 
@@ -38,13 +43,15 @@ import Pic from '@/components/atoms/Pic'
 import Vid from '@/components/atoms/Vid'
 import Theme from '@/components/atoms/Theme'
 import Copy from '@/components/atoms/Copy/Copy'
+import Slideshow from '@/components/organisms/Slideshow'
 
 export default {
   components: {
     Pic,
     Vid,
     Theme,
-    Copy
+    Copy,
+    Slideshow
   },
   props: {
     slices: {
