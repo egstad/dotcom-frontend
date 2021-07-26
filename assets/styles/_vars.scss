@@ -7,10 +7,6 @@ $xl: 1024px;
 $xx: 1300px;
 
 :root {
-  --hBackground: 0, 0, 0;
-  --rgbForeground: 18, 17, 21;
-  --rgbAccent: 35, 91, 237;
-
   --aH: 0; // num:  0-360
   --aS: 85%; // perc: 0-100
   --aL: 53%; // perc  0-100
@@ -20,7 +16,7 @@ $xx: 1300px;
   --bH: 0; // num:  0-360
   --bS: 0%; // perc: 0-100
   --bL: 100%; // perc  0-100
-  --bA: 0%; // perc:  0-100
+  --bA: 100%; // perc:  0-100
   --background: hsla(var(--bH), var(--bS), var(--bL), var(--bA));
 
   --fH: 255; // num:  0-360
