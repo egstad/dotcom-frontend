@@ -7,10 +7,26 @@
 -->
 
 <template>
-  <section class="slideshow">
+  <section
+    class="slideshow"
+    :aria-live="ariaLive ? 'polite' : 'off'"
+    :aria-label="`${ariaDescription} - Navigate with arrow keys`"
+    aria-roledescription="carousel"
+    tabindex="0"
+    @keydown.right="goTo('next')"
+    @keydown.left="goTo('previous')"
+    @keydown.space.prevent="goTo('next')"
+    @focus="ariaLive = true"
+    @blur="ariaLive = false"
+    @mouseenter="ariaLive = true"
+    @mouseleave="ariaLive = false"
+  >
     <button
       class="slideshow__ui next"
+      aria-label="Next Slide"
       @click="goTo('next', $event)"
+      @focus="ariaLive = true"
+      @blur="ariaLive = false"
       @mouseenter="mouseInNext"
       @mouseout="mouseOutNext"
     >
@@ -18,7 +34,10 @@
     </button>
     <button
       class="slideshow__ui prev"
+      aria-label="Previous Slide"
       @click="goTo('previous', $event)"
+      @focus="ariaLive = true"
+      @blur="ariaLive = false"
       @mouseenter="mouseInPrev"
       @mouseout="mouseOutPrev"
     >
@@ -32,31 +51,31 @@
         { 'is-hovered-prev': hoverPrev }
       ]"
     >
+      <!-- { 'is-next': index === indexNext },
+          { 'is-prev': index === indexPrev }, -->
       <li
         v-for="(num, index) in images"
         :key="num"
         ref="slide"
+        role="group"
+        :aria-label="`${index + 1} of ${indexMax + 1}`"
+        aria-roledescription="slide"
         :class="[
           'slide',
           { 'is-curr': index === indexCurr },
-          { 'is-next': index === indexNext },
-          { 'is-prev': index === indexPrev },
+          {
+            'is-peaking': hovered && hoverLast === 'next' && index === indexNext
+          },
+          {
+            'is-peaking': hovered && hoverLast === 'prev' && index === indexPrev
+          },
           { 'trans-to': index === indexTransTo },
           { 'trans-from': index === indexTransFrom }
-        ]"
-        :style="[
-          {
-            visibility:
-              (hidePrev && index === indexPrev) ||
-              (hideNext && index === indexNext)
-                ? 'hidden'
-                : ''
-          }
         ]"
         @mouseenter="isAutoplay && !reduceMotion ? stopAutoplay() : null"
         @mouseleave="isAutoplay && !reduceMotion ? startAutoplay() : null"
       >
-        <img :src="num" />
+        <img :src="num" :alt="`this is an alt tag of number ${index}`" />
       </li>
     </ul>
   </section>
@@ -66,6 +85,10 @@
 export default {
   data() {
     return {
+      // a11y
+      ariaLive: false,
+      ariaDescription: '',
+
       // navigation
       indexStart: 0,
       indexCurr: null,
@@ -74,6 +97,7 @@ export default {
       indexMax: null,
       indexTransFrom: null,
       indexTransTo: null,
+      indexPeaking: null,
 
       // slide info
       slides: null,
@@ -82,6 +106,8 @@ export default {
       // interaction
       hoverNext: false,
       hoverPrev: false,
+      hoverLast: null,
+      hovered: false,
 
       // state
       isTransitioning: false,
@@ -104,6 +130,26 @@ export default {
   computed: {
     reduceMotion() {
       return this.$store.state.device.hideAnimations
+    }
+  },
+  watch: {
+    hoverPrev(newVal) {
+      if (newVal) {
+        this.hovered = true
+      } else {
+        setTimeout(() => {
+          this.hovered = false
+        }, 200)
+      }
+    },
+    hoverNext(newVal) {
+      if (newVal) {
+        this.hovered = true
+      } else {
+        setTimeout(() => {
+          this.hovered = false
+        }, 200)
+      }
     }
   },
   mounted() {
@@ -207,23 +253,17 @@ export default {
     },
     mouseInNext() {
       this.hoverNext = true
-      this.hidePrev = true
+      this.hoverLast = 'next'
     },
     mouseOutNext() {
       this.hoverNext = false
-      setTimeout(() => {
-        this.hidePrev = false
-      }, 400)
     },
     mouseInPrev() {
       this.hoverPrev = true
-      this.hideNext = true
+      this.hoverLast = 'prev'
     },
     mouseOutPrev() {
       this.hoverPrev = false
-      setTimeout(() => {
-        this.hideNext = false
-      }, 400)
     }
   }
 }
@@ -273,23 +313,18 @@ export default {
     top: 0;
     left: 0;
     z-index: 0;
-    // visibility: hidden;
+    visibility: hidden;
 
-    &.is-curr,
-    &.trans-to {
+    &.is-curr {
+      z-index: 3;
       visibility: visible;
     }
 
-    &.is-next,
-    &.is-prev,
+    &.is-peaking,
     &.trans-to {
       z-index: 2;
       opacity: 1;
       visibility: visible;
-    }
-
-    &.is-curr {
-      z-index: 3;
     }
 
     &.trans-from {
@@ -309,6 +344,9 @@ export default {
     img {
       width: 100%;
       height: auto;
+      display: block;
+      margin: 0;
+      padding: 0;
     }
   }
 
@@ -326,30 +364,11 @@ export default {
       rgba(0, 0, 0, 0) 100%
     );
   }
-  .is-hovered-next {
-    .is-curr {
-      mask-position: 100% 0%;
-      z-index: 4;
-    }
-    .is-next {
-      visibility: visible;
-    }
-    .is-prev {
-      visibility: hidden;
-    }
+  .is-hovered-next .is-curr {
+    mask-position: 100% 0%;
   }
-  .is-hovered-prev {
-    .is-curr {
-      mask-position: 0% 0%;
-      z-index: 4;
-    }
-    .is-prev {
-      visibility: visible;
-      z-index: 3;
-    }
-    .is-next {
-      visibility: hidden;
-    }
+  .is-hovered-prev .is-curr {
+    mask-position: 0% 0%;
   }
 }
 </style>
