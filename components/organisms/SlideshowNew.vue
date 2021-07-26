@@ -1,8 +1,7 @@
 <!--
 
-1. Provide a pause button and do NOT use autoplay (this can cause seizures).
-2. All slideshow/carousel navigation and pause/play buttons must be keyboard accessible and have adequate color/contrast ratios.
-3. Also make sure the hover and focus states are visibly obvious.
+1. Provide a pause button and do NOT use autoplay
+2. Normalize focus/blur a11y helpers
 4. Tell the user how many slides there are, and where they are in that slideshow.
 -->
 
@@ -16,10 +15,10 @@
     @keydown.right="goTo('next')"
     @keydown.left="goTo('previous')"
     @keydown.space.prevent="goTo('next')"
-    @focus="ariaLive = true"
-    @blur="ariaLive = false"
-    @mouseenter="ariaLive = true"
-    @mouseleave="ariaLive = false"
+    @focus="onSlideshowFocus"
+    @blur="onSlideshowBlur"
+    @mouseenter="onSlideshowFocus"
+    @mouseleave="onSlideshowBlur"
   >
     <button
       class="slideshow__ui next"
@@ -51,8 +50,6 @@
         { 'is-hovered-prev': hoverPrev }
       ]"
     >
-      <!-- { 'is-next': index === indexNext },
-          { 'is-prev': index === indexPrev }, -->
       <li
         v-for="(num, index) in images"
         :key="num"
@@ -63,12 +60,7 @@
         :class="[
           'slide',
           { 'is-curr': index === indexCurr },
-          {
-            'is-peaking': hovered && hoverLast === 'next' && index === indexNext
-          },
-          {
-            'is-peaking': hovered && hoverLast === 'prev' && index === indexPrev
-          },
+          { 'is-peaking': getIsPeaking(index) },
           { 'trans-to': index === indexTransTo },
           { 'trans-from': index === indexTransFrom }
         ]"
@@ -107,11 +99,11 @@ export default {
       hoverNext: false,
       hoverPrev: false,
       hoverLast: null,
-      hovered: false,
+      hoveredOnButton: false,
 
       // state
       isTransitioning: false,
-      isAutoplay: false,
+      isAutoplay: true,
       autoplayInterval: null,
       autoplayDuration: 1000,
 
@@ -134,22 +126,10 @@ export default {
   },
   watch: {
     hoverPrev(newVal) {
-      if (newVal) {
-        this.hovered = true
-      } else {
-        setTimeout(() => {
-          this.hovered = false
-        }, 200)
-      }
+      newVal ? (this.hoveredOnButton = true) : this.mouseOutNextPrevDelay()
     },
     hoverNext(newVal) {
-      if (newVal) {
-        this.hovered = true
-      } else {
-        setTimeout(() => {
-          this.hovered = false
-        }, 200)
-      }
+      newVal ? (this.hoveredOnButton = true) : this.mouseOutNextPrevDelay()
     }
   },
   mounted() {
@@ -221,6 +201,16 @@ export default {
     getPrevIndex() {
       return this.indexCurr === 0 ? this.indexMax : this.indexCurr - 1
     },
+    getIsPeaking(index) {
+      return (
+        (this.hoveredOnButton &&
+          this.hoverLast === 'next' &&
+          index === this.indexNext) ||
+        (this.hoveredOnButton &&
+          this.hoverLast === 'prev' &&
+          index === this.indexPrev)
+      )
+    },
     setSiblingsIndex() {
       this.indexNext = this.indexCurr < this.indexMax ? this.indexCurr + 1 : 0
       this.indexPrev = this.indexCurr === 0 ? this.indexMax : this.indexCurr - 1
@@ -254,16 +244,39 @@ export default {
     mouseInNext() {
       this.hoverNext = true
       this.hoverLast = 'next'
+      this.autoplayPause()
     },
     mouseOutNext() {
       this.hoverNext = false
+      this.autoplayResume()
     },
     mouseInPrev() {
       this.hoverPrev = true
       this.hoverLast = 'prev'
+      this.autoplayPause()
     },
     mouseOutPrev() {
       this.hoverPrev = false
+      this.autoplayResume()
+    },
+    mouseOutNextPrevDelay() {
+      setTimeout(() => {
+        this.hoveredOnButton = false
+      }, 400)
+    },
+    onSlideshowFocus() {
+      this.ariaLive = true
+      this.autoplayPause()
+    },
+    onSlideshowBlur() {
+      this.ariaLive = false
+      this.autoplayResume()
+    },
+    autoplayPause() {
+      if (this.isAutoplay && !this.reduceMotion) this.stopAutoplay()
+    },
+    autoplayResume() {
+      if (this.isAutoplay && !this.reduceMotion) this.startAutoplay()
     }
   }
 }
@@ -353,8 +366,8 @@ export default {
   // mask animation
   .is-curr,
   .trans-to {
-    transition: mask-position 200ms ease-in-out;
-    mask-size: 200% 100%;
+    transition: mask-position 400ms ease-in-out;
+    mask-size: 300% 100%;
     mask-position: 50% 0%;
     mask-image: linear-gradient(
       to right,
