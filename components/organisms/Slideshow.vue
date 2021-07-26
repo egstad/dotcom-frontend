@@ -1,28 +1,34 @@
 <template>
   <client-only>
     <div class="slideshow">
-      <nav class="slideshow__ui">
-        <button
-          class="button --next"
-          aria-label="Next Slide"
-          @click="next"
-          @mouseenter="onMouseEnter('next')"
-          @mouseout="onMouseOut('next')"
-        >
-          N
-        </button>
-        <button
-          class="button --prev"
-          aria-label="Previous Slide"
-          @click="previous"
-          @mouseenter="onMouseEnter('previous')"
-          @mouseout="onMouseOut('previous')"
-        >
-          P
-        </button>
-      </nav>
+      <button
+        class="button --next"
+        aria-label="Next Slide"
+        @click="next"
+        @mouseenter="hoverNext = true"
+        @mouseout="hoverNext = false"
+      >
+        N
+      </button>
+      <button
+        class="button --prev"
+        aria-label="Previous Slide"
+        @click="previous"
+        @mouseenter="hoverPrev = true"
+        @mouseout="hoverPrev = false"
+      >
+        P
+      </button>
 
-      <Flickity ref="gallery" class="slideshow__slides" :options="options">
+      <Flickity
+        ref="gallery"
+        class="slideshow__slides"
+        :options="options"
+        :class="[
+          { 'is-hovered-next': hoverNext },
+          { 'is-hovered-prev': hoverPrev }
+        ]"
+      >
         <Pic
           v-for="(slide, index) in slides"
           :key="slide._key"
@@ -64,6 +70,8 @@ export default {
       maxIndex: null,
       nextIndex: null,
       prevIndex: null,
+      hoverNext: false,
+      hoverPrev: false,
       options: {
         selectedAttraction: 1,
         friction: 1,
@@ -72,24 +80,26 @@ export default {
         percentPosition: true,
         resize: true,
         wrapAround: true,
+        prevNextButtons: false,
         pageDots: false,
         fade: true,
         on: {
-          ready: this.onReady,
-          change: this.onChange
+          ready: this.handleIndex,
+          change: this.handleIndex
         }
         // autoPlay: 8000,
         // cellAlign: 'left',
         // freeScroll: false,
-        // prevNextButtons: false,
       }
     }
   },
   mounted() {
     this.$nextTick(() => {
       this.flickity = this.$refs.gallery.$flickity
-      this.maxIndex = this.$refs.slide.length - 1
     })
+  },
+  beforeDestroy() {
+    this.flickity.destroy()
   },
   methods: {
     next() {
@@ -98,30 +108,11 @@ export default {
     previous() {
       this.$refs.gallery.previous()
     },
-    onMouseEnter(hoveredOn) {
-      if (hoveredOn === 'next') {
-        this.flickity.viewport.classList.add('is-hovered-next')
-      } else if (hoveredOn === 'previous') {
-        this.flickity.viewport.classList.add('is-hovered-prev')
-      }
-    },
-    onMouseOut(mouseAwayFrom) {
-      if (mouseAwayFrom === 'next') {
-        this.flickity.viewport.classList.remove('is-hovered-next')
-      } else if (mouseAwayFrom === 'previous') {
-        this.flickity.viewport.classList.remove('is-hovered-prev')
-      }
-    },
-    onChange(index) {
-      this.handleIndex(index)
-    },
-    onReady() {
-      this.handleIndex(0)
-    },
     handleIndex(index) {
-      this.selectedIndex = index
-      this.setPrevIndex(index)
-      this.setNextIndex(index)
+      this.maxIndex = this.$refs.slide.length - 1
+      this.selectedIndex = index || 0
+      this.setPrevIndex(this.selectedIndex)
+      this.setNextIndex(this.selectedIndex)
     },
     setNextIndex(index) {
       this.nextIndex = index < this.maxIndex ? index + 1 : 0
@@ -138,31 +129,29 @@ export default {
   position: relative;
   margin-top: 20vw;
 
-  &__ui {
+  .button {
     position: absolute;
     top: 0;
-    left: 0;
     z-index: 2;
     display: flex;
-    width: 100%;
-    height: 100%;
     justify-content: space-between;
+    // flex: 1 auto;
+    height: 100%;
+    appearance: none;
+    background: 0;
+    border: 0;
+    cursor: pointer;
+    min-width: 44px;
+    width: clamp(44px, 20%, 96px);
 
-    .button {
-      flex: 1 1;
-      height: 100%;
-      appearance: none;
-      background: 0;
-      border: 0;
-      cursor: pointer;
+    &.--prev {
+      left: 0;
+      order: 1;
+    }
 
-      &.--prev {
-        order: 1;
-      }
-
-      &.--next {
-        order: 2;
-      }
+    &.--next {
+      right: 0;
+      order: 2;
     }
   }
 
@@ -187,7 +176,7 @@ export default {
     }
 
     .is-next {
-      opacity: 1 !important;
+      opacity: 0.7 !important;
     }
   }
   .is-hovered-prev {
@@ -197,7 +186,11 @@ export default {
     }
 
     .is-prev {
-      opacity: 1 !important;
+      opacity: 0.7 !important;
+    }
+
+    .is-next {
+      z-index: -1;
     }
   }
 }
