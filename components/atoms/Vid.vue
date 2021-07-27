@@ -176,9 +176,9 @@ export default {
   height: auto;
 }
 
-.vid.is-loading {
+/* .vid.is-loading {
   opacity: 0;
-}
+} */
 
 /* .vid.has-errored {} */
 /* .vid.has-loaded {} */
