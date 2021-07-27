@@ -1,38 +1,45 @@
 <template>
   <Grid tag="article" class="piece" v-bind="gridProps">
-    <Column v-bind="colProps" class="piece__wrap">
-      <header class="piece__header" :class="headerClasses">
-        <Type tag="h2" :size="1" class="piece__title">
-          <span>{{ title }}</span>
-        </Type>
-      </header>
+    <Column v-bind="colProps">
+      <div class="piece__content" :class="{ 'is-visible': inView }">
+        <header class="piece__header" :class="headerClasses">
+          <Type tag="h2" :size="1" class="piece__title">
+            <span>{{ title }}</span>
+          </Type>
+        </header>
 
-      <template v-for="slice in [content]">
-        <template v-if="slice._type === 'video'">
-          <Vid
-            :key="slice._key"
-            :alt="slice.alt"
-            :asset="slice.url"
-            :poster="slice.poster"
-            :config="slice.settings"
-          />
-          <!-- <pre :key="slice._key">{{ slice }}</pre> -->
-        </template>
+        <template v-for="slice in [content]">
+          <template v-if="slice._type === 'video'">
+            <Vid
+              :key="slice._key"
+              :alt="slice.alt"
+              :asset="slice.url"
+              :poster="slice.poster"
+              :config="slice.settings"
+            />
+            <!-- <pre :key="slice._key">{{ content }}</pre> -->
+          </template>
 
-        <template v-else-if="slice._type === 'picture'">
-          <Pic :key="slice._key" :alt="slice.alt" :asset="slice.asset._ref" />
-          <!-- <pre :key="slice._key">{{ slice }}</pre> -->
-        </template>
+          <template v-else-if="slice._type === 'picture'">
+            <Pic
+              :key="slice._key"
+              :alt="slice.alt"
+              :asset="slice.asset._ref"
+              :palette="slice.paletteImage.palette"
+            />
+            <!-- <pre :key="slice._key">{{ slice }}</pre> -->
+          </template>
 
-        <template v-else-if="slice._type === 'slideshow'">
-          <Slideshow
-            :key="slice._key"
-            :content="slice.slides"
-            :options="slice.options"
-          />
-          <!-- <pre :key="'pre-' + slice._key">{{ slice.options }}</pre> -->
+          <template v-else-if="slice._type === 'slideshow'">
+            <Slideshow
+              :key="slice._key"
+              :content="slice.slides"
+              :options="slice.options"
+            />
+            <!-- <pre :key="'pre-' + slice._key">{{ slice.options }}</pre> -->
+          </template>
         </template>
-      </template>
+      </div>
     </Column>
   </Grid>
 </template>
@@ -52,6 +59,11 @@ export default {
     piece: {
       type: Object,
       required: true
+    }
+  },
+  data() {
+    return {
+      inView: false
     }
   },
   computed: {
@@ -108,6 +120,14 @@ export default {
     headerClasses() {
       return this.size === 'full' ? 'padded' : null
     }
+  },
+  methods: {
+    handleInView(ev) {
+      this.inView = true
+    },
+    handleOutOfView() {
+      this.inView = false
+    }
   }
 }
 </script>
@@ -118,9 +138,17 @@ $captionHeight: 16px;
 .piece {
   position: relative;
 
-  &__wrap {
+  &__content {
     display: flex;
     flex-direction: column;
+    transition: opacity 500ms 250ms ease-in-out, transform 700ms ease-in-out;
+    transform: translate3d(0, 5vw, 0);
+    // opacity: 0;
+
+    // &.is-visible {
+    //   opacity: 1;
+    //   transform: translate3d(0, 0, 0);
+    // }
   }
 
   &__header {

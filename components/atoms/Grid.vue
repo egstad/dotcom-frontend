@@ -1,10 +1,5 @@
 <template>
-  <component
-    :is="tag"
-    v-if="ready"
-    :style="style"
-    :class="['grid', { padded: padding }]"
-  >
+  <component :is="tag" :style="style" :class="['grid', { padded: padding }]">
     <slot />
   </component>
 </template>

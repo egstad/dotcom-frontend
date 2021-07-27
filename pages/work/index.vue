@@ -1,11 +1,11 @@
 <template>
   <div class="container">
+    <pre>{{ date }}</pre>
     <Pieces :pieces="document.content.pieces" />
   </div>
 </template>
 
 <script>
-import { groq } from '@nuxtjs/sanity'
 import Pieces from '@/components/templates/Pieces'
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
 import { hsla } from '@/assets/js/utils/SanityHSL'
@@ -15,10 +15,9 @@ export default {
     Pieces
   },
   mixins: [routeTransitionFade],
-  async asyncData({ $sanity }) {
+  async asyncData({ $egstad }) {
     const queryLength = 1
-    const queryDocument = groq`
-      *[_type == "work"][0]{
+    const query = `*[_type == "work"][0]{
         _id,
         title,
         theme{
@@ -33,30 +32,32 @@ export default {
             "title": data->title,
             "titleOverride": title,
             size,
-            "content": data->content[0],
+            "content": data->content[0] {
+              "paletteImage": asset->metadata,
+              ...,
+            }
           }
         }
       }`
-    // const queryDocument = groq`*[_type == "work"][0] {_id,theme,social}`
-    // const queryPieces = groq`*[_type == "work"][0]{"pieces": content.pieces[0...${queryLength}]}`
 
     return {
       queryLength,
-      document: await $sanity.fetch(queryDocument)
-      // pieces: await $sanity.fetch(queryPieces)
+      document: await $egstad.fetch(query)
     }
   },
   data() {
     return {
       nextQuery: 0,
       currentlyFetching: false,
-      hasMorePostsToLoad: true
+      hasMorePostsToLoad: true,
+      date: null
     }
   },
   head() {
     return this.$setPageMetadata(this.document.social)
   },
   created() {
+    // console.log(this.document)
     if (process.client) {
       const theme = this.document.theme
       this.$store.dispatch('updateTheme', {
@@ -65,11 +66,13 @@ export default {
         accent: hsla(theme.accent)
       })
     }
+  },
+  mounted() {
+    // 'v2021-06-07'
+    // this.date = `v${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDay()}`
+    // this.$nuxt.$on('window::scrollNearBottom', this.scrollHandler)
+    // this.$nuxt.$emit('page::mounted')
   }
-  // mounted() {
-  //   this.$nuxt.$on('window::scrollNearBottom', this.scrollHandler)
-  //   this.$nuxt.$emit('page::mounted')
-  // }
   // beforeDestroy() {
   //   this.$nuxt.$off('window::scrollNearBottom', this.scrollHandler)
   // },

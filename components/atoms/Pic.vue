@@ -1,8 +1,9 @@
 <template>
-  <intersect
-    :threshold="[0, 0]"
-    :root-margin="`${$store.state.device.winHeight}px 0px`"
-    @enter.once="handleInView"
+  <div
+    :style="{
+      background:
+        palette && extension != 'png' ? palette.dominant.background : null
+    }"
   >
     <img
       ref="pic"
@@ -18,10 +19,11 @@
       @load="onLoad($event)"
       @error="onError($event)"
     />
-  </intersect>
+  </div>
 </template>
 
 <script>
+import IntersectionObserverAdmin from 'intersection-observer-admin'
 import { getImageAsset } from '@sanity/asset-utils'
 
 export default {
@@ -39,6 +41,11 @@ export default {
       type: String,
       required: false,
       default: 'lazy'
+    },
+    palette: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
   data() {
@@ -46,7 +53,9 @@ export default {
       hasLoaded: null,
       hasErrored: null,
       sizes: [320, 640, 1280, 2560, 3200],
-      srcSet: []
+      srcSet: [],
+      observer: new IntersectionObserverAdmin(),
+      observerOptions: {}
     }
   },
   computed: {
@@ -55,6 +64,9 @@ export default {
         projectId: this.$sanity.config.projectId,
         dataset: this.$sanity.config.dataset
       })
+    },
+    extension() {
+      return this.image.extension
     }
   },
   created() {
@@ -64,6 +76,15 @@ export default {
 
       return `${url}${transform} ${size}w`
     })
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.observer.addEnterCallback(this.$refs.pic, this.inView)
+      this.observer.observe(this.$refs.pic)
+    })
+  },
+  beforeDestroy() {
+    this.observer.destroy()
   },
   methods: {
     onLoad(ev) {
@@ -80,11 +101,9 @@ export default {
         this.$refs.pic.srcset = this.srcSet
       }
     },
-    handleInView() {
+    inView() {
       this.setSource()
-      if (this.autoplay && !this.hasBeenInteractedWith) {
-        this.play()
-      }
+      this.observer.destroy()
     }
   }
 }
@@ -92,7 +111,7 @@ export default {
 
 <style>
 .pic {
-  transition: opacity var(--time) var(--ease);
+  transition: opacity 1s 200ms var(--ease);
   display: block;
   width: 100%;
   height: auto;

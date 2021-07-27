@@ -3,6 +3,7 @@
     <ul class="pieces__list">
       <li v-for="piece in pieces" :key="piece._id" class="piece">
         <Piece :piece="piece" />
+        <!-- <pre>{{ piece }}</pre> -->
       </li>
     </ul>
   </section>

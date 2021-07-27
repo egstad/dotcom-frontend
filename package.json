@@ -22,15 +22,17 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "@nuxtjs/sanity": "^0.9.4",
     "@sanity/asset-utils": "^1.1.4",
+    "@sanity/client": "^2.13.0",
     "dayjs": "^1.10.6",
     "flickity": "^2.2.2",
     "flickity-fade": "^1.0.0",
     "flickity-imagesloaded": "^2.0.0",
     "gsap": "^3.6.1",
     "imagesloaded": "^4.1.4",
+    "intersection-observer-admin": "^0.3.2",
     "nuxt": "^2.15.4",
     "vue-flickity": "^1.2.1",
-    "vue-intersect": "^1.1.6",
+    "vue-sanity": "^0.10.6",
     "vue2-touch-events": "^3.2.2"
   },
   "devDependencies": {

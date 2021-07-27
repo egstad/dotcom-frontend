@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" v-if="ready" :style="style" class="grid__col">
+  <component :is="tag" :style="style" class="grid__col">
     <slot />
   </component>
 </template>

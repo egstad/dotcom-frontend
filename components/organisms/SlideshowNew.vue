@@ -7,85 +7,85 @@ Todo:
 -->
 
 <template>
-  <intersect :threshold="[0, 0]" @enter="inView" @leave="stopAutoplay">
-    <section
-      v-touch:swipe.left="swipeLeft"
-      v-touch:swipe.right="swipeRight"
-      :class="[
-        'slideshow',
-        { 'is-hovered-next': hoverNext && !isTouch },
-        { 'is-hovered-prev': hoverPrev && !isTouch },
-        { 'hide-ui': isPlaying && !hoverNext && !hoverPrev }
-      ]"
-      :aria-live="ariaLive ? 'polite' : 'off'"
-      :aria-label="`${ariaDescription} - Navigate with arrow keys`"
-      aria-roledescription="carousel"
-      tabindex="0"
-      @focus="onFocus"
-      @blur="onBlur"
+  <section
+    ref="slideshow"
+    v-touch:swipe.left="swipeLeft"
+    v-touch:swipe.right="swipeRight"
+    :class="[
+      'slideshow',
+      { 'is-hovered-next': hoverNext && !isTouch },
+      { 'is-hovered-prev': hoverPrev && !isTouch },
+      { 'hide-ui': isPlaying && !hoverNext && !hoverPrev }
+    ]"
+    :aria-live="ariaLive ? 'polite' : 'off'"
+    :aria-label="`${ariaDescription} - Navigate with arrow keys`"
+    aria-roledescription="carousel"
+    tabindex="0"
+    @focus="onFocus"
+    @blur="onBlur"
+    @click="goTo('next', $event)"
+    @keydown.self.right="goTo('next', $event)"
+    @keydown.self.left="goTo('previous', $event)"
+    @mouseenter.self="onFocus"
+    @mouseleave.self="onBlur"
+  >
+    <button
+      class="slideshow__ui next"
+      aria-label="Next Slide"
       @click="goTo('next', $event)"
+      @focus="onFocus($event, 'next')"
+      @blur="onBlur($event, 'next')"
+      @mouseenter="onFocus($event, 'next')"
+      @mouseout="onBlur($event, 'next')"
       @keydown.self.right="goTo('next', $event)"
       @keydown.self.left="goTo('previous', $event)"
-      @mouseenter.self="onFocus"
-      @mouseleave.self="onBlur"
     >
-      <button
-        class="slideshow__ui next"
-        aria-label="Next Slide"
-        @click="goTo('next', $event)"
-        @focus="onFocus($event, 'next')"
-        @blur="onBlur($event, 'next')"
-        @mouseenter="onFocus($event, 'next')"
-        @mouseout="onBlur($event, 'next')"
-        @keydown.self.right="goTo('next', $event)"
-        @keydown.self.left="goTo('previous', $event)"
+      <span class="pill">
+        <SlideshowArrow class="arrow" direction="right" />
+      </span>
+    </button>
+    <button
+      class="slideshow__ui prev"
+      aria-label="Previous Slide"
+      @click="goTo('previous', $event)"
+      @focus="onFocus($event, 'previous')"
+      @blur="onBlur($event, 'previous')"
+      @mouseenter="onFocus($event, 'previous')"
+      @mouseout="onBlur($event, 'previous')"
+      @keydown.self.right="goTo('next', $event)"
+      @keydown.self.left="goTo('previous', $event)"
+    >
+      <span class="pill">
+        <SlideshowArrow class="arrow" direction="left" />
+      </span>
+    </button>
+    <ul :style="[{ minHeight: `${slideHeight}px` }]" class="slides">
+      <li
+        v-for="(slide, index) in content"
+        :key="slide._key"
+        ref="slide"
+        role="group"
+        :aria-label="`${index + 1} of ${indexMax + 1}`"
+        aria-roledescription="slide"
+        :class="[
+          'slide',
+          { 'is-curr': index === indexCurr },
+          { 'is-peaking': getIsPeaking(index) },
+          { 'trans-to': index === indexTransTo },
+          { 'trans-from': index === indexTransFrom }
+        ]"
       >
-        <span class="pill">
-          <SlideshowArrow class="arrow" direction="right" />
-        </span>
-      </button>
-      <button
-        class="slideshow__ui prev"
-        aria-label="Previous Slide"
-        @click="goTo('previous', $event)"
-        @focus="onFocus($event, 'previous')"
-        @blur="onBlur($event, 'previous')"
-        @mouseenter="onFocus($event, 'previous')"
-        @mouseout="onBlur($event, 'previous')"
-        @keydown.self.right="goTo('next', $event)"
-        @keydown.self.left="goTo('previous', $event)"
-      >
-        <span class="pill">
-          <SlideshowArrow class="arrow" direction="left" />
-        </span>
-      </button>
-      <ul :style="[{ minHeight: `${slideHeight}px` }]" class="slides">
-        <li
-          v-for="(slide, index) in content"
-          :key="slide._key"
-          ref="slide"
-          role="group"
-          :aria-label="`${index + 1} of ${indexMax + 1}`"
-          aria-roledescription="slide"
-          :class="[
-            'slide',
-            { 'is-curr': index === indexCurr },
-            { 'is-peaking': getIsPeaking(index) },
-            { 'trans-to': index === indexTransTo },
-            { 'trans-from': index === indexTransFrom }
-          ]"
-        >
-          <!-- <img :src="num" :alt="`this is an alt tag of number ${index}`" /> -->
-          <Pic :alt="slide.alt" :asset="slide.asset._ref" />
-        </li>
-      </ul>
-    </section>
-  </intersect>
+        <!-- <img :src="num" :alt="`this is an alt tag of number ${index}`" /> -->
+        <Pic :alt="slide.alt" :asset="slide.asset._ref" />
+      </li>
+    </ul>
+  </section>
 </template>
 
 <script>
 import Pic from '@/components/atoms/Pic.vue'
 import SlideshowArrow from '@/components/atoms/Slideshow/SlideshowArrow.vue'
+import IntersectionObserverAdmin from 'intersection-observer-admin'
 
 export default {
   components: {
@@ -135,7 +135,10 @@ export default {
 
       // animation
       hidePrev: false,
-      hideNext: false
+      hideNext: false,
+
+      // intersection observer for autoplay
+      observerAutoplay: new IntersectionObserverAdmin()
     }
   },
   computed: {
@@ -185,10 +188,16 @@ export default {
       this.$nuxt.$on('window::resize', () => {
         this.setHeight(this.indexCurr)
       })
+
+      // setup an additional observer to handle autolaying
+      this.observerAutoplay.addEnterCallback(this.$el, this.inView)
+      this.observerAutoplay.addExitCallback(this.$el, this.outOfView)
+      this.observerAutoplay.observe(this.$el)
     },
     destroy() {
       this.$nuxt.$off('window::resize')
       this.stopAutoplay()
+      this.observerAutoplay.destroy()
     },
     goTo(newIndex, ev) {
       let transTo
@@ -367,6 +376,9 @@ export default {
     inView() {
       this.setHeight(this.indexCurr)
       this.startAutoplay()
+    },
+    outOfView() {
+      this.stopAutoplay()
     }
   }
 }
