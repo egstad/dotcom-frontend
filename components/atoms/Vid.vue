@@ -1,33 +1,39 @@
 <template>
-  <video
-    ref="video"
-    class="vid"
-    :class="[
-      { 'is-loading': !hasLoaded && !hasErrored },
-      { 'has-loaded': hasLoaded },
-      { 'has-errored': hasErrored }
-    ]"
-    :data-src="source"
-    :aria-label="alt"
-    :autoplay="autoplay"
-    :loop="loop"
-    :muted="muted"
-    :controls="controls"
-    :playsinline="playsinline"
-    :width="width"
-    :height="height"
-    :poster="posterSource"
-    tabindex="1"
-    @keydown.space.prevent="!controls ? playToggle() : null"
-    @keydown.enter="!controls ? playToggle() : null"
-    @click="!controls ? playToggle() : null"
-    @error="onError($event)"
-    @play="onPlay($event)"
-    @pause="onPause($event)"
-    @ended="onEnd($event)"
-    @loadeddata="onLoad($event)"
-    @loadedmetadata="onLoadedData($event)"
-  ></video>
+  <intersect
+    :threshold="[0, 0]"
+    @enter="autoplay ? play : null"
+    @leave="autoplay ? pause : null"
+  >
+    <video
+      ref="video"
+      class="vid"
+      :class="[
+        { 'is-loading': !hasLoaded && !hasErrored },
+        { 'has-loaded': hasLoaded },
+        { 'has-errored': hasErrored }
+      ]"
+      :data-src="source"
+      :aria-label="alt"
+      :autoplay="autoplay"
+      :loop="loop"
+      :muted="muted"
+      :controls="controls"
+      :playsinline="playsinline"
+      :width="width"
+      :height="height"
+      :poster="posterSource"
+      tabindex="1"
+      @keydown.space.prevent="!controls ? playToggle() : null"
+      @keydown.enter="!controls ? playToggle() : null"
+      @click="!controls ? playToggle() : null"
+      @error="onError($event)"
+      @play="onPlay($event)"
+      @pause="onPause($event)"
+      @ended="onEnd($event)"
+      @loadeddata="onLoad($event)"
+      @loadedmetadata="onLoadedData($event)"
+    ></video>
+  </intersect>
 </template>
 
 <script>
@@ -63,7 +69,6 @@ export default {
       hasLoaded: null,
       hasErrored: null,
       isPlaying: null,
-      observer: null,
       width: null,
       height: null
     }
@@ -94,13 +99,6 @@ export default {
       })
       return `${imageAsset.url}?q=60&auto=format`
     }
-  },
-  mounted() {
-    this.registerObserver()
-    this.observer.observe(this.$refs.video)
-  },
-  beforeDestroy() {
-    this.unobserve()
   },
   methods: {
     play() {
@@ -135,20 +133,6 @@ export default {
     onEnd(ev) {
       this.$emit('end', ev)
     },
-    registerObserver() {
-      this.observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (!this.hasLoaded) {
-              this.$refs.video.src = this.$refs.video.dataset.src
-            }
-            this.handleInView()
-          } else {
-            this.handleOutOfView()
-          }
-        })
-      })
-    },
     handleInView() {
       if (this.autoplay) {
         this.play()
@@ -158,11 +142,6 @@ export default {
       if (this.autoplay) {
         this.pause()
       }
-    },
-    unobserve() {
-      this.observer.unobserve(this.$refs.video)
-      this.observer.disconnect()
-      this.observer = null
     }
   }
 }
