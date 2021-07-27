@@ -19,6 +19,7 @@
       :height="height"
       :poster="posterSource"
       tabindex="1"
+      preload="metadata"
       @keydown.space.prevent="!controls ? playToggle() : null"
       @keydown.enter="!controls ? playToggle() : null"
       @click="!controls ? playToggle() : null"
