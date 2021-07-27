@@ -1,17 +1,24 @@
 <template>
-  <img
-    class="pic"
-    :class="[
-      { 'is-loading': !hasLoaded && !hasErrored },
-      { 'has-loaded': hasLoaded },
-      { 'has-errored': hasErrored }
-    ]"
-    :alt="alt"
-    :width="image.metadata.dimensions.width"
-    :height="image.metadata.dimensions.height"
-    @load="onLoad($event)"
-    @error="onError($event)"
-  />
+  <intersect
+    :threshold="[0, 0]"
+    :root-margin="`${$store.state.device.winHeight}px 0px`"
+    @enter.once="handleInView"
+  >
+    <img
+      ref="pic"
+      class="pic"
+      :class="[
+        { 'is-loading': !hasLoaded && !hasErrored },
+        { 'has-loaded': hasLoaded },
+        { 'has-errored': hasErrored }
+      ]"
+      :alt="alt"
+      :width="image.metadata.dimensions.width"
+      :height="image.metadata.dimensions.height"
+      @load="onLoad($event)"
+      @error="onError($event)"
+    />
+  </intersect>
 </template>
 
 <script>
@@ -38,7 +45,6 @@ export default {
     return {
       hasLoaded: null,
       hasErrored: null,
-      observer: null,
       sizes: [320, 640, 1280, 2560, 3200],
       srcSet: []
     }
@@ -59,10 +65,6 @@ export default {
       return `${url}${transform} ${size}w`
     })
   },
-  mounted() {
-    this.registerObserver()
-    this.observer.observe(this.$el)
-  },
   methods: {
     onLoad(ev) {
       this.hasLoaded = true
@@ -72,27 +74,17 @@ export default {
       this.hasErrored = true
       this.$emit('error', ev)
     },
-    registerObserver() {
-      this.observer = new IntersectionObserver(
-        (entries, observer) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              this.$el.src = `${this.image.url}?w=${this.sizes[0]}&auto=format&fit=max`
-              this.$el.srcset = this.srcSet
-              this.unobserve()
-            }
-          })
-        },
-        {
-          rootMargin: `${window.innerHeight}px 0px`,
-          threshold: 0
-        }
-      )
+    setSource() {
+      if (!this.$refs.pic.src) {
+        this.$refs.pic.src = `${this.image.url}?w=${this.sizes[0]}&auto=format&fit=max`
+        this.$refs.pic.srcset = this.srcSet
+      }
     },
-    unobserve() {
-      this.observer.unobserve(this.$el)
-      this.observer.disconnect()
-      this.observer = null
+    handleInView() {
+      this.setSource()
+      if (this.autoplay && !this.hasBeenInteractedWith) {
+        this.play()
+      }
     }
   }
 }
