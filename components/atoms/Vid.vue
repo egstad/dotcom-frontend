@@ -1,9 +1,5 @@
 <template>
-  <intersect
-    :threshold="[0, 0]"
-    @enter="autoplay ? play : null"
-    @leave="autoplay ? pause : null"
-  >
+  <intersect :threshold="[0, 0]" @enter="handleInView" @leave="handleOutOfView">
     <video
       ref="video"
       class="vid"
@@ -69,6 +65,7 @@ export default {
       hasLoaded: null,
       hasErrored: null,
       isPlaying: null,
+      hasBeenInteractedWith: false,
       width: null,
       height: null
     }
@@ -109,6 +106,7 @@ export default {
     },
     playToggle() {
       this.isPlaying ? this.pause() : this.play()
+      this.hasBeenInteractedWith = true
     },
     onLoadedData(ev) {
       this.width = this.$refs.video.videoWidth
@@ -133,8 +131,16 @@ export default {
     onEnd(ev) {
       this.$emit('end', ev)
     },
+    setSource() {
+      if (!this.$refs.video.src) {
+        console.log('updated src', this.$refs.video)
+        this.$refs.video.src = this.$refs.video.dataset.src
+        this.$refs.video.removeAttribute('data-src')
+      }
+    },
     handleInView() {
-      if (this.autoplay) {
+      this.setSource()
+      if (this.autoplay && !this.hasBeenInteractedWith) {
         this.play()
       }
     },
@@ -155,9 +161,9 @@ export default {
   height: auto;
 }
 
-/* .vid.is-loading {
+.vid.is-loading {
   opacity: 0;
-} */
+}
 
 /* .vid.has-errored {} */
 /* .vid.has-loaded {} */
