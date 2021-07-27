@@ -38,8 +38,8 @@ export default {
       switch (this.size) {
         case 'small':
           return {
-            sm: 6,
-            xl: 5,
+            sm: 8,
+            xl: 6,
             xx: 4
           }
         case 'medium':
@@ -50,10 +50,16 @@ export default {
           }
         case 'large':
           return {
-            sm: 10
+            sm: 10,
+            xl: 9,
+            xx: 8
           }
         case 'xlarge':
-          return {}
+          return {
+            sm: 12,
+            xl: 11,
+            xx: 10
+          }
         case 'full':
           return {
             padding: false

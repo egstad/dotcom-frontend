@@ -1,93 +1,109 @@
 <!--
 
-1. Provide a pause button and do NOT use autoplay
-2. Normalize focus/blur a11y helpers
-4. Tell the user how many slides there are, and where they are in that slideshow.
+Todo:
+1. Provide a pause button for autoplay
+2. Tell the user how many slides there are, and where they are in that slideshow.
+// https://www.w3.org/TR/wai-aria-practices/examples/carousel/carousel-1.html#
 -->
 
 <template>
-  <section
-    :class="[
-      'slideshow',
-      { 'is-hovered-next': hoverNext && !isTouch },
-      { 'is-hovered-prev': hoverPrev && !isTouch }
-    ]"
-    :aria-live="ariaLive ? 'polite' : 'off'"
-    :aria-label="`${ariaDescription} - Navigate with arrow keys`"
-    aria-roledescription="carousel"
-    tabindex="0"
-    @focus="onFocus"
-    @blur="onBlur"
-    @click="goTo('next', $event)"
-    @keydown.self.right="goTo('next', $event)"
-    @keydown.self.left="goTo('previous', $event)"
-    @mouseenter.self="onFocus"
-    @mouseleave.self="onBlur"
-  >
-    <button
-      class="slideshow__ui next"
-      aria-label="Next Slide"
+  <intersect :threshold="[0, 0]" @enter="startAutoplay" @leave="stopAutoplay">
+    <section
+      :class="[
+        'slideshow',
+        { 'is-hovered-next': hoverNext && !isTouch },
+        { 'is-hovered-prev': hoverPrev && !isTouch },
+        { 'hide-ui': isPlaying && !hoverNext && !hoverPrev }
+      ]"
+      :aria-live="ariaLive ? 'polite' : 'off'"
+      :aria-label="`${ariaDescription} - Navigate with arrow keys`"
+      aria-roledescription="carousel"
+      tabindex="0"
+      @focus="onFocus"
+      @blur="onBlur"
       @click="goTo('next', $event)"
-      @focus="onFocus($event, 'next')"
-      @blur="onBlur($event, 'next')"
-      @mouseenter="onFocus($event, 'next')"
-      @mouseout="onBlur($event, 'next')"
       @keydown.self.right="goTo('next', $event)"
       @keydown.self.left="goTo('previous', $event)"
+      @mouseenter.self="onFocus"
+      @mouseleave.self="onBlur"
     >
-      <span class="pill">
-        <SlideshowArrow class="arrow" direction="right" />
-      </span>
-    </button>
-    <button
-      class="slideshow__ui prev"
-      aria-label="Previous Slide"
-      @click="goTo('previous', $event)"
-      @focus="onFocus($event, 'previous')"
-      @blur="onBlur($event, 'previous')"
-      @mouseenter="onFocus($event, 'previous')"
-      @mouseout="onBlur($event, 'previous')"
-      @keydown.self.right="goTo('next', $event)"
-      @keydown.self.left="goTo('previous', $event)"
-    >
-      <span class="pill">
-        <SlideshowArrow class="arrow" direction="left" />
-      </span>
-    </button>
-    <ul :style="[{ minHeight: `${slideHeight}px` }]" class="slides">
-      <li
-        v-for="(num, index) in images"
-        :key="num"
-        ref="slide"
-        role="group"
-        :aria-label="`${index + 1} of ${indexMax + 1}`"
-        aria-roledescription="slide"
-        :class="[
-          'slide',
-          { 'is-curr': index === indexCurr },
-          { 'is-peaking': getIsPeaking(index) },
-          { 'trans-to': index === indexTransTo },
-          { 'trans-from': index === indexTransFrom }
-        ]"
+      <button
+        class="slideshow__ui next"
+        aria-label="Next Slide"
+        @click="goTo('next', $event)"
+        @focus="onFocus($event, 'next')"
+        @blur="onBlur($event, 'next')"
+        @mouseenter="onFocus($event, 'next')"
+        @mouseout="onBlur($event, 'next')"
+        @keydown.self.right="goTo('next', $event)"
+        @keydown.self.left="goTo('previous', $event)"
       >
-        <img :src="num" :alt="`this is an alt tag of number ${index}`" />
-      </li>
-    </ul>
-  </section>
+        <span class="pill">
+          <SlideshowArrow class="arrow" direction="right" />
+        </span>
+      </button>
+      <button
+        class="slideshow__ui prev"
+        aria-label="Previous Slide"
+        @click="goTo('previous', $event)"
+        @focus="onFocus($event, 'previous')"
+        @blur="onBlur($event, 'previous')"
+        @mouseenter="onFocus($event, 'previous')"
+        @mouseout="onBlur($event, 'previous')"
+        @keydown.self.right="goTo('next', $event)"
+        @keydown.self.left="goTo('previous', $event)"
+      >
+        <span class="pill">
+          <SlideshowArrow class="arrow" direction="left" />
+        </span>
+      </button>
+      <ul :style="[{ minHeight: `${slideHeight}px` }]" class="slides">
+        <li
+          v-for="(slide, index) in content"
+          :key="slide._key"
+          ref="slide"
+          role="group"
+          :aria-label="`${index + 1} of ${indexMax + 1}`"
+          aria-roledescription="slide"
+          :class="[
+            'slide',
+            { 'is-curr': index === indexCurr },
+            { 'is-peaking': getIsPeaking(index) },
+            { 'trans-to': index === indexTransTo },
+            { 'trans-from': index === indexTransFrom }
+          ]"
+        >
+          <!-- <img :src="num" :alt="`this is an alt tag of number ${index}`" /> -->
+          <Pic :alt="slide.alt" :asset="slide.asset._ref" />
+        </li>
+      </ul>
+    </section>
+  </intersect>
 </template>
 
 <script>
+import Pic from '@/components/atoms/Pic.vue'
 import SlideshowArrow from '@/components/atoms/Slideshow/SlideshowArrow.vue'
 
 export default {
   components: {
+    Pic,
     SlideshowArrow
+  },
+  props: {
+    content: {
+      type: Array,
+      required: true
+    },
+    options: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {
       // a11y
       ariaLive: false,
-      ariaDescription: '',
 
       // navigation
       indexStart: 0,
@@ -110,21 +126,14 @@ export default {
       hoveredOnButton: false,
 
       // state
+      isPlaying: false,
+      hasBeenInteractedWith: false,
       isTransitioning: false,
-      isAutoplay: true,
       autoplayInterval: null,
-      autoplayDuration: 1000,
 
       // animation
       hidePrev: false,
-      hideNext: false,
-
-      // fake
-      images: [
-        'https://www.ricardoferrol.com/thumbs/projects/peter-langer-shoots-beauty-for-the-dolder-grand/p_langer_dolder_01_hi_f-960x1344.jpg',
-        'https://www.ricardoferrol.com/thumbs/projects/peter-langer-shoots-beauty-for-the-dolder-grand/p_langer_dolder_02_hi-960x1344.jpg'
-        // 'https://www.ricardoferrol.com/thumbs/projects/peter-langer-shoots-beauty-for-the-dolder-grand/p_langer_dolder_03_hi-960x1344.jpg'
-      ]
+      hideNext: false
     }
   },
   computed: {
@@ -133,6 +142,18 @@ export default {
     },
     isTouch() {
       return this.$store.state.device.isMobile
+    },
+    isAutoplay() {
+      return this.options.isAutoplay || false
+    },
+    autoplayDuration() {
+      return this.options.autoplayDuration || 3000
+    },
+    ariaDescription() {
+      return this.options.description || null
+    },
+    startIndex() {
+      return this.options.startIndex || 0
     }
   },
   watch: {
@@ -162,8 +183,6 @@ export default {
       this.$nuxt.$on('window::resize', () => {
         this.setHeight(this.indexCurr)
       })
-
-      if (this.isAutoplay && !this.reduceMotion) this.startAutoplay()
     },
     destroy() {
       this.$nuxt.$off('window::resize')
@@ -200,10 +219,10 @@ export default {
         this.onTransitionEnd
       )
 
-      // if user interacts with click, stop autoplaying
-      if (this.isAutoplay && ev && ev.type === 'click') {
+      // if user interacts via input event, stop autoplaying
+      if (this.isAutoplay && ev) {
+        this.hasBeenInteractedWith = true
         this.stopAutoplay()
-        this.isAutoplay = false
       }
     },
     getNextIndex() {
@@ -227,10 +246,12 @@ export default {
       this.indexPrev = this.indexCurr === 0 ? this.indexMax : this.indexCurr - 1
     },
     onTransitionEnd() {
-      this.slides[this.indexTransFrom].removeEventListener(
-        'transitionend',
-        this.onTransitionEnd
-      )
+      if (this.slides[this.indexTransFrom]) {
+        this.slides[this.indexTransFrom].removeEventListener(
+          'transitionend',
+          this.onTransitionEnd
+        )
+      }
 
       // update all indexes now that transition is complete
       this.indexCurr = this.indexTransTo
@@ -242,14 +263,22 @@ export default {
       this.isTransitioning = false
     },
     setHeight(index) {
-      this.slideHeight = this.slides[index].getBoundingClientRect().height
+      setTimeout(() => {
+        this.slideHeight = this.slides[index].getBoundingClientRect().height
+      }, 1)
     },
     startAutoplay() {
-      this.autoplayInterval = setInterval(() => {
-        this.goTo('next')
-      }, this.autoplayDuration)
+      if (this.hasBeenInteractedWith) return
+
+      if (this.isAutoplay && !this.isPlaying && !this.reduceMotion) {
+        this.isPlaying = true
+        this.autoplayInterval = setInterval(() => {
+          this.goTo('next')
+        }, this.autoplayDuration)
+      }
     },
     stopAutoplay() {
+      this.isPlaying = false
       clearInterval(this.autoplayInterval)
     },
     mouseInNext() {
@@ -297,7 +326,7 @@ export default {
     },
     onFocus(event, direction) {
       this.ariaLive = true
-      if (this.isAutoplay && !this.reduceMotion) this.stopAutoplay()
+      this.stopAutoplay()
 
       if (!direction) return
 
@@ -312,10 +341,11 @@ export default {
     },
     onBlur(event, direction) {
       this.ariaLive = false
-      if (this.isAutoplay && !this.reduceMotion && !direction)
-        this.startAutoplay()
 
-      if (!direction) return
+      if (!direction && !this.hasBeenInteractedWith) {
+        this.startAutoplay()
+        return
+      }
 
       switch (true) {
         case event.type === 'mouseout' && direction === 'next':
@@ -340,7 +370,7 @@ export default {
   }
 
   .slides {
-    transition: min-height 400ms ease-in-out;
+    transition: min-height 300ms ease-in-out;
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -349,10 +379,11 @@ export default {
   &__ui {
     position: absolute;
     height: 100%;
-    min-width: 44px;
-    width: clamp(44px, 20%, 88px);
     z-index: 4;
     top: 0;
+    padding: 0 1em;
+    padding: 0 clamp(1em, 1vw, 2em);
+
     appearance: none;
     background: 0;
     border: 0;
@@ -402,14 +433,22 @@ export default {
       transition: background-color 400ms ease-in-out, opacity 400ms ease-in-out;
       background-color: hsla(var(--bH), var(--bS), var(--bL), 60%);
       outline-offset: 4px;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       min-width: 44px;
-      min-height: 44px;
-      width: clamp(44px, 1vw, 64px);
+      min-height: 72px;
+      // width: clamp(44px, 1vw, 64px);
       padding-top: 1.2em;
       padding-bottom: 1.2em;
       border-radius: 0.75em;
       backdrop-filter: blur(15px);
+      margin: 0;
+
+      .arrow {
+        width: 35%;
+        height: auto;
+      }
     }
   }
 
@@ -478,10 +517,6 @@ export default {
     .next .pill {
       background-color: hsla(var(--bH), var(--bS), var(--bL), 100%);
     }
-
-    .prev .pill {
-      opacity: 0;
-    }
   }
   &.is-hovered-prev {
     .is-curr {
@@ -491,9 +526,16 @@ export default {
     .prev .pill {
       background-color: hsla(var(--bH), var(--bS), var(--bL), 100%);
     }
+  }
 
-    .next .pill {
+  &.hide-ui {
+    .pill {
       opacity: 0;
+    }
+    &:hover .pill,
+    &:focus-visible .pill,
+    &:focus-within .pill {
+      opacity: 1;
     }
   }
 }

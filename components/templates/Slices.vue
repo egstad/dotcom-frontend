@@ -27,8 +27,12 @@
       </template>
 
       <template v-else-if="slice._type === 'slideshow'">
-        <Slideshow :key="slice._key" :slides="slice.slides" />
-        <!-- <pre :key="'pre-' + slice._key">{{ slice }}</pre> -->
+        <Slideshow
+          :key="slice._key"
+          :content="slice.slides"
+          :options="slice.options"
+        />
+        <!-- <pre :key="'pre-' + slice._key">{{ slice.options }}</pre> -->
       </template>
 
       <template v-else-if="slice._type === 'richText'">
@@ -43,7 +47,7 @@ import Pic from '@/components/atoms/Pic'
 import Vid from '@/components/atoms/Vid'
 import Theme from '@/components/atoms/Theme'
 import Copy from '@/components/atoms/Copy/Copy'
-import Slideshow from '@/components/organisms/Slideshow'
+import Slideshow from '@/components/organisms/SlideshowNew'
 
 export default {
   components: {
