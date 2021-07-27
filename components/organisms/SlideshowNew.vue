@@ -75,10 +75,14 @@ Todo:
           { 'trans-from': index === indexTransFrom }
         ]"
       >
-        <!-- <img :src="num" :alt="`this is an alt tag of number ${index}`" /> -->
-        <Pic :alt="slide.alt" :asset="slide.asset._ref" />
+        <Pic
+          :alt="slide.alt"
+          :asset="slide.asset._ref"
+          :palette="slide.paletteImage"
+        />
       </li>
     </ul>
+    <!-- <pre>{{ content[0] }}</pre> -->
   </section>
 </template>
 

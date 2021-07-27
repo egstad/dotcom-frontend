@@ -1,10 +1,5 @@
 <template>
-  <div
-    :style="{
-      background:
-        palette && extension != 'png' ? palette.dominant.background : null
-    }"
-  >
+  <div class="pic__wrap" :style="{ background: background }">
     <img
       ref="pic"
       class="pic"
@@ -67,6 +62,11 @@ export default {
     },
     extension() {
       return this.image.extension
+    },
+    background() {
+      return this.palette && this.extension !== 'png'
+        ? this.palette.dominant.background
+        : null
     }
   },
   created() {
@@ -111,7 +111,7 @@ export default {
 
 <style>
 .pic {
-  transition: opacity 1s 200ms var(--ease);
+  transition: opacity 400ms 400ms var(--ease);
   display: block;
   width: 100%;
   height: auto;

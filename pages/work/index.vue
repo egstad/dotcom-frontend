@@ -17,7 +17,8 @@ export default {
   mixins: [routeTransitionFade],
   async asyncData({ $egstad }) {
     const queryLength = 1
-    const query = `*[_type == "work"][0]{
+    const query = `
+      *[_type == "work"][0]{
         _id,
         title,
         theme{
@@ -33,12 +34,18 @@ export default {
             "titleOverride": title,
             size,
             "content": data->content[0] {
-              "paletteImage": asset->metadata,
               ...,
+              "paletteVideo": poster.asset->metadata.palette,
+              "paletteImage": asset->metadata.palette,
+              "slides": slides[]{
+                ...,
+                "paletteImage":asset->metadata.palette
+              }
             }
           }
         }
-      }`
+      }
+    `
 
     return {
       queryLength,

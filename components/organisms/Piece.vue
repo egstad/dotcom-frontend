@@ -16,6 +16,7 @@
               :asset="slice.url"
               :poster="slice.poster"
               :config="slice.settings"
+              :palette="slice.paletteVideo"
             />
             <!-- <pre :key="slice._key">{{ content }}</pre> -->
           </template>
@@ -25,9 +26,9 @@
               :key="slice._key"
               :alt="slice.alt"
               :asset="slice.asset._ref"
-              :palette="slice.paletteImage.palette"
+              :palette="slice.paletteImage"
             />
-            <!-- <pre :key="slice._key">{{ slice }}</pre> -->
+            <!-- <pre :key="slice._key + 'pre'">{{ slice.paletteImage }}</pre> -->
           </template>
 
           <template v-else-if="slice._type === 'slideshow'">

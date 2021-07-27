@@ -1,34 +1,36 @@
 <template>
-  <video
-    ref="video"
-    class="vid"
-    :class="[
-      { 'is-loading': !hasLoaded && !hasErrored },
-      { 'has-loaded': hasLoaded },
-      { 'has-errored': hasErrored }
-    ]"
-    :data-src="source"
-    :aria-label="alt"
-    :autoplay="autoplay"
-    :loop="loop"
-    :muted="muted"
-    :controls="controls"
-    :playsinline="playsinline"
-    :width="width"
-    :height="height"
-    :poster="posterSource"
-    tabindex="1"
-    preload="metadata"
-    @keydown.space.prevent="!controls ? playToggle() : null"
-    @keydown.enter="!controls ? playToggle() : null"
-    @click="!controls ? playToggle() : null"
-    @error="onError($event)"
-    @play="onPlay($event)"
-    @pause="onPause($event)"
-    @ended="onEnd($event)"
-    @canplay="onLoad($event)"
-    @loadedmetadata="onLoadedData($event)"
-  ></video>
+  <div class="vid__wrap" :style="{ background: background }">
+    <video
+      ref="video"
+      class="vid"
+      :class="[
+        { 'is-loading': !hasLoaded && !hasErrored },
+        { 'has-loaded': hasLoaded },
+        { 'has-errored': hasErrored }
+      ]"
+      :data-src="source"
+      :aria-label="alt"
+      :autoplay="autoplay"
+      :loop="loop"
+      :muted="muted"
+      :controls="controls"
+      :playsinline="playsinline"
+      :width="width"
+      :height="height"
+      :poster="posterSource"
+      tabindex="1"
+      preload="metadata"
+      @keydown.space.prevent="!controls ? playToggle() : null"
+      @keydown.enter="!controls ? playToggle() : null"
+      @click="!controls ? playToggle() : null"
+      @error="onError($event)"
+      @play="onPlay($event)"
+      @pause="onPause($event)"
+      @ended="onEnd($event)"
+      @canplay="onLoad($event)"
+      @loadedmetadata="onLoadedData($event)"
+    ></video>
+  </div>
 </template>
 
 <script>
@@ -58,6 +60,11 @@ export default {
       default() {
         return {}
       }
+    },
+    palette: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
   data() {
@@ -103,6 +110,11 @@ export default {
     },
     winHeight() {
       return this.$store.state.device.winHeight
+    },
+    background() {
+      return this.palette && this.extension !== 'png'
+        ? this.palette.dominant.background
+        : null
     }
   },
   created() {
@@ -133,10 +145,10 @@ export default {
   },
   methods: {
     play() {
-      this.$el.play()
+      this.$refs.video.play()
     },
     pause() {
-      this.$el.pause()
+      this.$refs.video.pause()
     },
     playToggle() {
       this.isPlaying ? this.pause() : this.play()
@@ -166,15 +178,15 @@ export default {
       this.$emit('end', ev)
     },
     setSource() {
-      if (this.$el.src) return
+      if (this.$refs.video.src) return
 
       // update the src & garbage collect
-      this.$el.src = this.$el.dataset.src
-      this.$el.removeAttribute('data-src')
+      this.$refs.video.src = this.$refs.video.dataset.src
+      this.$refs.video.removeAttribute('data-src')
       this.observerLazyload.destroy()
 
       // ask the browser to immediately load
-      this.$el.load()
+      this.$refs.video.load()
     },
     autoplayInView() {
       if (this.autoplay && !this.hasBeenInteractedWith) this.play()
@@ -188,7 +200,7 @@ export default {
 
 <style>
 .vid {
-  transition: opacity var(--time) var(--ease);
+  transition: opacity 400ms 400ms var(--ease);
   display: block;
   width: 100%;
   height: auto;
