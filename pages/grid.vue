@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div style="margin-top: 40vw">
-      <Slideshow />
-
+    <div style="margin-top: 20vh">
       <!-- full -->
       <Grid :padding="false">
         <Column
@@ -103,13 +101,3 @@
     </Column>
   </div>
 </template>
-
-<script>
-import Slideshow from '@/components/organisms/SlideshowNew.vue'
-
-export default {
-  components: {
-    Slideshow
-  }
-}
-</script>

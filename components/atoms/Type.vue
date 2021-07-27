@@ -22,9 +22,9 @@ export default {
 
 <style scoped lang="scss">
 $scale: 1.5;
-$baseline: 16;
+$baseline: 14;
 $sizes: (
-  1: 13,
+  1: 12,
   2: 16,
   3: 27,
   4: 35,
@@ -37,15 +37,15 @@ $sizes: (
     $size: map-get($sizes, $i);
     $leading: $baseline;
     $increment: ($i * 0.5) + ($scale - 1);
-    font-family: 'Lars Light';
-    // font-family: sans-serif;
+    // font-family: 'Lars Light';
+    font-family: 'Univers Next Pro';
 
     @if $i > 1 {
       $leading: $baseline * $increment;
     }
 
     @if $i > 2 {
-      font-family: 'Lars Regular';
+      font-family: 'Univers Next Pro';
     }
 
     font-size: $size + px;

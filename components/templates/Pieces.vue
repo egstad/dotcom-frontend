@@ -1,7 +1,7 @@
 <template>
   <section class="pieces">
     <ul class="pieces__list">
-      <li v-for="piece in pieces" :key="piece._id" class="piece__">
+      <li v-for="piece in pieces" :key="piece._id" class="piece">
         <Piece :piece="piece" />
       </li>
     </ul>
@@ -31,7 +31,8 @@ export default {
 .pieces {
   &__list {
     counter-reset: pieces;
-    li {
+
+    > .piece {
       counter-increment: piece;
     }
   }

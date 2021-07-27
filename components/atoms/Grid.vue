@@ -162,9 +162,11 @@ $grid-gap: 16px;
   padding-left: $grid-gap;
   padding-right: $grid-gap;
 
-  @include bp($md) {
-    padding-left: calc-vw($grid-gap, $md);
-    padding-right: calc-vw($grid-gap, $md);
+  @include bp($xl) {
+    padding-left: calc-vw($grid-gap, $xl);
+    padding-right: calc-vw($grid-gap, $xx);
+    // padding-left: $grid-gap * 2;
+    // padding-right: $grid-gap * 2;
   }
 }
 </style>

@@ -9,6 +9,8 @@ Todo:
 <template>
   <intersect :threshold="[0, 0]" @enter="startAutoplay" @leave="stopAutoplay">
     <section
+      v-touch:swipe.left="swipeLeft"
+      v-touch:swipe.right="swipeRight"
       :class="[
         'slideshow',
         { 'is-hovered-next': hoverNext && !isTouch },
@@ -355,6 +357,12 @@ export default {
           this.mouseOutPrev()
           break
       }
+    },
+    swipeLeft(ev) {
+      this.goTo('next', {})
+    },
+    swipeRight(ev) {
+      this.goTo('previous', {})
     }
   }
 }

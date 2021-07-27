@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <!-- <pre>{{ document.content.pieces }}</pre> -->
     <Pieces :pieces="document.content.pieces" />
   </div>
 </template>
