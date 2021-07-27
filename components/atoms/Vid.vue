@@ -26,7 +26,7 @@
       @play="onPlay($event)"
       @pause="onPause($event)"
       @ended="onEnd($event)"
-      @canplaythrough="onLoad($event)"
+      @canplay="onLoad($event)"
       @loadedmetadata="onLoadedData($event)"
     ></video>
   </intersect>
@@ -135,6 +135,7 @@ export default {
       if (!this.$refs.video.src) {
         this.$refs.video.src = this.$refs.video.dataset.src
         this.$refs.video.removeAttribute('data-src')
+        this.$refs.video.load()
       }
     },
     handleInView() {
