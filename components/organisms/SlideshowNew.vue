@@ -7,7 +7,7 @@ Todo:
 -->
 
 <template>
-  <intersect :threshold="[0, 0]" @enter="startAutoplay" @leave="stopAutoplay">
+  <intersect :threshold="[0, 0]" @enter="inView" @leave="stopAutoplay">
     <section
       v-touch:swipe.left="swipeLeft"
       v-touch:swipe.right="swipeRight"
@@ -363,6 +363,10 @@ export default {
     },
     swipeRight(ev) {
       this.goTo('previous', {})
+    },
+    inView() {
+      this.setHeight(this.indexCurr)
+      this.startAutoplay()
     }
   }
 }
