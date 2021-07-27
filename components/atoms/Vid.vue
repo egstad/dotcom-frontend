@@ -26,7 +26,7 @@
       @play="onPlay($event)"
       @pause="onPause($event)"
       @ended="onEnd($event)"
-      @canplay="onLoad($event)"
+      @canplaythrough="onLoad($event)"
       @loadedmetadata="onLoadedData($event)"
     ></video>
   </intersect>
