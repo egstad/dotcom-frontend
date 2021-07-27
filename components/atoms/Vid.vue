@@ -26,7 +26,7 @@
       @play="onPlay($event)"
       @pause="onPause($event)"
       @ended="onEnd($event)"
-      @loadeddata="onLoad($event)"
+      @canplay="onLoad($event)"
       @loadedmetadata="onLoadedData($event)"
     ></video>
   </intersect>
@@ -133,7 +133,6 @@ export default {
     },
     setSource() {
       if (!this.$refs.video.src) {
-        console.log('updated src', this.$refs.video)
         this.$refs.video.src = this.$refs.video.dataset.src
         this.$refs.video.removeAttribute('data-src')
       }
