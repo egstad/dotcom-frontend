@@ -8,14 +8,13 @@
 <script>
 import Pieces from '@/components/templates/Pieces'
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
-import { hsla } from '@/assets/js/utils/SanityHSL'
 
 export default {
   components: {
     Pieces
   },
   mixins: [routeTransitionFade],
-  async asyncData({ $egstad }) {
+  async asyncData({ $egstad, store }) {
     const queryLength = 1
     const query = `
       *[_type == "work"][0]{
@@ -46,10 +45,18 @@ export default {
         }
       }
     `
+    const document = await $egstad.fetch(query)
+
+    // set theme
+    await store.commit('setCSSVars', {
+      background: document.theme.background,
+      foreground: document.theme.foreground,
+      accent: document.theme.accent
+    })
 
     return {
       queryLength,
-      document: await $egstad.fetch(query)
+      document
     }
   },
   data() {
@@ -63,22 +70,11 @@ export default {
   head() {
     return this.$setPageMetadata(this.document.social)
   },
-  created() {
-    // console.log(this.document)
-    if (process.client) {
-      const theme = this.document.theme
-      this.$store.dispatch('updateTheme', {
-        background: hsla(theme.background),
-        foreground: hsla(theme.foreground),
-        accent: hsla(theme.accent)
-      })
-    }
-  },
   mounted() {
     // 'v2021-06-07'
     // this.date = `v${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDay()}`
     // this.$nuxt.$on('window::scrollNearBottom', this.scrollHandler)
-    // this.$nuxt.$emit('page::mounted')
+    this.$nuxt.$emit('page::mounted')
   }
   // beforeDestroy() {
   //   this.$nuxt.$off('window::scrollNearBottom', this.scrollHandler)

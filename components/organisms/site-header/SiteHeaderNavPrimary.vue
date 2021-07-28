@@ -42,7 +42,7 @@ export default {
 
 .header-nav__link {
   display: inline-block;
-  color: var(--foreground);
+  color: var(--accent);
   text-decoration: none;
   opacity: 0.5;
   transition: color var(--time) var(--ease),

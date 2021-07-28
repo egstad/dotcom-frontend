@@ -10,6 +10,25 @@ const hsla = (val) => {
   return `hsla(${h}, ${s}, ${l}, ${a})`
 }
 
+// const hslaPrefixArray = (val, prefix) => {
+//   const h = { [`--${prefix}H`]: `${Math.round(val.h)}` }
+//   const s = { [`--${prefix}S`]: `${Math.round(val.s)}%` }
+//   const l = { [`--${prefix}L`]: `${Math.round(val.l)}%` }
+//   const a = { [`--${prefix}A`]: `${Math.round(val.a)}%` }
+
+//   return [h, s, l, a]
+// }
+
+const hslaPrefixObject = (val, prefix, full) => {
+  return {
+    [`--${prefix}-h`]: `${Math.round(val.h)}`,
+    [`--${prefix}-s`]: `${Math.round(val.s * 100)}%`,
+    [`--${prefix}-l`]: `${Math.round(val.l * 100)}%`,
+    [`--${prefix}-a`]: `${Math.round(val.a * 100)}%`,
+    [`--${full}`]: `hsla(var(--${prefix}-h), var(--${prefix}-s), var(--${prefix}-l), var(--${prefix}-a))`
+  }
+}
+
 const hslaBreak = (val) => {
   // remove 'hsla(' and ending ')'
   const string = val.substr(5).slice(0, -1)
@@ -18,4 +37,4 @@ const hslaBreak = (val) => {
   return hsla
 }
 
-export { perc, hsla, hslaBreak }
+export { perc, hsla, hslaBreak, hslaPrefixObject }

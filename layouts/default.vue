@@ -1,5 +1,5 @@
 <template>
-  <div class="site-wrapper">
+  <div class="site" :style="cssVars">
     <SiteHeader />
 
     <div class="site-content" :style="mainStyle">
@@ -11,7 +11,7 @@
     </div>
 
     <!-- <Debug /> -->
-    <!-- <Scrim /> -->
+    <Scrim />
   </div>
 </template>
 
@@ -20,14 +20,14 @@ import SiteHeader from '@/components/organisms/site-header/SiteHeader'
 import SiteFooter from '@/components/organisms/site-footer/SiteFooter'
 
 // import Debug from '@/components/templates/Debug'
-// import Scrim from '@/components/templates/Scrim'
+import Scrim from '@/components/templates/Scrim'
 
 export default {
   components: {
     SiteHeader,
-    SiteFooter
+    SiteFooter,
+    Scrim
     // Debug
-    // Scrim
   },
   computed: {
     isCursor() {
@@ -43,9 +43,10 @@ export default {
       return this.$store.state.device.winHeight
     },
     mainStyle() {
-      return {
-        minHeight: `${this.winHeight}px`
-      }
+      return { minHeight: `${this.winHeight}px` }
+    },
+    cssVars() {
+      return this.$store.state.cssVars
     }
   },
   watch: {
@@ -60,12 +61,17 @@ export default {
     },
     isMobile(state) {
       this.toggleDocClass('is-mobile', state)
+    },
+    cssVars(state) {
+      return state
     }
   },
-  // mounted() {
-  //   this.$nuxt.$on('route::updated', this.handlePageRoutes)
-  //   this.$nuxt.$on('page::mounted', this.handlePageMounts)
-  // },
+  mounted() {
+    this.$nuxt.$emit('site::mounted')
+    // this.$nuxt.$on('route::updated', this.handlePageRoutes)
+    // this.$nuxt.$on('page::mounted', this.handlePageMounts)
+    // document.documentElement.classList.add('mounted')
+  },
   methods: {
     // handlePageRoutes() {
     //   // fires just before routing to new page
@@ -95,6 +101,32 @@ export default {
 
 <style lang="scss" scoped>
 .site {
+  transition: background-color 750ms 250ms ease-in-out;
+  background-color: var(--background);
+  color: var(--foreground);
+
+  ::selection {
+    background: hsla(var(--fH), var(--fS), var(--fL), 80%);
+    color: var(--background);
+  }
+
+  a[href]:not([tabindex='-1']),
+  area[href]:not([tabindex='-1']),
+  input:not([disabled]):not([tabindex='-1']),
+  select:not([disabled]):not([tabindex='-1']),
+  textarea:not([disabled]):not([tabindex='-1']),
+  button:not([disabled]):not([tabindex='-1']),
+  video:not([disabled]):not([tabindex='-1']),
+  iframe,
+  [tabindex],
+  [contentEditable='true'] {
+    outline-color: var(--accent);
+  }
+
+  a {
+    color: var(--accent);
+  }
+
   &-content {
     display: flex;
     flex-direction: column;

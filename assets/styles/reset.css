@@ -145,11 +145,6 @@ table {
   box-sizing: border-box;
 }
 
-::selection {
-  background: hsla(var(--fH), var(--fS), var(--fL), 80%);
-  color: var(--background);
-}
-
 html,
 body,
 #__nuxt,
@@ -166,32 +161,4 @@ html {
   overflow-x: hidden;
   overflow-y: scroll;
   position: relative;
-  background-color: var(--background);
-  color: var(--foreground);
-  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
-}
-
-a[href]:not([tabindex='-1']),
-area[href]:not([tabindex='-1']),
-input:not([disabled]):not([tabindex='-1']),
-select:not([disabled]):not([tabindex='-1']),
-textarea:not([disabled]):not([tabindex='-1']),
-button:not([disabled]):not([tabindex='-1']),
-video:not([disabled]):not([tabindex='-1']),
-iframe,
-[tabindex],
-[contentEditable='true'] {
-  outline-color: var(--accent);
-}
-
-a {
-  color: var(--accent);
-}
-
-hr {
-  border-color: var(--foreground);
-}
-
-iframe {
-  width: 100%;
 }

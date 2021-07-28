@@ -6,26 +6,26 @@ $lg: 700px;
 $xl: 1024px;
 $xx: 1300px;
 
-:root {
-  --aH: 0; // num:  0-360
-  --aS: 85%; // perc: 0-100
-  --aL: 53%; // perc  0-100
-  --aA: 100%; // perc:  0-100
-  --accent: hsla(var(--aH), var(--aS), var(--aL), var(--aA));
+.site {
+  // --aH: 0; // num:  0-360
+  // --aS: 0%; // perc: 0-100
+  // --aL: 0%; // perc  0-100
+  // --aA: 100%; // perc:  0-100
+  // --accent: hsla(var(--aH), var(--aS), var(--aL), var(--aA));
 
-  --bH: 0; // num:  0-360
-  --bS: 0%; // perc: 0-100
-  --bL: 100%; // perc  0-100
-  --bA: 100%; // perc:  0-100
-  --background: hsla(var(--bH), var(--bS), var(--bL), var(--bA));
+  // --bH: 0; // num:  0-360
+  // --bS: 0%; // perc: 0-100
+  // --bL: 0%; // perc  0-100
+  // --bA: 100%; // perc:  0-100
+  // --background: hsla(var(--bH), var(--bS), var(--bL), var(--bA));
 
-  --fH: 255; // num:  0-360
-  --fS: 11%; // perc: 0-100
-  --fL: 7%; // perc  0-100
-  --fA: 100%; // perc:  0-100
-  --foreground: hsla(var(--fH), var(--fS), var(--fL), var(--fA));
+  // --fH: 0; // num:  0-360
+  // --fS: 0%; // perc: 0-100
+  // --fL: 0%; // perc  0-100
+  // --fA: 100%; // perc:  0-100
+  // --foreground: hsla(var(--fH), var(--fS), var(--fL), var(--fA));
 
-  /* Easing Function */
+  // /* Easing Function */
   --time: 600ms;
   --ease: cubic-bezier(0.455, 0.03, 0.515, 0.955);
 

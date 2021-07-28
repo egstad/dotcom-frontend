@@ -1,43 +1,51 @@
+import { hslaPrefixObject } from '@/assets/js/utils/SanityHSL'
+
 const theme = {
-  updateColor(colors) {
-    const root = document.documentElement.style
-    const background = colors.background
-    const foreground = colors.foreground
-    const accent = colors.accent
+  filterObjectByKey(array, allowedKeys) {
+    return Object.keys(array)
+      .filter((key) => allowedKeys.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = array[key]
+        return obj
+      }, {})
+  },
+  addCSSVarPrefix(object, prefix) {
+    const arr = []
 
-    if (background) {
-      root.setProperty('--bH', background[0])
-      root.setProperty('--bS', background[1])
-      root.setProperty('--bL', background[2])
-      root.setProperty('--bA', background[3])
-    }
+    Object.keys(object).forEach((key, index) => {
+      arr.push({ key: object })
+      // console.log(key, object)
+      // key: the name of the object key
+      // index: the ordinal position of the key within the object
+    })
 
-    if (foreground) {
-      root.setProperty('--fH', foreground[0])
-      root.setProperty('--fS', foreground[1])
-      root.setProperty('--fL', foreground[2])
-      root.setProperty('--fA', foreground[3])
-    }
+    console.log(arr)
 
-    if (accent) {
-      root.setProperty('--aH', accent[0])
-      root.setProperty('--aS', accent[1])
-      root.setProperty('--aL', accent[2])
-      root.setProperty('--aA', accent[3])
+    // // for (const [key, value] of Object.entries(object)) {
+    // //   newArr.push(`--${prefix}${key.toUpperCase()}: ${value}`)
+    // // }
+
+    // return newArr
+  },
+  set(colors) {
+    const allowedKeys = ['h', 's', 'l', 'a']
+
+    // sanitize objects
+    const background = this.filterObjectByKey(colors.background, allowedKeys)
+    const foreground = this.filterObjectByKey(colors.foreground, allowedKeys)
+    const accent = this.filterObjectByKey(colors.accent, allowedKeys)
+
+    // add css prefixes to object keys
+    const bHSLA = hslaPrefixObject(background, 'b', 'background')
+    const fHSLA = hslaPrefixObject(foreground, 'f', 'foreground')
+    const aHSLA = hslaPrefixObject(accent, 'a', 'accent')
+
+    return {
+      ...bHSLA,
+      ...fHSLA,
+      ...aHSLA
     }
   }
 }
-
-// if (process.client) {
-//   window.onNuxtReady((app) => {
-//     console.log(app.$store.state)
-//     // theme.updateColor({
-//     //   background: window.$nuxt.$store.state.theme.background,
-//     //   foreground: window.$nuxt.$store.state.theme.foreground,
-//     //   accent: window.$nuxt.$store.state.theme.accent
-//     // })
-//     // window.$nuxt.$on('theme::update', theme.updateColor)
-//   })
-// }
 
 export default theme
