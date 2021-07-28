@@ -42,25 +42,23 @@ export default {
 
 .header-nav__link {
   display: inline-block;
-  color: var(--accent);
+  transition: opacity 250ms ease-in-out, color 750ms 250ms ease-in-out;
+  color: var(--foreground);
   text-decoration: none;
-  opacity: 0.5;
-  transition: color var(--time) var(--ease),
-    opacity calc(var(--time) * 0.5) var(--ease);
   text-transform: lowercase;
   padding: 0.6em 0;
   margin-left: 1.2em;
 
-  html.is-touch & {
-    padding: 0.4em 0;
-  }
+  // html.is-touch & {
+  //   padding: 0.4em 0;
+  // }
 
   &:hover {
-    opacity: 1;
+    opacity: 0.5;
   }
 }
 
 .nuxt-link-exact-active {
-  opacity: 1;
+  opacity: 0.5;
 }
 </style>

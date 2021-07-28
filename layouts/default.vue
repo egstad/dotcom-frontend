@@ -101,7 +101,8 @@ export default {
 
 <style lang="scss" scoped>
 .site {
-  transition: background-color 750ms 250ms ease-in-out;
+  transition: background-color 750ms 250ms ease-in-out,
+    color 750ms 250ms ease-in-out;
   background-color: var(--background);
   color: var(--foreground);
 

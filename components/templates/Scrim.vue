@@ -3,13 +3,16 @@
     <div v-if="scrimShouldShow" ref="scrim" class="scrim">
       <div v-if="isShowing" ref="text" class="text">
         <span class="letter">E</span>
-        <span class="letter">G</span>
-        <span class="letter">S</span>
-        <span class="letter">T</span>
-        <span class="letter">A</span>
-        <span class="letter">D</span>
+        <span class="letter">g</span>
+        <span class="letter">s</span>
+        <span class="letter">t</span>
+        <span class="letter">a</span>
+        <span class="letter">d</span>
       </div>
-      <p v-if="javascriptIsDisabled" class="script">Requires javascript!</p>
+      <!-- <p v-if="javascriptIsDisabled" class="script">
+        Hi you. Thanks for stopping by. To view this site, you'll need to
+        <a href="https://www.enable-javascript.com/"> enable javascript</a>
+      </p> -->
     </div>
   </transition>
 </template>
@@ -22,7 +25,7 @@ export default {
     return {
       isShowing: true,
       loadTimeout: null,
-      loadDuration: 1000,
+      loadDuration: 1500,
       tl: gsap.timeline(),
       tlLetters: gsap.timeline(),
       letters: null,
@@ -56,6 +59,8 @@ export default {
     clearTimeout(this.loadTimeout)
     this.isShowing = false
     this.$nuxt.$off('page::mounted')
+    this.tl.kill()
+    this.tlLetters.kill()
   },
   methods: {
     show() {
@@ -71,13 +76,10 @@ export default {
       this.tlLetters.pause()
 
       this.tl.to(this.letters, {
-        delay: 0.5,
+        delay: 0.25,
         duration: 0.5,
         opacity: 0,
         y: this.$store.state.device.winHeight * 0.1,
-        // rotation: 30,
-        // skewY: 90,
-        // skewX: 90,
         transformOrigin: '0% 50% -100%',
         ease: 'Power2.easeIn',
         stagger: 0.1
@@ -91,7 +93,6 @@ export default {
     },
     animateLetters() {
       this.letters = this.$refs.text.querySelectorAll('.letter')
-      this.tlLetters.set(this.letters, { opacity: 0 })
 
       this.tlLetters.fromTo(
         this.letters,
@@ -99,30 +100,13 @@ export default {
           opacity: 0
         },
         {
-          duration: 1,
+          delay: this.loadDuration * 0.25 * 0.001,
+          duration: this.loadDuration * 0.75 * 0.001,
           ease: 'Power3.inOut',
           opacity: 1,
           stagger: 0.1
         }
       )
-
-      // this.tlLetters.fromTo(
-      //   this.letters,
-      //   {
-      //     opacity: 0,
-      //     repeat: -1
-      //   },
-      //   {
-      //     duration: 0.5,
-      //     ease: 'Power3.inOut',
-      //     opacity: 1,
-      //     stagger: {
-      //       each: 0.1,
-      //       yoyo: true,
-      //       repeat: -1
-      //     }
-      //   }
-      // )
     }
   }
 }
@@ -130,7 +114,8 @@ export default {
 
 <style lang="scss" scoped>
 .scrim {
-  background-color: black;
+  background-color: var(--foreground);
+  color: var(--background);
   z-index: 0;
   position: fixed;
   top: 0;
@@ -153,7 +138,6 @@ export default {
   }
 
   .text {
-    color: var(--background);
     pointer-events: none;
     font-family: sans-serif;
     font-size: 26vw;
@@ -162,10 +146,15 @@ export default {
     letter-spacing: -0.08em;
     text-transform: uppercase;
     display: flex;
+
+    .letter {
+      opacity: 0;
+    }
   }
 }
 
 .script {
+  font-family: sans-serif;
   color: var(--background);
 }
 </style>
