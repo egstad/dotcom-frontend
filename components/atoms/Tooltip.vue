@@ -1,8 +1,9 @@
 <template>
-  <span class="tooltip" aria-hidden="true" :class="{ 'is-visible': isHover }">
-    {{ content }}
-    <span class="pointer"></span>
-  </span>
+  <transition name="bounce">
+    <span v-if="isHover" class="tooltip" aria-hidden="true">
+      {{ content }}
+    </span>
+  </transition>
 </template>
 
 <script>
@@ -15,19 +16,24 @@ export default {
   },
   data() {
     return {
-      isHover: false
+      isHover: false,
+      isVisible: false
     }
   },
   methods: {
     showTooltip() {
       this.isHover = true
+      this.isVisible = true
     },
     hideTooltip() {
       this.isHover = false
     },
     mouseHandler(ev) {
-      this.$el.style.left = `${ev.clientX}px`
-      this.$el.style.top = `${ev.clientY}px`
+      const rect = ev.target.getBoundingClientRect()
+      const x = ev.clientX - rect.left
+      const y = ev.clientY - rect.top
+      this.$el.style.left = `${x}px`
+      this.$el.style.top = `${y}px`
     }
   }
 }
@@ -36,26 +42,53 @@ export default {
 <style lang="scss" scoped>
 .tooltip {
   display: block;
-  position: fixed;
-  transform: translate3d(-50%, -200%, 0) rotateX(-4deg) rotateY(-4deg)
-    rotateZ(4deg);
-  opacity: 0;
+  position: absolute;
   pointer-events: none;
-  perspective: 600px;
-  transition: opacity calc(var(--time) * 0.3) ease-out,
-    transform calc(var(--time) * 0.3) ease-in-out;
-
   padding: 0.4em 0.6em;
   border-radius: 0.2em;
-  background: var(--accent);
-  color: var(--foreground);
+  background: var(--foreground);
+  color: var(--background);
   font-family: 'Lars Mono';
   font-size: 75%;
   line-height: 1;
+  width: auto;
+  white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
-  &.is-visible {
+  left: 0;
+  top: 0;
+  transform: translate3d(-50%, -150%, 0);
+}
+.bounce-enter-active {
+  animation: bounce-in 0.4s;
+}
+.bounce-leave-active {
+  animation: fade-out 0.3s;
+}
+@keyframes fade-out {
+  0% {
     opacity: 1;
-    transform: translate3d(-50%, -150%, 0);
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.7) rotate3d(0, 0, 1, -10deg) translate3d(-50%, -150%, 0);
+  }
+}
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(1) rotate3d(0, 0, 1, 15deg) translate3d(-50%, -150%, 0);
+  }
+  50% {
+    transform: scale(1.1) translate3d(-50%, -150%, 0);
+  }
+  100% {
+    transform: scale(1) translate3d(-50%, -150%, 0);
   }
 }
 </style>

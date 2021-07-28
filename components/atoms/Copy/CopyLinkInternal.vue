@@ -1,7 +1,8 @@
 <template>
-  <span>
+  <span class="link">
     <nuxt-link
-      :to="slug.current === 'index' ? '/' : slug.current"
+      :to="slug === 'index' ? '/' : slug"
+      class="link"
       style="text-underline-offset: 0.08em; text-decoration-thickness: 0.08em;"
       @mouseenter.native="$refs.tooltip.showTooltip()"
       @mousemove.native="$refs.tooltip.mouseHandler($event)"
@@ -9,7 +10,7 @@
     >
       <slot />
     </nuxt-link>
-    <Tooltip ref="tooltip" :content="pageName" />
+    <Tooltip ref="tooltip" :content="title ? title : pageName" />
   </span>
 </template>
 
@@ -22,14 +23,24 @@ export default {
   },
   props: {
     slug: {
-      type: Object,
-      default: null
+      type: String,
+      required: true
+    },
+    title: {
+      type: String,
+      required: true
     }
   },
   computed: {
     pageName() {
-      return this.slug.current
+      return this.slug
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.link {
+  position: relative;
+}
+</style>

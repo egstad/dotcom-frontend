@@ -8,13 +8,19 @@
           :asset="slice.url"
           :poster="slice.poster"
           :config="slice.settings"
+          :palette="slice.paletteVideo"
         />
         <!-- <pre :key="slice._key">{{ slice }}</pre> -->
       </template>
 
       <template v-else-if="slice._type === 'picture'">
-        <Pic :key="slice._key" :alt="slice.alt" :asset="slice.asset._ref" />
-        <!-- <pre :key="slice._key">{{ slice }}</pre> -->
+        <!-- <pre :key="slice._key + 'hi'">{{ slice.paletteImage }}</pre> -->
+        <Pic
+          :key="slice._key"
+          :alt="slice.alt"
+          :asset="slice.asset._ref"
+          :palette="slice.paletteImage"
+        />
       </template>
 
       <template v-else-if="slice._type === 'themeScroller'">
@@ -36,7 +42,7 @@
       </template>
 
       <template v-else-if="slice._type === 'richText'">
-        <Copy :key="slice._key" :blocks="slice.content" />
+        <Copy :key="slice._key" :blocks="slice.text" />
       </template>
     </template>
   </div>

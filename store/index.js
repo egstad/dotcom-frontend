@@ -1,4 +1,3 @@
-import { groq } from '@nuxtjs/sanity'
 import ThemeChanger from '@/plugins/ThemeChanger'
 import { hslaBreak } from '@/assets/js/utils/SanityHSL'
 
@@ -52,15 +51,15 @@ export const actions = {
     commit('setBackground', colors.background)
     commit('setForeground', colors.foreground)
     commit('setAccent', colors.accent)
-  },
-  async fetchSiteSettings({ commit }, $sanity) {
-    try {
-      const query = groq`*[_type == "siteSettings"]`
-      const settings = await $sanity.fetch(query)
-
-      commit('navigation/setPrimary', settings[0].primaryNavigation)
-    } catch (e) {
-      // console.warn('error in fetchSiteSettings', e)
-    }
   }
+  // async fetchSiteSettings({ commit }, $sanity) {
+  //   try {
+  //     const query = groq`*[_type == "siteSettings"]`
+  //     const settings = await $sanity.fetch(query)
+
+  //     commit('navigation/setPrimary', settings[0].primaryNavigation)
+  //   } catch (e) {
+  //     // console.warn('error in fetchSiteSettings', e)
+  //   }
+  // }
 }

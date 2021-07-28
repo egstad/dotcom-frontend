@@ -24,7 +24,7 @@ export const routeTransitionFade = {
 
       gsap.to(el, {
         ease: 'Power2.easeOut',
-        duration: 0.5,
+        // duration: 0.5,
         delay: 0.5,
         opacity: 1,
         y: 0,
@@ -34,7 +34,7 @@ export const routeTransitionFade = {
     leave(el, done) {
       gsap.to(el, {
         ease: 'Power2.easeIn',
-        duration: 0.3,
+        // duration: 0.3,
         opacity: 0,
         y: 25,
         onComplete: () => {

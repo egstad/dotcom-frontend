@@ -1,25 +1,25 @@
 <template>
   <div class="container">
+    <pre>egstad</pre>
     <pre>{{ document }}</pre>
   </div>
 </template>
 
 <script>
-import { groq } from '@nuxtjs/sanity'
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
 import { hsla } from '@/assets/js/utils/SanityHSL'
 
 export default {
   mixins: [routeTransitionFade],
-  async asyncData({ $sanity }) {
-    const query = groq`*[_type == "homepage" && _id == "index"][0]`
+  async asyncData({ $egstad }) {
+    const query = `*[_type == "homepage" && _id == "index"][0]`
 
     return {
-      document: await $sanity.fetch(query)
+      document: await $egstad.fetch(query)
     }
   },
   head() {
-    return this.$setPageMetadata(this.document)
+    return this.$setPageMetadata(this.document.social)
   },
   created() {
     if (process.client) {
