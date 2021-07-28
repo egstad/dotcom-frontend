@@ -6,7 +6,7 @@ $lg: 700px;
 $xl: 1024px;
 $xx: 1300px;
 
-.site-wrapper {
+.site {
   // --aH: 0; // num:  0-360
   // --aS: 0%; // perc: 0-100
   // --aL: 0%; // perc  0-100
@@ -26,8 +26,8 @@ $xx: 1300px;
   // --foreground: hsla(var(--fH), var(--fS), var(--fL), var(--fA));
 
   // /* Easing Function */
-  // --time: 600ms;
-  // --ease: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --time: 600ms;
+  --ease: cubic-bezier(0.455, 0.03, 0.515, 0.955);
 
   /* Breakpoints */
   --sm: #{$sm};

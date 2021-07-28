@@ -7,7 +7,6 @@
 
 <script>
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
-// import { hsla } from '@/assets/js/utils/SanityHSL'
 
 export default {
   mixins: [routeTransitionFade],
@@ -56,30 +55,9 @@ export default {
       document
     }
   },
-  // async fetch({ $theme }) {
-  // if (process.client) {
-  //   const theme = this.document.theme
-  //   console.log('theme', theme)
-  //   await $theme.updateColor({
-  //     background: hsla(theme.background.hsl),
-  //     foreground: hsla(theme.foreground.hsl),
-  //     accent: hsla(theme.accent.hsl)
-  //   })
-  // }
-  // },
   head() {
     return this.$setPageMetadata(this.document.social)
   },
-  // created() {
-  //   if (process.client) {
-  //     const theme = this.document.theme
-  //     this.$store.dispatch('updateTheme', {
-  //       background: hsla(theme.background.hsl),
-  //       foreground: hsla(theme.foreground.hsl),
-  //       accent: hsla(theme.accent.hsl)
-  //     })
-  //   }
-  // },
   mounted() {
     this.$nuxt.$emit('page::mounted')
   }

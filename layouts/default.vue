@@ -43,9 +43,7 @@ export default {
       return this.$store.state.device.winHeight
     },
     mainStyle() {
-      return {
-        minHeight: `${this.winHeight}px`
-      }
+      return { minHeight: `${this.winHeight}px` }
     },
     cssVars() {
       return this.$store.state.cssVars
@@ -69,9 +67,9 @@ export default {
     }
   },
   mounted() {
+    this.$nuxt.$emit('site::mounted')
     // this.$nuxt.$on('route::updated', this.handlePageRoutes)
     // this.$nuxt.$on('page::mounted', this.handlePageMounts)
-    this.$nuxt.$emit('scrim::hide')
     // document.documentElement.classList.add('mounted')
   },
   methods: {
