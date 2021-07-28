@@ -85,7 +85,9 @@ export default {
       return `https://egstad.link/${this.asset}`
     },
     autoplay() {
-      return this.config.autoplay ? this.config.autoplay : false
+      return this.config.autoplay && !this.$store.state.device.hideAnimations
+        ? this.config.autoplay
+        : false
     },
     loop() {
       return this.config.loop ? this.config.loop : false
@@ -94,7 +96,11 @@ export default {
       return this.config.mute ? this.config.mute : false
     },
     controls() {
-      return this.config.controls ? this.config.controls : false
+      if (this.$store.state.device.hideAnimations) {
+        return true
+      } else {
+        return this.config.controls ? this.config.controls : false
+      }
     },
     playsinline() {
       return this.config.playsinline ? this.config.playsinline : true
@@ -192,12 +198,15 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .vid {
-  transition: opacity 400ms 400ms var(--ease);
   display: block;
   width: 100%;
   height: auto;
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    transition: opacity 400ms 400ms var(--ease);
+  }
 }
 
 .vid.is-loading {

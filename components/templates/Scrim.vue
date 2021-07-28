@@ -27,7 +27,6 @@ export default {
       loadTimeout: null,
       loadDuration: 1500,
       tl: gsap.timeline(),
-      tlLetters: gsap.timeline(),
       letters: null,
       javascriptIsDisabled: true
     }
@@ -60,7 +59,6 @@ export default {
     this.isShowing = false
     this.$nuxt.$off('page::mounted')
     this.tl.kill()
-    this.tlLetters.kill()
   },
   methods: {
     show() {
@@ -73,31 +71,31 @@ export default {
       )
     },
     leave(el, done) {
-      this.tlLetters.pause()
+      if (this.$store.state.device.hideAnimations) done()
 
-      this.tl.to(this.letters, {
-        delay: 0.25,
-        duration: 0.5,
-        opacity: 0,
-        y: this.$store.state.device.winHeight * 0.1,
-        transformOrigin: '0% 50% -100%',
-        ease: 'Power2.easeIn',
-        stagger: 0.1
-      })
       this.tl.to(this.$refs.scrim, {
-        ease: 'Power2.easeIn',
-        duration: 0.5,
-        opacity: 0,
+        ease: 'Power4.easeInOut',
+        duration: 1,
+        y: this.$store.state.device.winHeight,
+        // onStart: () => {
+        //   this.tl.to(this.letters, {
+        //     duration: 0.5,
+        //     y: this.$store.state.device.winHeight * 0.1,
+        //     transformOrigin: '0% 50% -100%',
+        //     ease: 'Power2.easeIn',
+        //     stagger: 0.1
+        //   })
+        // },
         onComplete: done
       })
     },
     animateLetters() {
       this.letters = this.$refs.text.querySelectorAll('.letter')
 
-      this.tlLetters.fromTo(
+      this.tl.fromTo(
         this.letters,
         {
-          opacity: 0
+          opacity: this.$store.state.device.hideAnimations ? 0 : 1
         },
         {
           delay: this.loadDuration * 0.25 * 0.001,
@@ -114,8 +112,22 @@ export default {
 
 <style lang="scss" scoped>
 .scrim {
+  // blur
+  // background-color: hsl(var(--b-h), var(--b-s), var(--b-l), 80%);
+  // backdrop-filter: blur(5vmin);
+  // color: var(--foreground);
+
+  // background-color: var(--foreground);
+  // color: var(--background);
+
+  // @media (prefers-color-scheme: dark) {
+  //   background-color: hsl(var(--b-h), var(--b-s), 40%, 100%);
+  //   color: hsl(var(--f-h), var(--f-s), 55%, 100%);
+  // }
+
   background-color: var(--foreground);
   color: var(--background);
+
   z-index: 0;
   position: fixed;
   top: 0;
@@ -141,14 +153,14 @@ export default {
     pointer-events: none;
     font-family: sans-serif;
     font-size: 26vw;
-
-    margin-left: -0.08em;
+    transform: translateX(-0.11em);
     letter-spacing: -0.08em;
     text-transform: uppercase;
     display: flex;
 
     .letter {
       opacity: 0;
+      text-indent: 0;
     }
   }
 }

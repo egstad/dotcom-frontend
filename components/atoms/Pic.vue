@@ -107,12 +107,15 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .pic {
-  transition: opacity 400ms 400ms var(--ease);
   display: block;
   width: 100%;
   height: auto;
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    transition: opacity 400ms 400ms var(--ease);
+  }
 }
 .pic.is-loading {
   opacity: 0;

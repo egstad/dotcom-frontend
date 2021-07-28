@@ -6,12 +6,16 @@ export const routeTransitionFade = {
     mode: 'out-in',
     css: false,
     beforeEnter(el) {
+      if (this.$store.state.device.hideAnimations) return
+
       gsap.set(el, {
         opacity: 0,
         y: 50
       })
     },
     enter(el, done) {
+      if (this.$store.state.device.hideAnimations) done()
+
       gsap.to(el, {
         ease: 'expo.out',
         duration: 1,
@@ -22,6 +26,8 @@ export const routeTransitionFade = {
       })
     },
     leave(el, done) {
+      if (this.$store.state.device.hideAnimations) done()
+
       gsap.to(el, {
         ease: 'Power2.easeIn',
         duration: 0.4,

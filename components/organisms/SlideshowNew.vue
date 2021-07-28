@@ -398,10 +398,13 @@ export default {
   }
 
   .slides {
-    transition: min-height 300ms ease-in-out;
     position: relative;
     overflow: hidden;
     width: 100%;
+
+    @media screen and (prefers-reduced-motion: no-preference) {
+      transition: min-height 300ms ease-in-out;
+    }
   }
 
   &__ui {
@@ -422,8 +425,11 @@ export default {
 
     // svg arrows
     .arrow {
-      transition: stroke var(--time) var(--ease);
       stroke: var(--foreground);
+
+      @media screen and (prefers-reduced-motion: no-preference) {
+        transition: stroke var(--time) var(--ease);
+      }
     }
 
     &.next {
@@ -436,8 +442,8 @@ export default {
       }
 
       &:focus-visible .pill {
-        background-color: hsla(var(--bH), var(--bS), var(--bL), 100%);
-        outline: 4px solid hsla(var(--aH), var(--aS), var(--aL), 100%);
+        background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
+        outline: 4px solid hsla(var(--a-h), var(--a-s), var(--a-l), 100%);
       }
     }
 
@@ -451,15 +457,14 @@ export default {
       }
 
       &:focus-visible .pill {
-        background-color: hsla(var(--bH), var(--bS), var(--bL), 100%);
-        outline: 4px solid hsla(var(--aH), var(--aS), var(--aL), 100%);
+        background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
+        outline: 4px solid hsla(var(--a-h), var(--a-s), var(--a-l), 100%);
       }
     }
 
     .pill {
       pointer-events: none;
-      transition: background-color 400ms ease-in-out, opacity 400ms ease-in-out;
-      background-color: hsla(var(--bH), var(--bS), var(--bL), 60%);
+      background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 60%);
       outline-offset: 4px;
       display: flex;
       align-items: center;
@@ -472,6 +477,11 @@ export default {
       border-radius: 0.75em;
       backdrop-filter: blur(15px);
       margin: 0;
+
+      @media screen and (prefers-reduced-motion: no-preference) {
+        transition: background-color 400ms ease-in-out,
+          opacity 400ms ease-in-out;
+      }
 
       .arrow {
         width: 35%;
@@ -503,7 +513,10 @@ export default {
     &.is-curr {
       z-index: 3;
       visibility: visible;
-      transition: mask-position 300ms 100ms ease-in-out;
+
+      @media screen and (prefers-reduced-motion: no-preference) {
+        transition: mask-position 300ms 100ms ease-in-out;
+      }
     }
 
     &.is-peaking,
@@ -514,12 +527,13 @@ export default {
     }
 
     &.trans-from {
-      transition: opacity 400ms var(--ease);
-      opacity: 0;
+      // needed for transition end
+      transition: opacity 1ms linear;
 
-      @media (prefers-reduced-motion) {
-        transition: opacity 1ms linear;
+      @media screen and (prefers-reduced-motion: no-preference) {
+        transition: opacity 400ms var(--ease);
       }
+      opacity: 0;
     }
 
     // fake
@@ -543,7 +557,7 @@ export default {
     }
 
     .next .pill {
-      background-color: hsla(var(--bH), var(--bS), var(--bL), 100%);
+      background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
     }
   }
   &.is-hovered-prev {
@@ -552,7 +566,7 @@ export default {
     }
 
     .prev .pill {
-      background-color: hsla(var(--bH), var(--bS), var(--bL), 100%);
+      background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
     }
   }
 

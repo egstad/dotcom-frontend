@@ -101,10 +101,13 @@ export default {
 
 <style lang="scss" scoped>
 .site {
-  transition: background-color 750ms 250ms ease-in-out,
-    color 750ms 250ms ease-in-out;
   background-color: var(--background);
   color: var(--foreground);
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    transition: background-color 750ms 250ms ease-in-out,
+      color 750ms 250ms ease-in-out;
+  }
 
   ::selection {
     background: hsla(var(--fH), var(--fS), var(--fL), 80%);
@@ -133,6 +136,8 @@ export default {
     flex-direction: column;
   }
   &-main {
+    width: 100%;
+    overflow: hidden;
     flex: 1 0 auto;
   }
 }
