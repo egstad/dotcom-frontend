@@ -11,7 +11,8 @@ export const state = () => ({
   dpi: null,
   isScrolling: null,
   scrollDirection: undefined,
-  breakpoint: null
+  breakpoint: null,
+  cssVars: null
 })
 
 export const mutations = {
@@ -41,6 +42,9 @@ export const mutations = {
   },
   setBreakpoint(state, val) {
     state.breakpoint = val
+  },
+  setGlobalCssVars(state, val) {
+    state.cssVars = val
   }
 }
 

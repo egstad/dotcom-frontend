@@ -1,16 +1,12 @@
 import ThemeChanger from '@/plugins/ThemeChanger'
-import { hslaBreak } from '@/assets/js/utils/SanityHSL'
+// import { hslaBreak } from '@/assets/js/utils/SanityHSL'
 
 // import { hsla } from '@/assets/js/utils/SanityHSL'
 
 export const state = () => ({
   isTransitioning: false,
   showScrim: true,
-  theme: {
-    background: 'hsla(0, 0% , 0%, 1)',
-    foreground: 'hsla(0, 0% , 0%, 1)',
-    accent: 'hsla(0, 0% , 0%, 1)'
-  }
+  cssVars: null
 })
 
 export const mutations = {
@@ -20,14 +16,8 @@ export const mutations = {
   setTransitionState(state, val) {
     state.isTransitioning = val
   },
-  setBackground(state, val) {
-    state.theme.background = val
-  },
-  setForeground(state, val) {
-    state.theme.foreground = val
-  },
-  setAccent(state, val) {
-    state.theme.accent = val
+  setCSSVars(state, val) {
+    state.cssVars = ThemeChanger.set(val)
   }
 
   // setTheme(state, val) {
@@ -41,22 +31,20 @@ export const mutations = {
 }
 
 export const actions = {
-  updateTheme({ commit }, colors) {
-    ThemeChanger.updateColor({
-      background: colors.background ? hslaBreak(colors.background) : null,
-      foreground: colors.foreground ? hslaBreak(colors.foreground) : null,
-      accent: colors.accent ? hslaBreak(colors.accent) : null
-    })
-
-    commit('setBackground', colors.background)
-    commit('setForeground', colors.foreground)
-    commit('setAccent', colors.accent)
-  }
+  // updateTheme({ commit }, colors) {
+  //   ThemeChanger.updateColor({
+  //     background: colors.background ? hslaBreak(colors.background) : null,
+  //     foreground: colors.foreground ? hslaBreak(colors.foreground) : null,
+  //     accent: colors.accent ? hslaBreak(colors.accent) : null
+  //   })
+  //   commit('setBackground', colors.background)
+  //   commit('setForeground', colors.foreground)
+  //   commit('setAccent', colors.accent)
+  // }
   // async fetchSiteSettings({ commit }, $sanity) {
   //   try {
   //     const query = groq`*[_type == "siteSettings"]`
   //     const settings = await $sanity.fetch(query)
-
   //     commit('navigation/setPrimary', settings[0].primaryNavigation)
   //   } catch (e) {
   //     // console.warn('error in fetchSiteSettings', e)

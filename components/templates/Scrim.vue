@@ -17,7 +17,7 @@ export default {
     return {
       isShowing: true,
       loadTimeout: null,
-      loadDuration: 500
+      loadDuration: 1500
     }
   },
   computed: {
@@ -25,25 +25,39 @@ export default {
       return this.$store.state.device.hideAnimations
     }
   },
-  created() {
-    this.$nuxt.$on('scrim::show', this.show)
+  watch: {
+    isShowing(showing) {
+      if (showing) {
+        console.log('show')
+        document.body.style.overflow = 'hidden'
+      } else {
+        console.log('hide')
+        document.body.style.overflow = ''
+      }
+    }
+  },
+  mounted() {
+    // scrim::show
+    //  this.$store.commit('setTransitionState', 'true')
+    this.$nuxt.$on('page::mounted', this.show)
+    this.$nuxt.$on('route::updated', this.hide)
     this.$nuxt.$on('scrim::hide', this.hide)
   },
   beforeDestroy() {
-    this.$nuxt.$off('scrim::show', this.show)
-    this.$nuxt.$off('scrim::hide', this.hide)
+    this.$nuxt.$off('page::mounted')
+    this.$nuxt.$off('route::updated')
+    this.$nuxt.$on('scrim::hide')
     this.hide()
   },
   methods: {
     show() {
       this.isShowing = true
-      // document.documentElement.style.overflowY = 'hidden'
     },
     hide() {
-      this.loadTimeout = setTimeout(() => {
-        this.isShowing = false
-        // document.documentElement.style.overflowY = 'auto'
-      }, this.loadDuration)
+      this.loadTimeout = setTimeout(
+        () => (this.isShowing = false),
+        this.loadDuration
+      )
     },
     beforeEnter(el) {
       this.$store.commit('setTransitionState', 'true')
@@ -55,7 +69,7 @@ export default {
       gsap.to(el, {
         ease: 'Power2.easeOut',
         duration: 0.5,
-        opacity: 0.8,
+        opacity: 1,
         onComplete: done
       })
     },
