@@ -1,5 +1,5 @@
 <template>
-  <span class="ts-link">
+  <span class="link">
     <a
       :href="href"
       :target="blank ? true : false"
@@ -40,3 +40,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.link {
+  position: relative;
+}
+</style>

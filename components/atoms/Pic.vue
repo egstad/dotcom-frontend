@@ -1,5 +1,5 @@
 <template>
-  <div class="pic__wrap" :style="{ background: background }">
+  <div class="pic__wrap" :style="{ backgroundColor: background }">
     <img
       ref="pic"
       class="pic"
@@ -56,17 +56,15 @@ export default {
   computed: {
     image() {
       return getImageAsset(this.asset, {
-        projectId: this.$sanity.config.projectId,
-        dataset: this.$sanity.config.dataset
+        projectId: this.$egstad.clientConfig.projectId,
+        dataset: this.$egstad.clientConfig.dataset
       })
     },
     extension() {
       return this.image.extension
     },
     background() {
-      return this.palette && this.extension !== 'png'
-        ? this.palette.dominant.background
-        : null
+      return this.palette.dominant.background
     }
   },
   created() {

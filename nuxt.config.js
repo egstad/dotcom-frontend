@@ -102,8 +102,6 @@ export default {
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
-    // Doc: https://sanity.nuxtjs.org/
-    '@nuxtjs/sanity/module',
     // Doc: https://github.com/nuxt-community/style-resources-module
     '@nuxtjs/style-resources'
   ],
@@ -111,12 +109,6 @@ export default {
   styleResources: {
     hoistUseStatements: true,
     scss: ['~/assets/styles/_vars.scss']
-  },
-
-  sanity: {
-    // Doc: https://sanity.nuxtjs.org/configuration
-    minimal: true,
-    contentHelper: false
   },
   /*
    ** Nuxt.js modules

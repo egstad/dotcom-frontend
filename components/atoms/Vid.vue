@@ -101,8 +101,8 @@ export default {
     },
     posterReference() {
       return getImageAsset(this.poster.asset, {
-        projectId: this.$nuxt.$sanity.config.projectId,
-        dataset: this.$nuxt.$sanity.config.dataset
+        projectId: this.$egstad.clientConfig.projectId,
+        dataset: this.$egstad.clientConfig.dataset
       })
     },
     posterSource() {
@@ -118,12 +118,6 @@ export default {
     }
   },
   created() {
-    // console.log(
-    //   getImage(this.poster.asset, {
-    //     projectId: this.$nuxt.$sanity.config.projectId,
-    //     dataset: this.$nuxt.$sanity.config.dataset
-    //   })
-    // )
     this.width = this.posterReference.metadata.dimensions.width
     this.height = this.posterReference.metadata.dimensions.height
   },

@@ -1,17 +1,17 @@
 <template functional>
-  <mark class="ts-highlight"><slot /></mark>
+  <mark class="ts-highlight"><slot />and more words go right here</mark>
 </template>
 
 <style lang="scss">
 .ts-highlight {
-  background: var(--accent);
+  background: hsla(var(--fH), var(--fS), var(--fL), 20%);
   color: var(--foreground);
-  display: inline-block;
   padding: 0 0.2em;
+  border-radius: 0.1em;
 
   &::selection {
-    color: var(--accent);
-    background: var(--foreground);
+    background: hsla(var(--bH), var(--bS), var(--bL), 70%);
+    color: var(--foreground);
   }
 }
 </style>

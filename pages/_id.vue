@@ -1,11 +1,10 @@
 <template>
   <div class="container">
-    <Slices :slices="document.content.slices"></Slices>
+    <Slices :slices="document.content"></Slices>
   </div>
 </template>
 
 <script>
-import { groq } from '@nuxtjs/sanity'
 import Slices from '@/components/templates/Slices'
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
 import { hsla } from '@/assets/js/utils/SanityHSL'
@@ -15,29 +14,41 @@ export default {
     Slices
   },
   mixins: [routeTransitionFade],
-  async asyncData({ $sanity, params, isDev, error }) {
+  async asyncData({ $egstad, params, error }) {
     const uid = params.id
     // query looks so odd because we're fetching internal link slugs
-    const query = groq`*[content.slug.current == "${uid}"][0]{
-      ...,
-      content {
-        ...,
-        slices[] {
+    const query = `
+      *[slug.current == "${uid}"][0]{
+        _id,
+        title,
+        theme{
+  			  "accent": accent.hsl,
+          "background": background.hsl,
+          "foreground": foreground.hsl,
+				},
+        "content": content[]{
           ...,
-          content[] {
-            ...,
+          text[] {
+          	...,
             markDefs[] {
               ...,
               _type == "internalLink" => {
                 ...,
-                "slug": @.item->content.slug
+                "slug": @.item->slug.current,
+                "title": @.item->title
               }
             }
+          },
+          "paletteVideo": poster.asset->metadata.palette,
+          "paletteImage": asset->metadata.palette,
+          "slides": slides[]{
+            ...,
+            "paletteImage":asset->metadata.palette
           }
-        }
-      }
-    }`
-    const data = await $sanity.fetch(query).then((res) => {
+        },
+        social,
+      }`
+    const data = await $egstad.fetch(query).then((res) => {
       if (!res) {
         error({ statusCode: 404, message: `Document '${uid}' doesn't exist` })
       } else {
@@ -50,15 +61,15 @@ export default {
     }
   },
   head() {
-    return this.$setPageMetadata(this.document.content)
+    return this.$setPageMetadata(this.document.social)
   },
   created() {
     if (process.client) {
-      const theme = this.document.content.theme
+      const theme = this.document.theme
       this.$store.dispatch('updateTheme', {
-        background: hsla(theme.background.hsl),
-        foreground: hsla(theme.foreground.hsl),
-        accent: hsla(theme.accent.hsl)
+        background: hsla(theme.background),
+        foreground: hsla(theme.foreground),
+        accent: hsla(theme.accent)
       })
     }
   },
@@ -70,6 +81,6 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  margin-top: calc(10vmax + 10vmin);
+  padding-top: calc(10vmax + 10vmin);
 }
 </style>

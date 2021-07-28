@@ -85,6 +85,8 @@ export default {
       }
     }
   }
+  // this was from the @nuxtjs/sanity package days...
+  // maybe it'll come in handy tho?
   // async middleware({ store, $sanity }) {
   //   await store.dispatch('fetchSiteSettings', $sanity)
   // }

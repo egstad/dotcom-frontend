@@ -146,7 +146,7 @@ table {
 }
 
 ::selection {
-  background: var(--foreground);
+  background: hsla(var(--fH), var(--fS), var(--fL), 80%);
   color: var(--background);
 }
 
