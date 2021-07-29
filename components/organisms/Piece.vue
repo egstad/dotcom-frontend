@@ -1,48 +1,46 @@
 <template>
-  <Grid tag="article" class="piece" v-bind="gridProps">
-    <Column v-bind="colProps">
-      <div class="piece__content" :class="{ 'is-visible': inView }">
-        <header class="piece__header" :class="headerClasses">
-          <Type tag="h2" :size="1" class="piece__title">
-            <span>{{ title }}</span>
-          </Type>
-        </header>
+  <section class="piece">
+    <article class="piece__content" :class="[size, { 'is-visible': inView }]">
+      <header class="piece__header" :class="headerClasses">
+        <Type tag="h2" :size="1" class="piece__title">
+          <span>{{ title }}</span>
+        </Type>
+      </header>
 
-        <template v-for="slice in [content]">
-          <template v-if="slice._type === 'video'">
-            <Vid
-              :key="slice._key"
-              :alt="slice.alt"
-              :asset="slice.url"
-              :poster="slice.poster"
-              :config="slice.settings"
-              :palette="slice.paletteVideo"
-            />
-            <!-- <pre :key="slice._key">{{ content }}</pre> -->
-          </template>
-
-          <template v-else-if="slice._type === 'picture'">
-            <Pic
-              :key="slice._key"
-              :alt="slice.alt"
-              :asset="slice.asset._ref"
-              :palette="slice.paletteImage"
-            />
-            <!-- <pre :key="slice._key + 'pre'">{{ slice.paletteImage }}</pre> -->
-          </template>
-
-          <template v-else-if="slice._type === 'slideshow'">
-            <Slideshow
-              :key="slice._key"
-              :content="slice.slides"
-              :options="slice.options"
-            />
-            <!-- <pre :key="'pre-' + slice._key">{{ slice.options }}</pre> -->
-          </template>
+      <template v-for="slice in [content]">
+        <template v-if="slice._type === 'video'">
+          <Vid
+            :key="slice._key"
+            :alt="slice.alt"
+            :asset="slice.url"
+            :poster="slice.poster"
+            :config="slice.settings"
+            :palette="slice.paletteVideo"
+          />
+          <!-- <pre :key="slice._key">{{ content }}</pre> -->
         </template>
-      </div>
-    </Column>
-  </Grid>
+
+        <template v-else-if="slice._type === 'picture'">
+          <Pic
+            :key="slice._key"
+            :alt="slice.alt"
+            :asset="slice.asset._ref"
+            :palette="slice.paletteImage"
+          />
+          <!-- <pre :key="slice._key + 'pre'">{{ slice.paletteImage }}</pre> -->
+        </template>
+
+        <template v-else-if="slice._type === 'slideshow'">
+          <Slideshow
+            :key="slice._key"
+            :content="slice.slides"
+            :options="slice.options"
+          />
+          <!-- <pre :key="'pre-' + slice._key">{{ slice.options }}</pre> -->
+        </template>
+      </template>
+    </article>
+  </section>
 </template>
 
 <script>
@@ -133,17 +131,115 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 $captionHeight: 16px;
 
 .piece {
   position: relative;
+  display: flex;
+  margin-bottom: $captionHeight;
+
+  @include bp($xl) {
+    margin-bottom: calc-vw($captionHeight, $xl);
+  }
+
+  &__content {
+    width: 100%;
+    max-width: 200vmin;
+    padding-left: $captionHeight;
+    padding-right: $captionHeight;
+
+    @include bp($xl) {
+      padding-left: calc-vw($captionHeight, $xl);
+      padding-right: calc-vw($captionHeight, $xl) !important;
+    }
+
+    &.small {
+      width: 85%;
+
+      @include bp($sm) {
+        width: 70%;
+      }
+
+      @include bp($md) {
+        width: 60%;
+      }
+
+      @include bp($lg) {
+        width: 50%;
+      }
+
+      @include bp($xx) {
+        width: 40%;
+        max-width: 60vmin;
+      }
+    }
+
+    &.medium {
+      width: 85%;
+
+      @include bp($sm) {
+        width: 80%;
+      }
+
+      @include bp($md) {
+        width: 70%;
+      }
+
+      @include bp($lg) {
+        width: 65%;
+      }
+
+      @include bp($xx) {
+        width: 55%;
+      }
+    }
+
+    &.large {
+      width: 100%;
+
+      @include bp($sm) {
+        width: 90%;
+      }
+
+      @include bp($md) {
+        width: 80%;
+      }
+
+      @include bp($lg) {
+        width: 75%;
+      }
+
+      @include bp($xx) {
+        width: 70%;
+      }
+    }
+
+    &.xlarge {
+      width: 100%;
+
+      @include bp($md) {
+        width: 90%;
+      }
+
+      @include bp($xx) {
+        width: 85%;
+      }
+    }
+
+    &.full {
+      width: 100%;
+      max-width: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
 
   &__content {
     display: flex;
     flex-direction: column;
-    transition: opacity 500ms 250ms ease-in-out, transform 700ms ease-in-out;
-    transform: translate3d(0, 5vw, 0);
+    // transition: opacity 500ms 250ms ease-in-out, transform 700ms ease-in-out;
+    // transform: translate3d(0, 5vw, 0);
     // opacity: 0;
 
     // &.is-visible {
