@@ -79,6 +79,7 @@ Todo:
           :alt="slide.alt"
           :asset="slide.asset._ref"
           :palette="slide.paletteImage"
+          @load="setHeight"
         />
       </li>
     </ul>
