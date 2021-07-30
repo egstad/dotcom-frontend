@@ -136,8 +136,8 @@ export default {
 </script>
 
 <style lang="scss">
-$height: 32px;
-$inset: 0;
+$height: 36px;
+$inset: 0px;
 $gap: 8px;
 $blur: 8px;
 $trans-time: 250ms;
@@ -158,7 +158,7 @@ $trans-time: 250ms;
     display: flex;
     flex: 1;
     width: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
     border-radius: $height;
     background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 10%), 100%);
     max-width: 400px;
@@ -170,7 +170,7 @@ $trans-time: 250ms;
       text-align: center;
       display: flex;
       position: relative;
-      z-index: 1;
+      z-index: 2;
 
       &.is-hovered {
         .list__link {
@@ -271,7 +271,7 @@ $trans-time: 250ms;
   position: absolute;
   height: calc(100% - #{$inset});
   border-radius: $height;
-  z-index: 0;
+  z-index: 1;
   top: $inset;
   bottom: $inset;
   left: 0;
@@ -281,8 +281,7 @@ $trans-time: 250ms;
   width: 33.333%;
 
   @media screen and (prefers-reduced-motion: no-preference) {
-    transition: transform 400ms cubic-bezier(0.375, 0.39, 0, 1.175),
-      width 300ms cubic-bezier(0.375, 0.39, 0, 1.175);
+    transition: transform 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
   }
 }
 </style>
