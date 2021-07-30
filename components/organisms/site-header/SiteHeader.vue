@@ -97,23 +97,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$height: 38px;
-$inset: 0;
-$gutter: 8px;
-$blur: 8px;
-$trans-time: 250ms;
-$margin: clamp(0.5em, 1vmax, 2em);
+$margin: clamp(0.5em, 1.5vw, 2em);
 
 .site-header {
   position: fixed;
   z-index: 20;
-  top: 0;
+  top: 3px;
   left: 0;
   width: 100%;
   min-width: 300px;
-  display: flex;
   padding: $margin;
-  grid-template-columns: 1fr ($height * 2 + $gutter * 2);
 
   &.navIsHidden {
     @media screen and (prefers-reduced-motion: no-preference) {

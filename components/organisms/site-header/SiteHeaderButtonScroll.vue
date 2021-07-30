@@ -29,6 +29,7 @@ export default {
       }
     },
     onTransition(ev) {
+      if (ev.propertyName !== 'opacity') return
       this.$nuxt.$emit('scrollUpButton::updated')
     }
   }

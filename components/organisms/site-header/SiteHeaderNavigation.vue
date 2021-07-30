@@ -1,7 +1,7 @@
 <template>
   <nav>
-    <ul class="list">
-      <li
+    <div class="list">
+      <div
         v-for="(link, i) in links"
         :key="i"
         ref="item"
@@ -11,19 +11,20 @@
           { 'is-active': i === activeIndex }
         ]"
         @mouseenter="onHover"
-        @mouseleave="init"
+        @mouseleave="onLeave"
       >
         <nuxt-link
           class="list__link"
           :to="link.path"
           @focus.native="onFocus"
+          @blur.native="init"
           @click.native="onClick"
         >
           {{ link.title }}
         </nuxt-link>
-      </li>
-    </ul>
-    <div v-show="mounted" ref="bg" class="bg"></div>
+      </div>
+      <div v-show="mounted" ref="bg" class="bg"></div>
+    </div>
 
     <ButtonScroll :show-scroll-button="showScrollButton" />
     <ButtonMenu />
@@ -51,7 +52,8 @@ export default {
     return {
       mounted: false,
       activeIndex: null,
-      hoveredIndex: null,
+      hoveredIndex: undefined,
+      hasClickedLink: false,
       // tl: gsap.timeline(),
       links: [
         {
@@ -74,9 +76,7 @@ export default {
       this.init()
       this.$nuxt.$on('window::resize', this.init)
       this.$nuxt.$on('page::mounted', this.init)
-      this.$nuxt.$on('scrollUpButton::updated', () => {
-        this.styleActiveLinkByIndex(this.activeIndex)
-      })
+      this.$nuxt.$on('scrollUpButton::updated', this.styleActiveLinkByIndex)
       this.mounted = true
     })
   },
@@ -88,11 +88,17 @@ export default {
     init(ev) {
       this.activeIndex = this.getActiveLinkIndex()
       this.hoveredIndex = this.activeIndex
+      this.hasClickedLink = false
       this.styleActiveLinkByIndex(this.activeIndex)
     },
     onHover(ev) {
       this.hoveredIndex = this.getElementIndex(ev.target)
       this.styleActiveLinkByIndex(this.getElementIndex(ev.target))
+    },
+    onLeave(ev) {
+      if (this.hasClickedLink) return
+
+      this.init()
     },
     onFocus(ev) {
       this.hoveredIndex = this.getElementIndex(ev.target.parentNode)
@@ -100,15 +106,16 @@ export default {
     },
     onClick(ev) {
       this.activeIndex = this.getElementIndex(ev.target.parentNode)
+      this.hasClickedLink = true
     },
     styleActiveLinkByIndex(index) {
-      const rect = this.$refs.item[index].getBoundingClientRect()
-      const margin = parseFloat(
-        getComputedStyle(this.$parent.$el).paddingLeft
-      ).toFixed(3)
+      const thisIndex = index !== undefined ? index : this.activeIndex
+      const rect = this.$refs.item[thisIndex].getBoundingClientRect()
+      const margin = parseInt(getComputedStyle(this.$parent.$el).paddingLeft)
+      // const inset = parseInt(getComputedStyle(this.$refs.bg).top)
 
       this.$refs.bg.style.transform = `translate3d(${rect.x - margin}px,0,0)`
-      this.$refs.bg.style.width = `${rect.width}px`
+      this.$refs.bg.style.width = `${100 / this.$refs.item.length}%`
     },
     getActiveLinkIndex() {
       let activeLinkIndex
@@ -127,7 +134,7 @@ export default {
 </script>
 
 <style lang="scss">
-$height: 38px;
+$height: 32px;
 $inset: 0;
 $gap: 8px;
 $blur: 8px;
@@ -135,23 +142,25 @@ $trans-time: 250ms;
 
 .site-header__nav {
   width: 100%;
-  display: flex;
   flex: 1;
   position: relative;
   border-radius: $height;
+  display: flex;
 
   @media screen and (prefers-reduced-motion: no-preference) {
     transition: transform $trans-time ease-in-out;
   }
 
   .list {
+    position: relative;
     display: flex;
     flex: 1;
     width: 100%;
-    padding: $inset;
+    overflow: hidden;
     border-radius: $height;
-    background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 10%), 80%);
+    background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 10%), 100%);
     max-width: 400px;
+
     // backdrop-filter: blur(5px);
 
     &__item {
@@ -178,8 +187,7 @@ $trans-time: 250ms;
     &__link {
       flex: 1 1;
       display: block;
-      line-height: 0;
-      line-height: $height;
+      line-height: $height + ($inset * 2);
       height: $height;
       text-transform: uppercase;
       color: var(--foreground);
@@ -192,7 +200,7 @@ $trans-time: 250ms;
       outline: none;
 
       @media screen and (prefers-reduced-motion: no-preference) {
-        transition: color $trans-time cubic-bezier(0.375, 0.39, 0, 1.175);
+        transition: color 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
       }
 
       @media (max-width: 400px) {
@@ -219,7 +227,7 @@ $trans-time: 250ms;
   line-height: $height;
   padding: 0;
   margin: 0;
-  background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 10%), 80%);
+  background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 10%), 100%);
   appearance: none;
   border: 0;
   border-radius: 50%;
@@ -259,15 +267,20 @@ $trans-time: 250ms;
 
 .bg {
   position: absolute;
-  height: 100%;
+  height: calc(100% - $inset);
   border-radius: $height;
   z-index: 0;
+  top: $inset;
+  bottom: $inset;
+  left: 0;
   background-color: var(--foreground);
+  pointer-events: none;
   transform: translate3d(0, -50%, 0);
+  width: 33.333%;
 
   @media screen and (prefers-reduced-motion: no-preference) {
     transition: transform 400ms cubic-bezier(0.375, 0.39, 0, 1.175),
-      width 300ms ease-in-out;
+      width 300ms cubic-bezier(0.375, 0.39, 0, 1.175);
   }
 }
 </style>
