@@ -1,11 +1,12 @@
 <template>
   <header
-    :class="['site-header', { navIsHidden }, { navIsAtTop }]"
+    :class="['site-header', { navIsHidden }, { navIsAtTop }, { isWiggling }]"
     @mouseenter="showNav"
   >
     <SiteHeaderNavigation
       :show-scroll-button="showScrollButton"
       class="site-header__nav"
+      @activeLinkClicked="wiggleNav"
     />
   </header>
 </template>
@@ -26,7 +27,8 @@ export default {
       navIsAtTop: true,
       navIsHidden: 0,
       showScrollButton: false,
-      highlightedIndex: null
+      highlightedIndex: null,
+      isWiggling: false
     }
   },
   computed: {
@@ -87,11 +89,17 @@ export default {
     },
     updateActiveItem(val) {
       this.activeItem = val
-    }
+    },
+    wiggleNav() {
+      this.isWiggling = true
 
-    // setHighlight(index) {
-    //   this.highlightedIndex
-    // }
+      const onEnd = () => {
+        this.isWiggling = false
+        this.$el.removeEventListener('animationend', onEnd)
+      }
+
+      this.$el.addEventListener('animationend', onEnd)
+    }
   }
 }
 </script>
@@ -124,11 +132,41 @@ $margin: clamp(0.5em, 1.5vw, 2em);
     }
   }
 
+  &.isWiggling {
+    animation: shakeX 1s ease;
+  }
+
   // &.navIsAtTop {
   //   .row {
   //     background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 10%), 100%);
   //     box-shadow: none;
   //   }
   // }
+}
+
+@keyframes shakeX {
+  from,
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+.shakeX {
+  animation-name: shakeX;
 }
 </style>

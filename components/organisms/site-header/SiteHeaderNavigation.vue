@@ -52,9 +52,7 @@ export default {
       mounted: false,
       activeIndex: null,
       hoveredIndex: undefined,
-      isHovered: false,
       hasClickedLink: false,
-      // tl: gsap.timeline(),
       links: [
         {
           title: 'Egstad',
@@ -79,18 +77,13 @@ export default {
   },
   mounted() {
     this.init()
-    window.addEventListener('resize', this.styleActiveLinkByIndex)
-    this.$nuxt.$on('scrollUpButton::updated', () => {
-      setTimeout(() => {
-        this.styleActiveLinkByIndex(this.getActiveLinkIndex())
-      }, 300)
-    })
-
+    this.$nuxt.$on('window::resize', this.styleActiveLinkByIndex)
+    this.$nuxt.$on('page::mounted', this.setToActiveLink)
     this.mounted = true
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.styleActiveLinkByIndex)
-    this.$nuxt.$off('scrollUpButton::updated')
+    this.$nuxt.$off('window::resize')
+    this.$nuxt.$off('page::mounted')
   },
   methods: {
     init(ev) {
@@ -99,14 +92,11 @@ export default {
       this.hasClickedLink = false
     },
     onHover(ev) {
-      this.isHovered = false
       this.hoveredIndex = this.getElementIndex(ev.target)
     },
     onLeave(ev) {
-      this.isHovered = true
-
       if (this.hasClickedLink) return
-      this.init()
+      this.setToActiveLink()
     },
     onFocus(ev) {
       this.hoveredIndex = this.getElementIndex(ev.target.parentNode)
@@ -114,15 +104,15 @@ export default {
     onClick(ev) {
       this.activeIndex = this.getElementIndex(ev.target.parentNode)
       this.hasClickedLink = true
-    },
-    styleActiveLinkByIndex(index) {
-      const thisIndex =
-        this.$refs.item[index] !== undefined ? index : this.activeIndex
-      const rect = this.$refs.item[thisIndex].getBoundingClientRect()
-      const margin = parseInt(getComputedStyle(this.$parent.$el).paddingLeft)
-      // const inset = parseInt(getComputedStyle(this.$refs.bg).top)
 
-      this.$refs.bg.style.transform = `translate3d(${rect.x - margin}px,0,0)`
+      // fire animation if clicked page is already active
+      if (this.activeIndex === this.getActiveLinkIndex()) {
+        this.$emit('activeLinkClicked')
+      }
+    },
+    styleActiveLinkByIndex() {
+      const self = this.hoveredIndex ?? this.activeIndex
+      this.$refs.bg.style.transform = `translate3d(${100 * self}%,0,0)`
       this.$refs.bg.style.width = `${100 / this.$refs.item.length}%`
     },
     getActiveLinkIndex() {
@@ -136,6 +126,10 @@ export default {
     },
     getElementIndex(element) {
       return [...element.parentNode.children].indexOf(element)
+    },
+    setToActiveLink() {
+      this.activeIndex = this.getActiveLinkIndex()
+      this.hoveredIndex = this.activeIndex
     }
   }
 }
@@ -283,7 +277,7 @@ $trans-time: 250ms;
   left: 0;
   background-color: var(--foreground);
   pointer-events: none;
-  transform: translate3d(0, -50%, 0);
+  transform: scale(2) translate3d(0, -50%, 0);
   width: 33.333%;
 
   @media screen and (prefers-reduced-motion: no-preference) {

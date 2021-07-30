@@ -52,6 +52,13 @@ export default {
   watch: {
     $route(to, from) {
       this.$nuxt.$emit('route::updated', to)
+
+      if (to.name === 'work') {
+        this.$nuxt.$emit('filter::show')
+      } else {
+        this.$nuxt.$emit('filter::hide')
+      }
+      // this.$nuxt.$emit('filter::hide')
     },
     isTouch(state) {
       this.toggleDocClass('is-touch', state)
