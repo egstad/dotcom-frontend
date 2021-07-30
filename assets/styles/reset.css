@@ -162,4 +162,5 @@ html {
   overflow-y: scroll;
   position: relative;
   font-family: var(--mono);
+  scroll-behavior: smooth;
 }
