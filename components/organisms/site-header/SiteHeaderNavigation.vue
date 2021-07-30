@@ -267,7 +267,7 @@ $trans-time: 250ms;
 
 .bg {
   position: absolute;
-  height: calc(100% - $inset);
+  height: calc(100% - #{$inset});
   border-radius: $height;
   z-index: 0;
   top: $inset;
