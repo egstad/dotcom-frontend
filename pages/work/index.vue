@@ -69,7 +69,12 @@ export default {
   head() {
     return this.$setPageMetadata(this.document.social)
   },
+  beforeDestroy() {
+    this.$nuxt.$emit('filter::hide')
+  },
   mounted() {
+    this.$nuxt.$emit('filter::show')
+
     // 'v2021-06-07'
     // this.date = `v${date.getUTCFullYear()}-${date.getUTCMonth()}-${date.getUTCDay()}`
     // this.$nuxt.$on('window::scrollNearBottom', this.scrollHandler)

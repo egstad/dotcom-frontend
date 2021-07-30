@@ -1,5 +1,10 @@
 <template>
-  <transition name="fade" mode="out-in">
+  <transition
+    name="fade"
+    mode="out-in"
+    @enter="$nuxt.$emit('scrollUpButton::updated')"
+    @leave="$nuxt.$emit('scrollUpButton::updated')"
+  >
     <button
       v-show="showScrollButton"
       class="button --scroll-up"
@@ -19,18 +24,11 @@ export default {
       required: true
     }
   },
-  mounted() {
-    this.$el.addEventListener('transitionend', this.onTransition)
-  },
   methods: {
     scrollToTop() {
       if (process.client) {
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }
-    },
-    onTransition(ev) {
-      if (ev.propertyName !== 'opacity') return
-      this.$nuxt.$emit('scrollUpButton::updated')
     }
   }
 }

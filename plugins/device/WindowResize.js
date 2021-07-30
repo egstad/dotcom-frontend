@@ -4,22 +4,19 @@ import windowBreakpoints from '~/plugins/device/WindowBreakpoints'
 const windowResize = {
   init() {
     this.resizeHandler = this.throttleResize.bind(this)
-    this.throttled = false
+    this.timeout = false
     this.delay = 200
 
     window.addEventListener('resize', this.resizeHandler)
   },
   throttleResize() {
-    if (!this.throttled) {
-      this.throttled = true
+    clearTimeout(this.timeout)
 
-      setTimeout(() => {
-        this.throttled = false
-        window.$nuxt.$emit('window::resize')
-        windowDimensions.set()
-        windowBreakpoints.set()
-      }, this.delay)
-    }
+    this.timeout = setTimeout(() => {
+      windowDimensions.set()
+      windowBreakpoints.set()
+      window.$nuxt.$emit('window::resize')
+    }, this.delay)
   }
 }
 

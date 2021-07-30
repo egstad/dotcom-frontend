@@ -14,11 +14,11 @@
         @mouseleave="onLeave"
       >
         <nuxt-link
+          v-touch:tap.self="onClick"
           class="list__link"
           :to="link.path"
           @focus.native="onFocus"
           @blur.native="init"
-          @click.native="onClick"
         >
           {{ link.title }}
         </nuxt-link>
@@ -47,12 +47,12 @@ export default {
       required: true
     }
   },
-
   data() {
     return {
       mounted: false,
       activeIndex: null,
       hoveredIndex: undefined,
+      isHovered: false,
       hasClickedLink: false,
       // tl: gsap.timeline(),
       links: [
@@ -71,45 +71,53 @@ export default {
       ]
     }
   },
+  watch: {
+    hoveredIndex(newValue) {
+      if (newValue === undefined) return
+      this.styleActiveLinkByIndex(newValue)
+    }
+  },
   mounted() {
-    this.$nextTick(() => {
-      this.init()
-      this.$nuxt.$on('window::resize', this.init)
-      this.$nuxt.$on('page::mounted', this.init)
-      this.$nuxt.$on('scrollUpButton::updated', this.styleActiveLinkByIndex)
-      this.mounted = true
+    this.init()
+    window.addEventListener('resize', this.styleActiveLinkByIndex)
+    this.$nuxt.$on('scrollUpButton::updated', () => {
+      setTimeout(() => {
+        this.styleActiveLinkByIndex(this.getActiveLinkIndex())
+      }, 300)
     })
+
+    this.mounted = true
   },
   beforeDestroy() {
-    this.$nuxt.$off('window::resize')
-    this.$nuxt.$off('page::mounted')
+    window.removeEventListener('resize', this.styleActiveLinkByIndex)
+    this.$nuxt.$off('scrollUpButton::updated')
   },
   methods: {
     init(ev) {
       this.activeIndex = this.getActiveLinkIndex()
       this.hoveredIndex = this.activeIndex
       this.hasClickedLink = false
-      this.styleActiveLinkByIndex(this.activeIndex)
     },
     onHover(ev) {
+      this.isHovered = false
       this.hoveredIndex = this.getElementIndex(ev.target)
-      this.styleActiveLinkByIndex(this.getElementIndex(ev.target))
     },
     onLeave(ev) {
-      if (this.hasClickedLink) return
+      this.isHovered = true
 
+      if (this.hasClickedLink) return
       this.init()
     },
     onFocus(ev) {
       this.hoveredIndex = this.getElementIndex(ev.target.parentNode)
-      this.styleActiveLinkByIndex(this.hoveredIndex)
     },
     onClick(ev) {
       this.activeIndex = this.getElementIndex(ev.target.parentNode)
       this.hasClickedLink = true
     },
     styleActiveLinkByIndex(index) {
-      const thisIndex = index !== undefined ? index : this.activeIndex
+      const thisIndex =
+        this.$refs.item[index] !== undefined ? index : this.activeIndex
       const rect = this.$refs.item[thisIndex].getBoundingClientRect()
       const margin = parseInt(getComputedStyle(this.$parent.$el).paddingLeft)
       // const inset = parseInt(getComputedStyle(this.$refs.bg).top)
@@ -238,13 +246,13 @@ $trans-time: 250ms;
 
   &.--toggle-menu {
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: transform $trans-time 100ms ease-in-out,
+      transition: transform $trans-time 200ms ease-in-out,
         opacity $trans-time ease-in-out;
     }
   }
   &.--scroll-up {
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: transform $trans-time 50ms ease-in-out,
+      transition: transform $trans-time 100ms ease-in-out,
         opacity $trans-time ease-in-out;
     }
   }

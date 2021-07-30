@@ -51,7 +51,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      this.$nuxt.$emit('route::updated')
+      this.$nuxt.$emit('route::updated', to)
     },
     isTouch(state) {
       this.toggleDocClass('is-touch', state)
