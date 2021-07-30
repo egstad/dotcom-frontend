@@ -2,6 +2,7 @@
   <div class="container">
     <br /><br /><br /><br /><br /><br />
     <pre>{{ document }}</pre>
+    <pre>{{ document }}</pre>
   </div>
 </template>
 

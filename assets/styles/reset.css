@@ -161,4 +161,5 @@ html {
   overflow-x: hidden;
   overflow-y: scroll;
   position: relative;
+  font-family: var(--mono);
 }

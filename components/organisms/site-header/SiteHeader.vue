@@ -1,40 +1,32 @@
 <template>
-  <Grid
-    tag="header"
-    class="site-header"
-    :class="{ navIsHidden }"
-    @mouseenter.native="showNav"
+  <header
+    :class="['site-header', { navIsHidden }, { navIsAtTop }]"
+    @mouseenter="showNav"
   >
-    <Column class="header-nav__wrap" :md="6">
-      <SiteHeaderLogo />
-      <SiteHeaderNavPrimary class="shy" />
-    </Column>
-    <Column :md="6" class="hide-mobile">
-      <SiteHeaderMeta class="shy" />
-    </Column>
-
-    <!-- <SiteHeaderBackground :hidden="navIsHidden" /> -->
-  </Grid>
+    <SiteHeaderNavigation
+      :show-scroll-button="showScrollButton"
+      class="site-header__nav"
+    />
+  </header>
 </template>
 
 <script>
-import SiteHeaderLogo from '~/components/organisms/site-header/SiteHeaderLogo.vue'
-import SiteHeaderNavPrimary from '~/components/organisms/site-header/SiteHeaderNavPrimary.vue'
-import SiteHeaderMeta from '~/components/organisms/site-header/SiteHeaderMeta.vue'
-// import SiteHeaderBackground from '~/components/organisms/site-header/SiteHeaderBackground.vue'
+import SiteHeaderNavigation from '~/components/organisms/site-header/SiteHeaderNavigation.vue'
+// import SiteHeaderMeta from '~/components/organisms/site-header/SiteHeaderMeta.vue'
 
 export default {
   components: {
-    SiteHeaderLogo,
-    SiteHeaderNavPrimary,
-    SiteHeaderMeta
-    // SiteHeaderBackground
+    SiteHeaderNavigation
+    // SiteHeaderNavPrimary,
+    // SiteHeaderMeta
   },
   data() {
     return {
       activeItem: null,
+      navIsAtTop: true,
       navIsHidden: 0,
-      lastY: 0
+      showScrollButton: false,
+      highlightedIndex: null
     }
   },
   computed: {
@@ -66,6 +58,7 @@ export default {
       if (y) this.lastY = Math.round(y)
     },
     scrollStop(y) {
+      this.scrollHandler()
       this.lastY = Math.round(y)
     },
     scrollHandler() {
@@ -76,13 +69,15 @@ export default {
       const hasScrolledDown = -scrollDiff > 0 && -scrollDiff > scrollOffset
       const hasScrolledUp = scrollDiff > 0 && scrollDiff > scrollOffset
       const nearTop = y < scrollOffset
-      const nearBottomOffset = 50
+      const nearBottomOffset = 25
       const nearBottom = this.winHeight + y + nearBottomOffset >= this.docHeight
 
       if (hasScrolledUp && this.navIsHidden) this.showNav()
       if (hasScrolledDown && !this.navIsHidden) this.hideNav()
-      if (nearTop && this.navIsHidden) this.showNav()
       if (nearBottom && this.navIsHidden) this.showNav()
+      if (nearTop && this.navIsHidden) this.showNav()
+      this.navIsAtTop = nearTop
+      this.showScrollButton = !nearTop
     },
     showNav() {
       this.navIsHidden = 0
@@ -93,46 +88,54 @@ export default {
     updateActiveItem(val) {
       this.activeItem = val
     }
+
+    // setHighlight(index) {
+    //   this.highlightedIndex
+    // }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-$dimHeight: 20vw;
-$blur: 2vw;
+$height: 38px;
+$inset: 0;
+$gutter: 8px;
+$blur: 8px;
+$trans-time: 250ms;
+$margin: clamp(0.5em, 1vmax, 2em);
 
 .site-header {
   position: fixed;
+  z-index: 20;
   top: 0;
   left: 0;
-  right: 0;
-  z-index: 20;
+  width: 100%;
+  min-width: 300px;
+  display: flex;
+  padding: $margin;
+  grid-template-columns: 1fr ($height * 2 + $gutter * 2);
 
   &.navIsHidden {
-    &::after {
-      transform: translate3d(0, -3vw, 0);
-    }
-
-    .shy {
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
-
-  .shy {
-    pointer-events: auto;
-    transition: opacity calc(var(--time) * 0.5) var(--ease);
-  }
-
-  .egstad-logo,
-  .header-nav {
-    display: inline-block;
-  }
-
-  .header-nav {
-    &__wrap {
-      display: flex;
+    @media screen and (prefers-reduced-motion: no-preference) {
+      ::v-deep .site-header__nav,
+      ::v-deep .--toggle-menu,
+      ::v-deep .--scroll-up {
+        transform: translate3d(0, calc(-150% - #{$margin}), 0);
+      }
+      ::v-deep .--toggle-menu {
+        transition-delay: 100ms;
+      }
+      ::v-deep .--scroll-up {
+        transition-delay: 50ms;
+      }
     }
   }
+
+  // &.navIsAtTop {
+  //   .row {
+  //     background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 10%), 100%);
+  //     box-shadow: none;
+  //   }
+  // }
 }
 </style>

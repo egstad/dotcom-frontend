@@ -106,3 +106,9 @@ export default {
   // }
 }
 </script>
+
+<style lang="scss" scoped>
+pre {
+  margin-top: 20vw;
+}
+</style>

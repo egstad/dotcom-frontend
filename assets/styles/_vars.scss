@@ -35,6 +35,8 @@ $xx: 1300px;
   --lg: #{$lg};
   --xl: #{$xl};
   --xx: #{$xx};
+
+  --mono: 'S85', monospace;
 }
 
 @mixin bp($size: $sm) {

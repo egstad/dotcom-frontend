@@ -134,11 +134,20 @@ export default {
   &-content {
     display: flex;
     flex-direction: column;
+    font-family: 'comic sans' !important;
   }
   &-main {
     width: 100%;
     overflow: hidden;
     flex: 1 0 auto;
   }
+}
+
+@font-face {
+  font-family: 'S85';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('~assets/fonts/S85.ttf') format('truetype');
 }
 </style>

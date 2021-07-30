@@ -1,6 +1,6 @@
 <template>
   <div>
-    <pre>{{ document }}</pre>
+    {{ document }}
   </div>
 </template>
 
@@ -60,4 +60,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+div {
+  font-family: var(--mono), monospace;
+}
+</style>
