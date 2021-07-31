@@ -1,6 +1,6 @@
 <template>
-  <div class="header-meta">
-    <client-only>
+  <client-only>
+    <div class="header-meta">
       <Type :size="2" class="ts-mono" tag="span">{{ hour }}</Type>
       <Type :size="2" tag="span" class="meta-c">:</Type>
       <Type :size="2" class="ts-mono" tag="span">{{ minute }}</Type>
@@ -12,8 +12,8 @@
       <Type :size="2" tag="span"
         ><span class="meta-p">{{ month }}</span></Type
       >
-    </client-only>
-  </div>
+    </div>
+  </client-only>
 </template>
 
 <script>

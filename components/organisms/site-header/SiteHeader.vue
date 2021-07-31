@@ -4,30 +4,26 @@
     @mouseenter="showNav"
   >
     <SiteHeaderNavigation
-      :show-scroll-button="showScrollButton"
-      :links="primaryNav"
       class="site-header__nav"
+      :show-scroll-button="showScrollButton"
+      :links-primary="linksPrimary"
+      :links-secondary="linksSecondary"
       @activeLinkClicked="wiggleNav"
     />
 
-    <Abacus :links="links" />
-    <Abacus :links="links" />
-    <Abacus :links="links" />
+    <SiteHeaderMeta />
   </header>
 </template>
 
 <script>
-import Abacus from '@/components/organisms/Abacus.vue'
-
 import SiteHeaderNavigation from '~/components/organisms/site-header/SiteHeaderNavigation.vue'
-// import SiteHeaderMeta from '~/components/organisms/site-header/SiteHeaderMeta.vue'
+import SiteHeaderMeta from '~/components/organisms/site-header/SiteHeaderMeta.vue'
 
 export default {
   components: {
-    Abacus,
-    SiteHeaderNavigation
+    SiteHeaderNavigation,
     // SiteHeaderNavPrimary,
-    // SiteHeaderMeta
+    SiteHeaderMeta
   },
   data() {
     return {
@@ -37,7 +33,7 @@ export default {
       showScrollButton: false,
       highlightedIndex: null,
       isWiggling: false,
-      primaryNav: [
+      linksPrimary: [
         {
           title: 'Egstad',
           path: '/'
@@ -51,18 +47,26 @@ export default {
           path: 'profile'
         }
       ],
-      links: [
+      linksSecondary: [
         {
-          title: 'Egstad',
-          path: '/'
+          title: 'All',
+          path: '/work'
         },
         {
-          title: 'Work',
-          path: 'work'
+          title: 'Design',
+          path: '/work/design'
         },
         {
-          title: 'About',
-          path: 'profile'
+          title: 'Development',
+          path: '/work/development'
+        },
+        {
+          title: 'Typography',
+          path: '/work/development'
+        },
+        {
+          title: 'Illustration',
+          path: '/work/illustration'
         }
       ]
     }
@@ -151,6 +155,7 @@ $margin: clamp(0.5em, 1.5vw, 2em);
   width: 100%;
   min-width: 300px;
   padding: $margin;
+  display: flex;
 
   &.navIsHidden {
     @media screen and (prefers-reduced-motion: no-preference) {

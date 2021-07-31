@@ -7,8 +7,7 @@
       :class="[
         'abacus__item',
         { 'is-hovered': i === hoveredIndex },
-        { 'is-active': i === activeIndex },
-        { 'is-last': i === lastIndex }
+        { 'is-active': i === activeIndex }
       ]"
       @mouseenter="onHover($event, i)"
       @mouseleave="onLeave"
@@ -24,7 +23,7 @@
         {{ link.title }}
       </nuxt-link>
     </li>
-    <div v-show="mounted" ref="bead" class="abacus__bead"></div>
+    <div v-show="showBead" ref="bead" class="abacus__bead"></div>
   </ul>
 </template>
 
@@ -40,9 +39,9 @@ export default {
     return {
       mounted: false,
       activeIndex: null,
-      lastIndex: null,
       hoveredIndex: undefined,
-      hasClickedLink: false
+      hasClickedLink: false,
+      showBead: false
     }
   },
   computed: {
@@ -62,16 +61,10 @@ export default {
   },
   mounted() {
     this.init()
-
     this.$nuxt.$on('window::resize', this.styleBead)
-    // this.$nuxt.$on('page::mounted', this.selectByActiveNuxtLink)
-    // this.$nuxt.$on('setActiveNavigationRoute', this.selectByActiveNuxtLink)
-    this.mounted = true
   },
   beforeDestroy() {
     this.$nuxt.$off('window::resize', this.styleBead)
-    // this.$nuxt.$off('page::mounted', this.selectByActiveNuxtLink)
-    // this.$nuxt.$off('setActiveNavigationRoute', this.selectByActiveNuxtLink)
   },
   methods: {
     init() {
@@ -82,7 +75,6 @@ export default {
       this.hoveredIndex = index
     },
     selectByIndex(index) {
-      this.lastIndex = this.activeIndex ?? 0
       this.activeIndex = index
       this.hoveredIndex = index
     },
@@ -103,9 +95,10 @@ export default {
     },
     styleBead() {
       const self = this.hoveredIndex ?? this.activeIndex
+      this.hasClickedLink = false
+      this.showBead = true
       this.$refs.bead.style.transform = `translate3d(${100 * self}%,0,0)`
       this.$refs.bead.style.width = `${100 / this.$refs.item.length}%`
-      this.hasClickedLink = false
     },
     getActiveIndex() {
       let activeLinkIndex
@@ -151,7 +144,7 @@ $blur: 8px;
 $trans-time: 250ms;
 
 .abacus {
-  overflow-x: hidden;
+  // overflow-x: hidden;
   position: relative;
   display: flex;
   width: 100%;
@@ -159,6 +152,10 @@ $trans-time: 250ms;
   border-radius: $height;
   background-color: var(--accent);
   background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    transition: background-color 750ms 250ms ease-in-out;
+  }
 
   &__item {
     position: relative;
@@ -171,7 +168,8 @@ $trans-time: 250ms;
     display: block;
     border-radius: $height;
     height: $height;
-    outline: none;
+    // outline: none;
+    outline-offset: 4px;
     flex: 1 1;
     color: var(--foreground);
     font-family: var(--mono);
@@ -183,25 +181,21 @@ $trans-time: 250ms;
     font-size: 0.9em;
     padding-left: 0 1em;
 
-    // @media screen and (prefers-reduced-motion: no-preference) {
-    //   transition: color 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
-    // }
+    @media screen and (prefers-reduced-motion: no-preference) {
+      transition: color 300ms cubic-bezier(0.375, 0.39, 0, 1.175);
+    }
 
     @media (max-width: 400px) {
       font-size: 0.9em;
     }
 
-    // update text color on hover
-    :not(.is-active):not(.is-hovered) &,
-    .is-active:not(.is-hovered) &,
-    .is-last:not(.is-active):not(.is-hovered) {
+    .is-active:not(.is-hovered) & {
       color: var(--foreground);
     }
 
-    // update background on hover
     .is-hovered &,
-    .is-hovered.is-active & {
-      color: var(--background) !important;
+    .is-active & {
+      color: var(--background);
     }
   }
 
@@ -218,42 +212,23 @@ $trans-time: 250ms;
     transform: translate3d(0, -50%, 0);
 
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: transform 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
+      transition: background-color 750ms 250ms ease-in-out,
+        transform 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
     }
   }
 }
 
+// match page transition
 .isTransitioning {
-  .abacus {
+  .abacus__link {
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: background-color 750ms 250ms ease-in-out;
+      transition: color 750ms 250ms ease-in-out;
     }
-  }
 
-  .abacus__item {
-    // update background on hover &.is-hovered .abacus__link,
-    &.is-active .abacus__link {
+    &.nuxt-link-exact-active {
       @media screen and (prefers-reduced-motion: no-preference) {
         transition: color 200ms ease-in-out;
       }
-    }
-    // &.is-last .abacus__link {
-    //   @media screen and (prefers-reduced-motion: no-preference) {
-    //     transition: color 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
-    //   }
-    // }
-  }
-
-  .abacus__link {
-    @media screen and (prefers-reduced-motion: no-preference) {
-      transition: color 600ms ease-in-out;
-    }
-  }
-
-  .abacus__bead {
-    @media screen and (prefers-reduced-motion: no-preference) {
-      transition: background-color 750ms 250ms ease-in-out,
-        transform 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
     }
   }
 }
