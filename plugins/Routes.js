@@ -8,6 +8,7 @@ export default ({ app }) => {
   // }
   app.router.beforeEach((to, from, next) => {
     app.store.commit('setIsTransitioning', true)
+    app.store.commit('setActiveNavigationRoute', to.path)
     next()
   })
   // called right before the navigation is confirmed

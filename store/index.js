@@ -6,6 +6,7 @@ import ThemeChanger from '@/plugins/ThemeChanger'
 export const state = () => ({
   layoutHasMounted: null,
   isTransitioning: null,
+  activeNavigationRoute: null,
   cssVars: null
 })
 
@@ -18,6 +19,9 @@ export const mutations = {
   },
   setIsTransitioning(state, val) {
     state.isTransitioning = val
+  },
+  setActiveNavigationRoute(state, val) {
+    state.activeNavigationRoute = val
   }
 }
 
