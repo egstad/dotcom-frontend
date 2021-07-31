@@ -1,18 +1,14 @@
 <template>
   <transition @leave="leave">
-    <div v-if="scrimShouldShow" ref="scrim" class="scrim">
-      <div v-if="isShowing" ref="text" class="text">
-        <span class="letter">E</span>
-        <span class="letter">g</span>
-        <span class="letter">s</span>
-        <span class="letter">t</span>
-        <span class="letter">a</span>
-        <span class="letter">d</span>
+    <div v-if="!layoutHasMounted && isShowing" ref="scrim" class="scrim">
+      <div ref="text" class="text">
+        <span
+          v-for="(letter, index) in loadingText"
+          :key="`letter${index}`"
+          ref="letter"
+          >{{ letter }}</span
+        >
       </div>
-      <!-- <p v-if="javascriptIsDisabled" class="script">
-        Hi you. Thanks for stopping by. To view this site, you'll need to
-        <a href="https://www.enable-javascript.com/"> enable javascript</a>
-      </p> -->
     </div>
   </transition>
 </template>
@@ -23,36 +19,34 @@ import gsap from 'gsap'
 export default {
   data() {
     return {
+      loadingText: 'Egstad',
       isShowing: true,
       loadTimeout: null,
       loadDuration: 1500,
-      tl: gsap.timeline(),
-      letters: null,
-      javascriptIsDisabled: true
+      tl: gsap.timeline()
     }
   },
   computed: {
     hideAnimations() {
       return this.$store.state.device.hideAnimations
     },
-    scrimShouldShow() {
-      return this.isShowing && !this.$store.state.siteHasMounted
+    layoutHasMounted() {
+      return this.$store.state.layoutHasMounted
+    },
+    winHeight() {
+      return this.$store.state.device.winHeight
     }
   },
   watch: {
-    isShowing(showing) {
-      if (showing) {
-        document.body.style.overflow = 'hidden'
-      } else {
-        document.body.style.overflow = ''
+    layoutHasMounted(hasMounted) {
+      if (hasMounted) {
+        this.loadTimeout = setTimeout(this.hide, this.loadDuration)
       }
     }
   },
   mounted() {
-    this.javascriptIsDisabled = false
     this.animateLetters()
-    this.$nuxt.$on('site::mounted', this.hide)
-    this.$nuxt.$on('page::mounted', this.hide)
+    // this.$nuxt.$on('page::mounted', this.hide)
   },
   beforeDestroy() {
     clearTimeout(this.loadTimeout)
@@ -65,44 +59,46 @@ export default {
       this.isShowing = true
     },
     hide() {
-      this.loadTimeout = setTimeout(
-        () => (this.isShowing = false),
-        this.loadDuration
-      )
+      this.isShowing = false
     },
     leave(el, done) {
-      if (this.$store.state.device.hideAnimations) done()
+      if (this.hideAnimations) done()
 
       this.tl.to(this.$refs.scrim, {
         ease: 'Power4.easeInOut',
         duration: 1,
-        y: this.$store.state.device.winHeight,
+        y: el.getBoundingClientRect().height,
         // onStart: () => {
-        //   this.tl.to(this.letters, {
-        //     duration: 0.5,
-        //     y: this.$store.state.device.winHeight * 0.1,
-        //     transformOrigin: '0% 50% -100%',
-        //     ease: 'Power2.easeIn',
-        //     stagger: 0.1
-        //   })
+        //   // this.tl.to(this.$refs.letters, {
+        //   //   duration: 0.5,
+        //   //   y: this.winHeight * 0.1,
+        //   //   transformOrigin: '0% 50% -100%',
+        //   //   ease: 'Power2.easeIn',
+        //   //   stagger: 0.1
+        //   // })
         // },
-        onComplete: done
+        onComplete: () => {
+          this.$store.commit('setIsTransitioning', false)
+          done()
+        }
       })
     },
     animateLetters() {
-      this.letters = this.$refs.text.querySelectorAll('.letter')
+      if (this.hideAnimations) return
 
       this.tl.fromTo(
-        this.letters,
+        this.$refs.letter,
         {
-          opacity: this.$store.state.device.hideAnimations ? 0 : 1
+          opacity: 0
         },
         {
           delay: this.loadDuration * 0.25 * 0.001,
           duration: this.loadDuration * 0.75 * 0.001,
           ease: 'Power3.inOut',
           opacity: 1,
-          stagger: 0.1
+          stagger: {
+            each: 0.1
+          }
         }
       )
     }
@@ -125,6 +121,7 @@ export default {
   //   color: hsl(var(--f-h), var(--f-s), 55%, 100%);
   // }
 
+  user-select: none;
   background-color: var(--foreground);
   color: var(--background);
 
@@ -140,6 +137,7 @@ export default {
   align-items: flex-end;
   justify-content: center;
   line-height: 0.9;
+  z-index: 1000;
 
   @media (min-width: 1024px) {
     align-items: center;

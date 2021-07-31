@@ -7,14 +7,13 @@
 <script>
 import Slices from '@/components/templates/Slices'
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
-import { hsla } from '@/assets/js/utils/SanityHSL'
 
 export default {
   components: {
     Slices
   },
   mixins: [routeTransitionFade],
-  async asyncData({ $egstad, params, error }) {
+  async asyncData({ $egstad, params, error, store }) {
     const uid = params.id
     // query looks so odd because we're fetching internal link slugs
     const query = `
@@ -48,7 +47,7 @@ export default {
         },
         social,
       }`
-    const data = await $egstad.fetch(query).then((res) => {
+    const document = await $egstad.fetch(query).then((res) => {
       if (!res) {
         error({ statusCode: 404, message: `Document '${uid}' doesn't exist` })
       } else {
@@ -56,22 +55,19 @@ export default {
       }
     })
 
+    // set theme
+    await store.commit('setCSSVars', {
+      background: document.theme.background,
+      foreground: document.theme.foreground,
+      accent: document.theme.accent
+    })
+
     return {
-      document: data
+      document
     }
   },
   head() {
     return this.$setPageMetadata(this.document.social)
-  },
-  created() {
-    if (process.client) {
-      const theme = this.document.theme
-      this.$store.dispatch('updateTheme', {
-        background: hsla(theme.background),
-        foreground: hsla(theme.foreground),
-        accent: hsla(theme.accent)
-      })
-    }
   },
   mounted() {
     this.$nuxt.$emit('page::mounted')

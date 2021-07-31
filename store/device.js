@@ -6,7 +6,7 @@ export const state = () => ({
   winHeight: null,
   docWidth: null,
   docHeight: null,
-  hideAnimations: null,
+  hideAnimations: false,
   preferredTheme: null,
   dpi: null,
   isScrolling: null,

@@ -23,7 +23,7 @@
           {{ link.title }}
         </nuxt-link>
       </div>
-      <div v-show="mounted" ref="bg" class="bg"></div>
+      <div v-show="mounted" ref="concierge" class="concierge"></div>
     </div>
 
     <ButtonScroll :show-scroll-button="showScrollButton" />
@@ -112,8 +112,8 @@ export default {
     },
     styleActiveLinkByIndex() {
       const self = this.hoveredIndex ?? this.activeIndex
-      this.$refs.bg.style.transform = `translate3d(${100 * self}%,0,0)`
-      this.$refs.bg.style.width = `${100 / this.$refs.item.length}%`
+      this.$refs.concierge.style.transform = `translate3d(${100 * self}%,0,0)`
+      this.$refs.concierge.style.width = `${100 / this.$refs.item.length}%`
     },
     getActiveLinkIndex() {
       let activeLinkIndex
@@ -121,6 +121,14 @@ export default {
         if (listItem.children[0].classList.contains('nuxt-link-exact-active'))
           activeLinkIndex = index
       })
+
+      // fallback if exact item isn't in nav
+      if (!activeLinkIndex) {
+        this.$refs.item.forEach((listItem, index) => {
+          if (listItem.children[0].classList.contains('nuxt-link-active'))
+            activeLinkIndex = index
+        })
+      }
 
       return activeLinkIndex
     },
@@ -143,6 +151,7 @@ $blur: 8px;
 $trans-time: 250ms;
 
 .site-header__nav {
+  user-select: none;
   width: 100%;
   flex: 1;
   position: relative;
@@ -161,7 +170,7 @@ $trans-time: 250ms;
     overflow-x: hidden;
     border-radius: $height;
     background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 10%), 100%);
-    max-width: 400px;
+    max-width: 350px;
 
     // backdrop-filter: blur(5px);
 
@@ -267,7 +276,7 @@ $trans-time: 250ms;
   }
 }
 
-.bg {
+.concierge {
   position: absolute;
   height: calc(100% - #{$inset});
   border-radius: $height;
@@ -282,6 +291,36 @@ $trans-time: 250ms;
 
   @media screen and (prefers-reduced-motion: no-preference) {
     transition: transform 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
+  }
+}
+
+.isTransitioning {
+  .site-header {
+    pointer-events: none;
+
+    .list {
+      @media screen and (prefers-reduced-motion: no-preference) {
+        transition: background-color 750ms 250ms ease-in-out;
+      }
+    }
+
+    .list__link {
+      @media screen and (prefers-reduced-motion: no-preference) {
+        transition: color 750ms 250ms ease-in-out;
+      }
+    }
+
+    .concierge {
+      @media screen and (prefers-reduced-motion: no-preference) {
+        transition: background-color 750ms 250ms ease-in-out,
+          transform 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
+      }
+    }
+
+    @media screen and (prefers-reduced-motion: no-preference) {
+      transition: all 750ms 250ms ease-in-out;
+      transition-property: background-color, color;
+    }
   }
 }
 </style>

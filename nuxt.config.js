@@ -94,7 +94,8 @@ export default {
     { src: '~/plugins/Grid.js' },
     { src: '~/plugins/Type.js' },
     { src: '~/plugins/VueSwipeEvents.client.js' },
-    { src: '~/plugins/Sanity.js' }
+    { src: '~/plugins/Sanity.js' },
+    { src: '~/plugins/Routes.js' }
     // { src: '~/plugins/Scroll.client.js' }
   ],
   /*

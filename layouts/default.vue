@@ -1,5 +1,9 @@
 <template>
-  <div class="site" :style="cssVars">
+  <div
+    class="site"
+    :style="cssVars"
+    :class="[{ isCursor }, { isTouch }, { isMobile }, { isTransitioning }]"
+  >
     <SiteHeader />
 
     <div class="site-content" :style="mainStyle">
@@ -47,7 +51,13 @@ export default {
     },
     cssVars() {
       return this.$store.state.cssVars
+    },
+    isTransitioning() {
+      return this.$store.state.isTransitioning
     }
+    // layoutHasMounted() {
+    //   return this.$store.state.layoutHasMounted
+    // }
   },
   watch: {
     $route(to, from) {
@@ -60,34 +70,26 @@ export default {
       }
       // this.$nuxt.$emit('filter::hide')
     },
-    isTouch(state) {
-      this.toggleDocClass('is-touch', state)
-    },
-    isCursor(state) {
-      this.toggleDocClass('is-cursor', state)
-    },
-    isMobile(state) {
-      this.toggleDocClass('is-mobile', state)
-    },
+    // isTouch(state) {
+    //   this.toggleDocClass('is-touch', state)
+    // },
+    // isCursor(state) {
+    //   this.toggleDocClass('is-cursor', state)
+    // },
+    // isMobile(state) {
+    //   this.toggleDocClass('is-mobile', state)
+    // },
+    // isTransitioning(state) {
+    //   this.toggleDocClass('is-transitioning', state)
+    // },
     cssVars(state) {
       return state
     }
   },
   mounted() {
-    this.$nuxt.$emit('site::mounted')
-    // this.$nuxt.$on('route::updated', this.handlePageRoutes)
-    // this.$nuxt.$on('page::mounted', this.handlePageMounts)
-    // document.documentElement.classList.add('mounted')
+    this.$store.commit('layoutHasMounted', true)
   },
   methods: {
-    // handlePageRoutes() {
-    //   // fires just before routing to new page
-    //   this.$store.commit('showScrim', 'true')
-    // },
-    // handlePageMounts() {
-    //   // fires just after route has completed + page has loaded
-    //   this.$store.commit('showScrim', 'false')
-    // },
     toggleDocClass(className, valIsTrue) {
       const doc = document.documentElement
 
@@ -112,13 +114,13 @@ export default {
   color: var(--foreground);
 
   @media screen and (prefers-reduced-motion: no-preference) {
-    transition: background-color 750ms 250ms ease-in-out,
-      color 750ms 250ms ease-in-out;
+    transition: all 750ms 250ms ease-in-out;
+    transition-property: background-color, color;
   }
 
   ::selection {
-    background: hsla(var(--fH), var(--fS), var(--fL), 80%);
-    color: var(--background);
+    background: hsla(var(--a-h), var(--a-s), var(--a-l), 50%);
+    color: var(--foreground);
   }
 
   a[href]:not([tabindex='-1']),
