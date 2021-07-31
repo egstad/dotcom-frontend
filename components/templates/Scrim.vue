@@ -51,7 +51,7 @@ export default {
   beforeDestroy() {
     clearTimeout(this.loadTimeout)
     this.isShowing = false
-    this.$nuxt.$off('page::mounted')
+    // this.$nuxt.$off('page::mounted')
     this.tl.kill()
   },
   methods: {

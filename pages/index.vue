@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <br /><br /><br /><br /><br /><br />
+    <Abacus :links="links" />
     <pre>{{ document }}</pre>
     <pre>{{ document }}</pre>
   </div>
@@ -8,8 +9,12 @@
 
 <script>
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
+import Abacus from '@/components/organisms/Abacus.vue'
 
 export default {
+  components: {
+    Abacus
+  },
   mixins: [routeTransitionFade],
   async asyncData({ $egstad, store }) {
     // fetch data
@@ -54,6 +59,36 @@ export default {
     // let's go!
     return {
       document
+    }
+  },
+  data() {
+    return {
+      links: [
+        {
+          title: 'Egstad',
+          path: '/'
+        },
+        {
+          title: 'Work',
+          path: 'work'
+        },
+        {
+          title: 'About',
+          path: 'profile'
+        },
+        {
+          title: 'Egstad',
+          path: '/'
+        },
+        {
+          title: 'Work',
+          path: 'work'
+        },
+        {
+          title: 'About',
+          path: 'profile'
+        }
+      ]
     }
   },
   head() {

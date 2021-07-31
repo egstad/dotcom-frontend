@@ -82,8 +82,8 @@ export default {
     this.mounted = true
   },
   beforeDestroy() {
-    this.$nuxt.$off('window::resize')
-    this.$nuxt.$off('page::mounted')
+    this.$nuxt.$off('window::resize', this.styleActiveLinkByIndex)
+    this.$nuxt.$off('page::mounted', this.setToActiveLink)
   },
   methods: {
     init(ev) {

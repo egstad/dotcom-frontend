@@ -27,8 +27,8 @@ export default {
     this.$nuxt.$on('filter::hide', this.hide)
   },
   beforeDestroy() {
-    this.$nuxt.$off('filter::show')
-    this.$nuxt.$off('filter::hide')
+    this.$nuxt.$off('filter::show', this.show)
+    this.$nuxt.$off('filter::hide', this.hide)
   },
   methods: {
     show() {

@@ -5,18 +5,26 @@
   >
     <SiteHeaderNavigation
       :show-scroll-button="showScrollButton"
+      :links="primaryNav"
       class="site-header__nav"
       @activeLinkClicked="wiggleNav"
     />
+
+    <Abacus :links="links" />
+    <Abacus :links="links" />
+    <Abacus :links="links" />
   </header>
 </template>
 
 <script>
+import Abacus from '@/components/organisms/Abacus.vue'
+
 import SiteHeaderNavigation from '~/components/organisms/site-header/SiteHeaderNavigation.vue'
 // import SiteHeaderMeta from '~/components/organisms/site-header/SiteHeaderMeta.vue'
 
 export default {
   components: {
+    Abacus,
     SiteHeaderNavigation
     // SiteHeaderNavPrimary,
     // SiteHeaderMeta
@@ -28,7 +36,35 @@ export default {
       navIsHidden: 0,
       showScrollButton: false,
       highlightedIndex: null,
-      isWiggling: false
+      isWiggling: false,
+      primaryNav: [
+        {
+          title: 'Egstad',
+          path: '/'
+        },
+        {
+          title: 'Work',
+          path: 'work'
+        },
+        {
+          title: 'About',
+          path: 'profile'
+        }
+      ],
+      links: [
+        {
+          title: 'Egstad',
+          path: '/'
+        },
+        {
+          title: 'Work',
+          path: 'work'
+        },
+        {
+          title: 'About',
+          path: 'profile'
+        }
+      ]
     }
   },
   computed: {
@@ -164,9 +200,5 @@ $margin: clamp(0.5em, 1.5vw, 2em);
   80% {
     transform: translate3d(10px, 0, 0);
   }
-}
-
-.shakeX {
-  animation-name: shakeX;
 }
 </style>
