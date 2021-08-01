@@ -1,7 +1,9 @@
 <template>
   <transition name="fab" mode="out-in">
     <button v-if="show" class="fab" :aria-label="label">
-      <slot></slot>
+      <span class="fab__content">
+        <slot></slot>
+      </span>
     </button>
   </transition>
 </template>
@@ -23,27 +25,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$height: 36px;
-$inset: 0px;
-$gap: 8px;
-
 .fab {
-  display: block;
-  width: $height + ($inset * 2);
-  height: $height + ($inset * 2);
-  line-height: $height;
-  padding: 0;
-  margin: 0;
-  background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
+  position: relative;
   appearance: none;
   border: 0;
-  border-radius: 50%;
+  padding: 0;
   font-family: var(--mono);
-  margin-left: $gap;
+  background: transparent;
+  width: var(--button-height);
   cursor: pointer;
+  margin-left: var(--header-item-gap);
 
-  &:hover,
-  &:focus-visible {
+  &__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    z-index: 1;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    border-radius: 100vw;
+    width: var(--button-height);
+    height: var(--button-height);
+    position: absolute;
+    top: var(--button-click-offset);
+    background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
     background-color: var(--foreground);
     color: var(--background);
     outline-offset: 4px;
@@ -51,7 +64,6 @@ $gap: 8px;
 
   @media screen and (prefers-reduced-motion: no-preference) {
     transition: transform var(--trans-short) var(--ease),
-      background-color var(--trans-short) var(--ease),
       color var(--trans-short) var(--ease);
   }
 
@@ -63,7 +75,7 @@ $gap: 8px;
           margin-left var(--trans-short) var(--trans-delay) var(--ease),
           transform var(--trans-short) var(--trans-delay) var(--ease),
           opacity var(--trans-short) var(--trans-delay) var(--ease),
-          background-color var(--transition-page), color var(--transition-page);
+          color var(--transition-page);
       }
     }
     &.fab-enter,

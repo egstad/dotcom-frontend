@@ -85,6 +85,7 @@ export default {
 
 <style lang="scss" scoped>
 .site {
+  // transition
   --trans-long: 750ms;
   --trans-medium: 400ms;
   --trans-short: 200ms;
@@ -92,6 +93,14 @@ export default {
   --ease: ease-in-out;
   --ease-back: cubic-bezier(0.375, 0.39, 0, 1.175);
   --transition-page: var(--trans-long) var(--trans-delay) var(--ease);
+
+  // site header and abacuses
+  --header-item-gap: 8px;
+  --button-height: 36px;
+  --button-click-offset: 16px;
+  @media (min-width: 1024px) {
+    --button-click-offset: #{calc-vw(16px, 1024px)};
+  }
 
   background-color: var(--background);
   color: var(--foreground);

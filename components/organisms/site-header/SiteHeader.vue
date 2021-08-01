@@ -45,10 +45,6 @@ export default {
         {
           title: 'About',
           path: 'profile'
-        },
-        {
-          title: 'Test',
-          path: 'testing-page'
         }
       ],
       linksSecondary: [
@@ -58,18 +54,22 @@ export default {
         },
         {
           title: 'Design',
+          abbr: 'Dsgn',
           path: '/work/design'
         },
         {
           title: 'Development',
+          abbr: 'Devl',
           path: '/work/development'
         },
         {
           title: 'Typography',
+          abbr: 'Type',
           path: '/work/development'
         },
         {
           title: 'Illustration',
+          abbr: 'Illo',
           path: '/work/illustration'
         }
       ]
@@ -149,33 +149,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$margin: clamp(0.5em, 1.5vw, 2em);
+// var(--gutter): clamp(0.5em, 1.5vw, 2em);
 
 .site-header {
+  --gutter: 12px;
+
+  @media (min-width: 1024px) {
+    --gutter: #{calc-vw(12px, 1024px)};
+  }
+
   position: fixed;
   z-index: 20;
-  top: 3px;
   left: 0;
   width: 100%;
-  min-width: 300px;
-  padding: $margin;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
   display: flex;
 
-  &.navIsHidden {
-    @media screen and (prefers-reduced-motion: no-preference) {
-      ::v-deep .site-header__nav,
-      ::v-deep .--toggle-menu,
-      ::v-deep .--scroll-up {
-        transform: translate3d(0, calc(-150% - #{$margin}), 0);
-      }
-      ::v-deep .--toggle-menu {
-        transition-delay: 100ms;
-      }
-      ::v-deep .--scroll-up {
-        transition-delay: 50ms;
-      }
-    }
-  }
+  // &.navIsHidden {
+  //   @media screen and (prefers-reduced-motion: no-preference) {
+  //     ::v-deep .site-header__nav,
+  //     ::v-deep .--toggle-menu,
+  //     ::v-deep .--scroll-up {
+  //       transform: translate3d(0, calc(-150% - var(--gutter)), 0);
+  //     }
+  //     ::v-deep .--toggle-menu {
+  //       transition-delay: 100ms;
+  //     }
+  //     ::v-deep .--scroll-up {
+  //       transition-delay: 50ms;
+  //     }
+  //   }
+  // }
 
   &.isWiggling {
     animation: shakeX 1s ease;

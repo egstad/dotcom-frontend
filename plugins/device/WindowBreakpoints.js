@@ -34,7 +34,7 @@ const windowBreakpoints = {
   },
   getBreakpoint(size) {
     if (process.client) {
-      return getComputedStyle(document.body)
+      return getComputedStyle(document.querySelector('.site'))
         .getPropertyValue(`--${size}`)
         .replace('px', '')
     }

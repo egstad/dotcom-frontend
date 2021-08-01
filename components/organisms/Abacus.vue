@@ -20,10 +20,17 @@
         @focus.native="onFocus($event, i)"
         @blur.native="init"
       >
-        {{ link.title }}
+        <template v-if="link.abbr">
+          <span v-if="largeBreakpoint">{{ link.title }}</span>
+          <abbr v-else :title="link.title">{{ link.abbr }}</abbr>
+        </template>
+        <template v-else>
+          {{ link.title }}
+        </template>
       </nuxt-link>
     </li>
     <div v-show="showBead" ref="bead" class="abacus__bead"></div>
+    <div class="abacus__row"></div>
   </ul>
 </template>
 
@@ -49,6 +56,10 @@ export default {
   computed: {
     activeNavigationRoute() {
       return this.$store.state.activeNavigationRoute
+    },
+
+    largeBreakpoint() {
+      return this.$store.state.device.windWidth >= 1600
     }
   },
   watch: {
@@ -108,7 +119,8 @@ export default {
       const self = this.hoveredIndex ?? this.activeIndex
       this.hasClickedLink = false
       this.showBead = true
-      this.$refs.bead.style.transform = `translate3d(${100 * self}%,0,0)`
+      this.$refs.bead.style.transform = `scale(1.01) translate3d(${100 *
+        self}%,-50%,0)`
       this.$refs.bead.style.width = `${100 / this.$refs.item.length}%`
 
       // update state
@@ -163,23 +175,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$height: 36px;
-$inset: 0px;
-$gap: 8px;
-$blur: 8px;
-
 .abacus {
   position: relative;
   display: flex;
   width: 100%;
   flex: 1;
-  border-radius: $height;
-  // background-color: var(--accent);
-  background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
-
-  @media screen and (prefers-reduced-motion: no-preference) {
-    transition: background-color var(--transition-page);
-  }
+  border-radius: var(--button-height);
 
   &__item {
     position: relative;
@@ -190,10 +191,7 @@ $blur: 8px;
 
   &__link {
     display: block;
-    border-radius: $height;
-    height: $height;
-    // outline: none;
-    outline-offset: 4px;
+    border-radius: var(--button-height);
     flex: 1 1;
     color: var(--foreground);
     font-family: var(--mono);
@@ -201,15 +199,16 @@ $blur: 8px;
     text-transform: uppercase;
     text-decoration: none;
     text-align: center;
-    line-height: $height + ($inset * 2);
-    font-size: 0.9em;
-    padding-left: 0 1em;
+    line-height: var(--button-height);
+    font-size: 12px;
+    padding-top: var(--button-click-offset);
+    padding-bottom: var(--button-click-offset);
 
     @media screen and (prefers-reduced-motion: no-preference) {
       transition: color var(--trans-short) var(--ease-back);
     }
 
-    @media (max-width: 400px) {
+    @media (max-width: 600px) {
       font-size: 0.9em;
     }
 
@@ -221,15 +220,35 @@ $blur: 8px;
     .is-active & {
       color: var(--background);
     }
+
+    abbr {
+      text-decoration: none;
+    }
+  }
+
+  &__row {
+    position: absolute;
+    z-index: 0;
+    top: var(--button-click-offset);
+    left: 0;
+    right: 0;
+    height: var(--button-height);
+    border-radius: 100vw;
+    pointer-events: none;
+    background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
+    width: 100%;
+
+    @media screen and (prefers-reduced-motion: no-preference) {
+      transition: background-color var(--transition-page);
+    }
   }
 
   &__bead {
     position: absolute;
-    height: calc(100% - #{$inset});
-    border-radius: $height;
+    height: var(--button-height);
+    border-radius: var(--button-height);
     z-index: 1;
-    top: $inset;
-    bottom: $inset;
+    top: 50%;
     left: 0;
     background-color: var(--foreground);
     pointer-events: none;
