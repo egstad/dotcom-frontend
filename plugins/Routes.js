@@ -55,10 +55,10 @@ export default ({ app }) => {
    * @param {object} nextRoute
    */
   const updateStoreBeforeRouteChanges = (nextRoute) => {
-    if (nextRoute.name === 'work') {
-      app.store.commit('setFilterVisibility', true)
-    } else {
-      app.store.commit('setFilterVisibility', false)
-    }
+    // if (nextRoute.name === 'work') {
+    //   app.store.commit('setFilterVisibility', true)
+    // } else {
+    //   app.store.commit('setFilterVisibility', false)
+    // }
   }
 }

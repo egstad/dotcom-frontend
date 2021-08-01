@@ -70,7 +70,7 @@ export default {
         {
           title: 'Illustration',
           abbr: 'Illo',
-          path: '/work/illustration'
+          path: '/testing-page'
         }
       ]
     }
@@ -148,11 +148,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 // var(--gutter): clamp(0.5em, 1.5vw, 2em);
 
 .site-header {
   --gutter: 12px;
+  // background-color: var(--background);
+  background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
 
   @media (min-width: 1024px) {
     --gutter: #{calc-vw(12px, 1024px)};
@@ -165,33 +167,38 @@ export default {
   padding-left: var(--gutter);
   padding-right: var(--gutter);
   display: flex;
+  // box-shadow: 0 0
 
-  // &.navIsHidden {
-  //   @media screen and (prefers-reduced-motion: no-preference) {
-  //     ::v-deep .site-header__nav,
-  //     ::v-deep .--toggle-menu,
-  //     ::v-deep .--scroll-up {
-  //       transform: translate3d(0, calc(-150% - var(--gutter)), 0);
-  //     }
-  //     ::v-deep .--toggle-menu {
-  //       transition-delay: 100ms;
-  //     }
-  //     ::v-deep .--scroll-up {
-  //       transition-delay: 50ms;
-  //     }
-  //   }
-  // }
+  @media screen and (prefers-reduced-motion: no-preference) {
+    transition: transform var(--trans-medium) var(--ease),
+      background-color var(--transition-page), color var(--transition-page);
+  }
+  &.navIsHidden {
+    @media screen and (prefers-reduced-motion: no-preference) {
+      transform: translate3d(0, calc(-200% - var(--gutter)), 0);
+    }
+  }
 
   &.isWiggling {
     animation: shakeX 1s ease;
   }
 
-  // &.navIsAtTop {
-  //   .row {
-  //     background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 10%), 100%);
-  //     box-shadow: none;
-  //   }
-  // }
+  &.navIsAtTop {
+    transition: transform var(--trans-medium) var(--ease),
+      background-color var(--trans-short) 50ms, color var(--trans-short);
+
+    background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 0%);
+  }
+}
+
+.isTransitioning {
+  .site-header {
+    background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 0%);
+
+    @media screen and (prefers-reduced-motion: no-preference) {
+      transition: background-color var(--trans-medium);
+    }
+  }
 }
 
 @keyframes shakeX {

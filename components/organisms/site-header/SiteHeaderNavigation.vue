@@ -1,36 +1,42 @@
 <template>
   <nav class="wrap">
     <div class="nav__primary">
-      <Abacus :links="linksPrimary" />
+      <Abacus :route="nextRoute" :links="linksPrimary" />
     </div>
 
     <div class="nav__secondary">
-      <Abacus :links="linksSecondary" />
+      <transition name="filter" mode="out-in">
+        <Abacus v-if="filterIsVisible" :links="linksSecondary" />
+      </transition>
     </div>
 
     <div class="nav__tertiary">
       <Fab :show="filterIsVisible" label="Open Filter &amp; Search Modal">
-        <span>S</span>
+        <IconEllipsis />
       </Fab>
       <Fab
         :show="showScrollButton && !isTransitioning"
         label="Scroll to the top of the page"
         @click.native="scrollToTop"
       >
-        <span>M</span>
+        <IconArrowUp />
       </Fab>
     </div>
   </nav>
 </template>
 
 <script>
+import IconArrowUp from '@/components/atoms/Icons/IconArrowUp'
+import IconEllipsis from '@/components/atoms/Icons/IconEllipsis'
 import Abacus from '@/components/organisms/Abacus.vue'
 import Fab from '@/components/atoms/Fab.vue'
 
 export default {
   components: {
     Abacus,
-    Fab
+    Fab,
+    IconArrowUp,
+    IconEllipsis
   },
   props: {
     showScrollButton: {
@@ -52,6 +58,9 @@ export default {
     },
     filterIsVisible() {
       return this.$store.state.filterIsVisible
+    },
+    nextRoute() {
+      return this.$store.state.activeNavigationRoute
     }
   },
   methods: {
@@ -109,6 +118,15 @@ $trans-time: 250ms;
       margin: 0 auto;
       width: 100%;
     }
+  }
+
+  .filter-enter-active,
+  .filter-leave-active {
+    transition: transform var(--trans-medium) var(--ease-back);
+  }
+  .filter-enter,
+  .filter-leave-to {
+    transform: translate3d(0, -100%, 0);
   }
 }
 

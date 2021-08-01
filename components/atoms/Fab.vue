@@ -42,6 +42,16 @@ export default {
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
     z-index: 1;
+
+    ::v-deep svg {
+      display: block;
+      width: 14px;
+      height: 14px;
+
+      @media screen and (prefers-reduced-motion: no-preference) {
+        transition: fill var(--trans-short) var(--ease);
+      }
+    }
   }
 
   &:after {
@@ -60,6 +70,12 @@ export default {
     background-color: var(--foreground);
     color: var(--background);
     outline-offset: 4px;
+  }
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    &::after {
+      transition: background-color var(--trans-short) var(--ease);
+    }
   }
 
   @media screen and (prefers-reduced-motion: no-preference) {

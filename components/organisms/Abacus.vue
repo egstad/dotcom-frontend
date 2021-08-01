@@ -29,7 +29,9 @@
         </template>
       </nuxt-link>
     </li>
+
     <div v-show="showBead" ref="bead" class="abacus__bead"></div>
+
     <div class="abacus__row"></div>
   </ul>
 </template>
@@ -40,6 +42,11 @@ export default {
     links: {
       type: Array,
       required: true
+    },
+    route: {
+      type: String,
+      required: false,
+      default: '/'
     }
   },
   data() {
@@ -54,10 +61,6 @@ export default {
     }
   },
   computed: {
-    activeNavigationRoute() {
-      return this.$store.state.activeNavigationRoute
-    },
-
     largeBreakpoint() {
       return this.$store.state.device.windWidth >= 1600
     }
@@ -67,8 +70,11 @@ export default {
       // if (newValue === undefined) return
       this.styleBead(newValue)
     },
-    activeNavigationRoute(newValue) {
-      this.selectByIndex(this.getIndexOfPath(newValue))
+    route(newValue) {
+      // no route?
+      const routeNotListed = this.getIndexOfPath(newValue) === undefined
+      // highlight the first item
+      this.selectByIndex(routeNotListed ? 0 : this.getIndexOfPath(newValue))
       this.styleBead()
     }
   },
@@ -93,6 +99,7 @@ export default {
     },
     onHover(ev, index) {
       this.hoveredIndex = index
+      this.showBead = true
     },
     selectByIndex(index) {
       // this.lastIndex = this.activeIndex
@@ -100,9 +107,10 @@ export default {
       this.hoveredIndex = index
     },
     onLeave() {
+      // if clicked, don't snap back to active
       if (this.hasClickedLink) return
-      this.hoveredIndex = this.activeIndex
-      // this.selectByIndex(this.activeIndex)
+
+      this.selectByActiveNuxtLink()
     },
     onFocus(ev, index) {
       this.hoveredIndex = index
@@ -116,6 +124,7 @@ export default {
       }
     },
     styleBead() {
+      if (!this.$refs.bead) return
       const self = this.hoveredIndex ?? this.activeIndex
       this.hasClickedLink = false
       this.showBead = true
@@ -181,6 +190,7 @@ export default {
   width: 100%;
   flex: 1;
   border-radius: var(--button-height);
+  min-width: 240px;
 
   &__item {
     position: relative;
@@ -200,16 +210,12 @@ export default {
     text-decoration: none;
     text-align: center;
     line-height: var(--button-height);
-    font-size: 12px;
     padding-top: var(--button-click-offset);
     padding-bottom: var(--button-click-offset);
+    font-size: 14px;
 
     @media screen and (prefers-reduced-motion: no-preference) {
       transition: color var(--trans-short) var(--ease-back);
-    }
-
-    @media (max-width: 600px) {
-      font-size: 0.9em;
     }
 
     .is-active:not(.is-hovered) & {
@@ -237,6 +243,7 @@ export default {
     pointer-events: none;
     background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
     width: 100%;
+    // transform: scaleX(0.99);
 
     @media screen and (prefers-reduced-motion: no-preference) {
       transition: background-color var(--transition-page);
@@ -253,6 +260,7 @@ export default {
     background-color: var(--foreground);
     pointer-events: none;
     transform: translate3d(0, -50%, 0);
+    // transform-origin: top;
 
     @media screen and (prefers-reduced-motion: no-preference) {
       transition: background-color var(--transition-page),

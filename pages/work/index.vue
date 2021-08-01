@@ -71,6 +71,13 @@ export default {
   },
   mounted() {
     this.$nuxt.$emit('page::mounted')
+
+    setTimeout(() => {
+      this.$store.commit('setFilterVisibility', true)
+    }, 1000)
+  },
+  beforeDestroy() {
+    this.$store.commit('setFilterVisibility', false)
   }
   // methods: {
   //   scrollHandler(ev) {
