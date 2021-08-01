@@ -45,6 +45,10 @@ export default {
         {
           title: 'About',
           path: 'profile'
+        },
+        {
+          title: 'Test',
+          path: 'testing-page'
         }
       ],
       linksSecondary: [

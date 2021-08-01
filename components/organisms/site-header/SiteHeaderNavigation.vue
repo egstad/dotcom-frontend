@@ -20,9 +20,6 @@
       <Fab :show="filterIsVisible" label="Open Filter &amp; Search Modal">
         <span>•</span>
       </Fab>
-
-      <!-- <ButtonScroll :show-scroll-button="showScrollButton" />
-      <ButtonMenu /> -->
     </div>
   </nav>
 </template>
@@ -30,14 +27,10 @@
 <script>
 import Abacus from '@/components/organisms/Abacus.vue'
 import Fab from '@/components/atoms/Fab.vue'
-// import ButtonScroll from '@/components/organisms/site-header/SiteHeaderButtonScroll.vue'
-// import ButtonMenu from '@/components/organisms/site-header/SiteHeaderButtonMenu.vue'
 
 export default {
   components: {
     Abacus,
-    // ButtonScroll,
-    // ButtonMenu,
     Fab
   },
   props: {
@@ -67,7 +60,6 @@ export default {
   },
   methods: {
     scrollToTop() {
-      console.log('scroll')
       if (process.client) {
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }

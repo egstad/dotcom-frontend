@@ -55,33 +55,8 @@ export default {
     isTransitioning() {
       return this.$store.state.isTransitioning
     }
-    // layoutHasMounted() {
-    //   return this.$store.state.layoutHasMounted
-    // }
   },
   watch: {
-    $route(to, from) {
-      this.$nuxt.$emit('route::updated', to)
-
-      // if (to.name === 'work') {
-      //   this.$nuxt.$emit('filter::show')
-      // } else {
-      //   this.$nuxt.$emit('filter::hide')
-      // }
-      // this.$nuxt.$emit('filter::hide')
-    },
-    // isTouch(state) {
-    //   this.toggleDocClass('is-touch', state)
-    // },
-    // isCursor(state) {
-    //   this.toggleDocClass('is-cursor', state)
-    // },
-    // isMobile(state) {
-    //   this.toggleDocClass('is-mobile', state)
-    // },
-    // isTransitioning(state) {
-    //   this.toggleDocClass('is-transitioning', state)
-    // },
     cssVars(state) {
       return state
     }

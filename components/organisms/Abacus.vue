@@ -174,8 +174,8 @@ $blur: 8px;
   width: 100%;
   flex: 1;
   border-radius: $height;
-  background-color: var(--accent);
-  background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
+  // background-color: var(--accent);
+  background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
 
   @media screen and (prefers-reduced-motion: no-preference) {
     transition: background-color var(--transition-page);
