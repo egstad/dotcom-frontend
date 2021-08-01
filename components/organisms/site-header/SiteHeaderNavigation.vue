@@ -14,8 +14,9 @@
       <Fab :show="filterIsVisible" label="Open Filter &amp; Search Modal">
         <IconEllipsis />
       </Fab>
+      <!-- v-if="showScrollButton" -->
       <Fab
-        v-if="showScrollButton"
+        :show="showScrollButton"
         label="Scroll to the top of the page"
         @click.native="scrollToTop"
       >
