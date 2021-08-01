@@ -1,5 +1,5 @@
 <template>
-  <ul class="abacus">
+  <ul class="abacus" :class="[{ 'bead-is-trans': beadIsTransitioning }]">
     <li
       v-for="(link, i) in links"
       :key="i"
@@ -39,9 +39,11 @@ export default {
     return {
       mounted: false,
       activeIndex: null,
+      // lastIndex: null,
       hoveredIndex: undefined,
       hasClickedLink: false,
-      showBead: false
+      showBead: false,
+      beadIsTransitioning: null
     }
   },
   computed: {
@@ -65,22 +67,31 @@ export default {
   },
   beforeDestroy() {
     this.$nuxt.$off('window::resize', this.styleBead)
+
+    if (this.$refs.bead)
+      this.$refs.bead.removeEventListener(
+        'transitionend',
+        this.beadOnTransitionEnd
+      )
   },
   methods: {
     init() {
       this.selectByActiveNuxtLink()
+      // this.lastIndex = this.activeIndex
       this.hasClickedLink = false
     },
     onHover(ev, index) {
       this.hoveredIndex = index
     },
     selectByIndex(index) {
+      // this.lastIndex = this.activeIndex
       this.activeIndex = index
       this.hoveredIndex = index
     },
     onLeave() {
       if (this.hasClickedLink) return
-      this.selectByActiveNuxtLink()
+      this.hoveredIndex = this.activeIndex
+      // this.selectByIndex(this.activeIndex)
     },
     onFocus(ev, index) {
       this.hoveredIndex = index
@@ -99,6 +110,21 @@ export default {
       this.showBead = true
       this.$refs.bead.style.transform = `translate3d(${100 * self}%,0,0)`
       this.$refs.bead.style.width = `${100 / this.$refs.item.length}%`
+
+      // update state
+      this.beadIsTransitioning = true
+      this.$refs.bead.addEventListener(
+        'transitionend',
+        this.beadOnTransitionEnd
+      )
+    },
+    beadOnTransitionEnd() {
+      if (!this.$refs.bead) return
+      this.$refs.bead.removeEventListener(
+        'transitionend',
+        this.beadOnTransitionEnd
+      )
+      this.beadIsTransitioning = false
     },
     getActiveIndex() {
       let activeLinkIndex
@@ -141,10 +167,8 @@ $height: 36px;
 $inset: 0px;
 $gap: 8px;
 $blur: 8px;
-$trans-time: 250ms;
 
 .abacus {
-  // overflow-x: hidden;
   position: relative;
   display: flex;
   width: 100%;
@@ -154,7 +178,7 @@ $trans-time: 250ms;
   background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
 
   @media screen and (prefers-reduced-motion: no-preference) {
-    transition: background-color 750ms 250ms ease-in-out;
+    transition: background-color var(--transition-page);
   }
 
   &__item {
@@ -182,7 +206,7 @@ $trans-time: 250ms;
     padding-left: 0 1em;
 
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: color 300ms cubic-bezier(0.375, 0.39, 0, 1.175);
+      transition: color var(--trans-short) var(--ease-back);
     }
 
     @media (max-width: 400px) {
@@ -212,23 +236,32 @@ $trans-time: 250ms;
     transform: translate3d(0, -50%, 0);
 
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: background-color 750ms 250ms ease-in-out,
-        transform 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
+      transition: background-color var(--transition-page),
+        transform var(--trans-medium) var(--ease-back);
     }
   }
 }
 
-// match page transition
-.isTransitioning {
+// quickly transition text color when the bead is moving
+.bead-is-trans {
   .abacus__link {
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: color 750ms 250ms ease-in-out;
+      transition: color var(--trans-short) var(--ease);
     }
+  }
+}
 
-    &.nuxt-link-exact-active {
-      @media screen and (prefers-reduced-motion: no-preference) {
-        transition: color 200ms ease-in-out;
-      }
+// page is transitioning
+.isTransitioning {
+  // disable hovers
+  .abacus {
+    pointer-events: none;
+  }
+
+  // match page transition
+  .abacus__link {
+    @media screen and (prefers-reduced-motion: no-preference) {
+      transition: color var(--transition-page);
     }
   }
 }

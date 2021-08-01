@@ -11,19 +11,19 @@
       @activeLinkClicked="wiggleNav"
     />
 
-    <SiteHeaderMeta />
+    <!-- <SiteHeaderMeta /> -->
   </header>
 </template>
 
 <script>
 import SiteHeaderNavigation from '~/components/organisms/site-header/SiteHeaderNavigation.vue'
-import SiteHeaderMeta from '~/components/organisms/site-header/SiteHeaderMeta.vue'
+// import SiteHeaderMeta from '~/components/organisms/site-header/SiteHeaderMeta.vue'
 
 export default {
   components: {
-    SiteHeaderNavigation,
+    SiteHeaderNavigation
     // SiteHeaderNavPrimary,
-    SiteHeaderMeta
+    // SiteHeaderMeta
   },
   data() {
     return {

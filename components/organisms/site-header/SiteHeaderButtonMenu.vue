@@ -6,7 +6,7 @@
     @leave="$nuxt.$emit('scrollUpButton::updated')"
   >
     <button
-      v-if="isShowing"
+      v-if="showFilter"
       class="button --toggle-menu"
       aria-label="Scroll to the top of the page."
     >
@@ -17,25 +17,9 @@
 
 <script>
 export default {
-  data() {
-    return {
-      isShowing: false
-    }
-  },
-  mounted() {
-    this.$nuxt.$on('filter::show', this.show)
-    this.$nuxt.$on('filter::hide', this.hide)
-  },
-  beforeDestroy() {
-    this.$nuxt.$off('filter::show', this.show)
-    this.$nuxt.$off('filter::hide', this.hide)
-  },
-  methods: {
-    show() {
-      this.isShowing = true
-    },
-    hide() {
-      this.isShowing = false
+  computed: {
+    showFilter() {
+      return this.$store.state.filterIsVisible
     }
   }
 }

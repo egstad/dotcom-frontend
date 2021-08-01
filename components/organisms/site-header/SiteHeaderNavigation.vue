@@ -1,9 +1,14 @@
 <template>
   <nav class="wrap">
     <Abacus class="nav__primary" :links="linksPrimary" />
-    <Abacus class="nav__secondary" :links="linksSecondary" />
+    <Abacus class="nav__primary" :links="linksPrimary" />
+    <Abacus
+      v-if="false === true"
+      class="nav__secondary"
+      :links="linksSecondary"
+    />
 
-    <div>
+    <div class="nav__tertiary">
       <ButtonScroll :show-scroll-button="showScrollButton" />
       <ButtonMenu />
     </div>
@@ -33,6 +38,11 @@ export default {
     linksSecondary: {
       type: Array,
       required: true
+    }
+  },
+  computed: {
+    breakpoint() {
+      return this.$store.state.device.breakpoint
     }
   }
 }
@@ -73,11 +83,15 @@ $trans-time: 250ms;
   }
 }
 
-.wrap {
-  display: grid;
-  grid-gap: 8vw;
-  grid-template-columns: 300px 1fr 300px;
+.nav__tertiary {
+  display: flex;
 }
+
+// .wrap {
+//   display: grid;
+//   grid-gap: 8vw;
+//   grid-template-columns: 300px 1fr 300px;
+// }
 
 .button {
   display: block;

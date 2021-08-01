@@ -63,11 +63,11 @@ export default {
     $route(to, from) {
       this.$nuxt.$emit('route::updated', to)
 
-      if (to.name === 'work') {
-        this.$nuxt.$emit('filter::show')
-      } else {
-        this.$nuxt.$emit('filter::hide')
-      }
+      // if (to.name === 'work') {
+      //   this.$nuxt.$emit('filter::show')
+      // } else {
+      //   this.$nuxt.$emit('filter::hide')
+      // }
       // this.$nuxt.$emit('filter::hide')
     },
     // isTouch(state) {
@@ -110,11 +110,19 @@ export default {
 
 <style lang="scss" scoped>
 .site {
+  --trans-long: 750ms;
+  --trans-medium: 400ms;
+  --trans-short: 200ms;
+  --trans-delay: 250ms;
+  --ease: ease-in-out;
+  --ease-back: cubic-bezier(0.375, 0.39, 0, 1.175);
+  --transition-page: var(--trans-long) var(--trans-delay) var(--ease);
+
   background-color: var(--background);
   color: var(--foreground);
 
   @media screen and (prefers-reduced-motion: no-preference) {
-    transition: all 750ms 250ms ease-in-out;
+    transition: all var(--transition-page);
     transition-property: background-color, color;
   }
 
