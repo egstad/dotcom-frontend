@@ -14,11 +14,7 @@
       <Fab :show="filterIsVisible" label="Open Filter &amp; Search Modal">
         <IconEllipsis />
       </Fab>
-      <Fab
-        :show="showScrollButton && !isTransitioning"
-        label="Scroll to the top of the page"
-        @click.native="scrollToTop"
-      >
+      <Fab label="Scroll to the top of the page" @click.native="scrollToTop">
         <IconArrowUp />
       </Fab>
     </div>
@@ -147,16 +143,7 @@ $trans-time: 250ms;
 .isTransitioning {
   .fab {
     pointer-events: none;
-
-    @media screen and (prefers-reduced-motion: no-preference) {
-      &:after {
-        transition: background-color var(--transition-page);
-      }
-
-      transition: transform $trans-time var(--ease),
-        width $trans-time var(--ease), margin-left $trans-time var(--ease),
-        opacity $trans-time var(--ease), color var(--transition-page);
-    }
+    transition: all var(--trans-medium) var(--trans-delay) var(--ease);
   }
 }
 </style>

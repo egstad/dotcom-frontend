@@ -38,7 +38,10 @@ export default {
   height: var(--button-height);
   cursor: pointer;
   margin-left: var(--header-item-gap);
-  background: rgba(red, 0.5);
+  background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
+  color: var(--foreground);
+
+  transition: all var(--trans-short) var(--ease);
 
   &__content {
     position: absolute;
@@ -58,45 +61,22 @@ export default {
     }
   }
 
-  // &:after {
-  //   content: '';
-  //   display: block;
-  //   border-radius: 100vw;
-  //   width: var(--button-height);
-  //   height: var(--button-height);
-  //   position: absolute;
-  //   top: var(--button-click-offset);
-  //   background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
-  // }
-
-  &:hover::after,
-  &:focus-visible::after {
+  &:hover,
+  &:focus-visible {
     background-color: var(--foreground);
     color: var(--background);
     outline-offset: 4px;
   }
 
   @media screen and (prefers-reduced-motion: no-preference) {
-    &::after {
-      transition: background-color var(--trans-short) var(--ease);
-    }
-  }
-
-  @media screen and (prefers-reduced-motion: no-preference) {
-    transition: transform var(--trans-short) var(--ease),
-      color var(--trans-short) var(--ease);
-  }
-
-  @media screen and (prefers-reduced-motion: no-preference) {
     &.fab-enter-active,
     &.fab-leave-active {
-      @media screen and (prefers-reduced-motion: no-preference) {
-        transition: width var(--trans-short) var(--trans-delay) var(--ease),
-          margin-left var(--trans-short) var(--trans-delay) var(--ease),
-          transform var(--trans-short) var(--trans-delay) var(--ease),
-          opacity var(--trans-short) var(--trans-delay) var(--ease),
-          color var(--transition-page);
-      }
+      transition: width var(--trans-medium) var(--trans-delay) var(--ease),
+        transform var(--trans-medium) var(--trans-delay) var(--ease),
+        opacity var(--trans-medium) var(--trans-delay) var(--ease),
+        margin-left var(--trans-medium) var(--trans-delay) var(--ease),
+        background-color var(--trans-medium) var(--trans-delay) var(--ease),
+        color var(--trans-medium) var(--trans-delay) var(--ease);
     }
     &.fab-enter,
     &.fab-leave-to {
