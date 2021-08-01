@@ -143,7 +143,12 @@ $trans-time: 250ms;
 .isTransitioning {
   .fab {
     pointer-events: none;
-    transition: all var(--trans-medium) var(--trans-delay) var(--ease);
+    transition: width var(--trans-medium) var(--trans-delay) var(--ease),
+      transform var(--trans-medium) var(--trans-delay) var(--ease),
+      opacity var(--trans-medium) var(--trans-delay) var(--ease),
+      margin-left var(--trans-medium) var(--trans-delay) var(--ease),
+      background-color var(--trans-medium) var(--trans-delay) var(--ease),
+      color var(--trans-medium) var(--trans-delay) var(--ease);
   }
 }
 </style>
