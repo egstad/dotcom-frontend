@@ -15,7 +15,7 @@
     </div>
 
     <!-- <Debug /> -->
-    <Scrim />
+    <!-- <Scrim /> -->
   </div>
 </template>
 
@@ -24,13 +24,13 @@ import SiteHeader from '@/components/organisms/site-header/SiteHeader'
 import SiteFooter from '@/components/organisms/site-footer/SiteFooter'
 
 // import Debug from '@/components/templates/Debug'
-import Scrim from '@/components/templates/Scrim'
+// import Scrim from '@/components/templates/Scrim'
 
 export default {
   components: {
     SiteHeader,
-    SiteFooter,
-    Scrim
+    SiteFooter
+    // Scrim
     // Debug
   },
   computed: {
@@ -62,6 +62,8 @@ export default {
     }
   },
   mounted() {
+    // remove when scrim is back
+    this.$store.commit('setIsTransitioning', false)
     this.$store.commit('layoutHasMounted', true)
   },
   methods: {

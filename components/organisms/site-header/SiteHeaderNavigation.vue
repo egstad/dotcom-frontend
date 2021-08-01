@@ -11,7 +11,8 @@
     </div>
 
     <div class="nav__tertiary">
-      <Fab :show="filterIsVisible" label="Open Filter &amp; Search Modal">
+      <Fab :show="true" label="Open Filter &amp; Search Modal">
+        <!-- <Fab :show="filterIsVisible" label="Open Filter &amp; Search Modal"> -->
         <IconEllipsis />
       </Fab>
       <!-- v-if="showScrollButton" -->
@@ -145,15 +146,15 @@ $trans-time: 250ms;
   flex: 1;
 }
 
-.isTransitioning {
-  .fab {
-    pointer-events: none;
+// .isTransitioning {
+//   .fab {
+//     pointer-events: none;
 
-    transition: width var(--trans-medium) var(--trans-delay) var(--ease),
-      transform var(--trans-medium) var(--trans-delay) var(--ease),
-      opacity var(--trans-medium) var(--trans-delay) var(--ease),
-      margin-left var(--trans-medium) var(--trans-delay) var(--ease),
-      background-color var(--transition-page), color var(--transition-page);
-  }
-}
+//     transition: width var(--trans-medium) var(--trans-delay) var(--ease),
+//       transform var(--trans-medium) var(--trans-delay) var(--ease),
+//       opacity var(--trans-medium) var(--trans-delay) var(--ease),
+//       margin-left var(--trans-medium) var(--trans-delay) var(--ease),
+//       background-color var(--transition-page), color var(--transition-page);
+//   }
+// }
 </style>

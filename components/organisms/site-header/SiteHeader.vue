@@ -173,11 +173,11 @@ export default {
     transition: transform var(--trans-medium) var(--ease),
       background-color var(--transition-page), color var(--transition-page);
   }
-  &.navIsHidden {
-    @media screen and (prefers-reduced-motion: no-preference) {
-      transform: translate3d(0, calc(-200% - var(--gutter)), 0);
-    }
-  }
+  // &.navIsHidden {
+  //   @media screen and (prefers-reduced-motion: no-preference) {
+  //     transform: translate3d(0, calc(-200% - var(--gutter)), 0);
+  //   }
+  // }
 
   &.isWiggling {
     animation: shakeX 1s ease;
@@ -192,11 +192,16 @@ export default {
 }
 
 .isTransitioning {
-  .site-header {
-    background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 0%);
-
+  // .site-header {
+  //   background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 0%);
+  //   @media screen and (prefers-reduced-motion: no-preference) {
+  //     transition: background-color var(--trans-medium);
+  //   }
+  // }
+  .fab {
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: background-color var(--trans-medium);
+      transition: background-color var(--transition-page),
+        color var(--transition-page);
     }
   }
 }

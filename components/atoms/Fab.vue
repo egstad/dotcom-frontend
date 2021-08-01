@@ -1,10 +1,12 @@
 <template>
   <transition name="fab" mode="out-in">
-    <button v-if="show" class="fab" :aria-label="label">
-      <span class="fab__content">
-        <slot></slot>
-      </span>
-    </button>
+    <div v-if="show" class="fab-wrap">
+      <button class="fab" :aria-label="label">
+        <span class="fab__content">
+          <slot></slot>
+        </span>
+      </button>
+    </div>
   </transition>
 </template>
 
@@ -26,29 +28,22 @@ export default {
 
 <style lang="scss" scoped>
 .fab {
-  position: relative;
-  appearance: none;
   border: 0;
   padding: 0;
-  top: var(--button-click-offset);
+  appearance: none;
   border-radius: 100%;
-  font-family: var(--mono);
-  background: transparent;
-  width: var(--button-height);
-  height: var(--button-height);
+  width: 100%;
+  height: 100%;
   cursor: pointer;
-  margin-left: var(--header-item-gap);
   background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
   color: var(--foreground);
 
-  transition: all var(--trans-short) var(--ease);
-
   &__content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 
     ::v-deep svg {
       display: flex;
@@ -66,7 +61,20 @@ export default {
     background-color: var(--foreground);
     color: var(--background);
     outline-offset: 4px;
+
+    @media screen and (prefers-reduced-motion: no-preference) {
+      transition: background-color var(--trans-short) var(--ease),
+        color var(--trans-short) var(--ease);
+    }
   }
+}
+
+.fab-wrap {
+  width: var(--button-height);
+  height: var(--button-height);
+  position: relative;
+  top: var(--button-click-offset);
+  margin-left: var(--header-item-gap);
 
   @media screen and (prefers-reduced-motion: no-preference) {
     &.fab-enter-active,
@@ -74,8 +82,7 @@ export default {
       transition: width var(--trans-medium) var(--trans-delay) var(--ease),
         transform var(--trans-medium) var(--trans-delay) var(--ease),
         opacity var(--trans-medium) var(--trans-delay) var(--ease),
-        margin-left var(--trans-medium) var(--trans-delay) var(--ease),
-        background-color var(--transition-page), color var(--transition-page);
+        margin-left var(--trans-medium) var(--trans-delay) var(--ease);
     }
     &.fab-enter,
     &.fab-leave-to {
