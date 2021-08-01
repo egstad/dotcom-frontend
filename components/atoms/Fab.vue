@@ -75,8 +75,7 @@ export default {
         transform var(--trans-medium) var(--trans-delay) var(--ease),
         opacity var(--trans-medium) var(--trans-delay) var(--ease),
         margin-left var(--trans-medium) var(--trans-delay) var(--ease),
-        background-color var(--trans-medium) var(--trans-delay) var(--ease),
-        color var(--trans-medium) var(--trans-delay) var(--ease);
+        background-color var(--transition-page), color var(--transition-page);
     }
     &.fab-enter,
     &.fab-leave-to {
