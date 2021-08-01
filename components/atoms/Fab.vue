@@ -30,11 +30,15 @@ export default {
   appearance: none;
   border: 0;
   padding: 0;
+  top: var(--button-click-offset);
+  border-radius: 100%;
   font-family: var(--mono);
   background: transparent;
   width: var(--button-height);
+  height: var(--button-height);
   cursor: pointer;
   margin-left: var(--header-item-gap);
+  background: rgba(red, 0.5);
 
   &__content {
     position: absolute;
@@ -44,7 +48,7 @@ export default {
     z-index: 1;
 
     ::v-deep svg {
-      display: block;
+      display: flex;
       width: 14px;
       height: 14px;
 
@@ -54,16 +58,16 @@ export default {
     }
   }
 
-  &:after {
-    content: '';
-    display: block;
-    border-radius: 100vw;
-    width: var(--button-height);
-    height: var(--button-height);
-    position: absolute;
-    top: var(--button-click-offset);
-    background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
-  }
+  // &:after {
+  //   content: '';
+  //   display: block;
+  //   border-radius: 100vw;
+  //   width: var(--button-height);
+  //   height: var(--button-height);
+  //   position: absolute;
+  //   top: var(--button-click-offset);
+  //   background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
+  // }
 
   &:hover::after,
   &:focus-visible::after {
