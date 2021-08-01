@@ -3,8 +3,8 @@ export default ({ app }) => {
    * Before each route begins...
    */
   app.router.beforeEach(async (to, from, next) => {
-    updateStoreBeforeRouteChanges(to)
     await waitForHeaderTransitionToComplete(to)
+    updateStoreBeforeRouteChanges(to)
     beginPageTransition()
     next()
   })

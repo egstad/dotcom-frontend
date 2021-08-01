@@ -1,7 +1,7 @@
 <template>
   <nav class="wrap">
     <Abacus class="nav__primary" :links="linksPrimary" />
-    <Abacus class="nav__primary" :links="linksPrimary" />
+    <!-- <Abacus class="nav__primary" :links="linksPrimary" /> -->
     <Abacus
       v-if="false === true"
       class="nav__secondary"
@@ -9,22 +9,36 @@
     />
 
     <div class="nav__tertiary">
-      <ButtonScroll :show-scroll-button="showScrollButton" />
-      <ButtonMenu />
+      <Fab
+        :show="showScrollButton && !isTransitioning"
+        label="Scroll to the top of the page"
+        @click.native="scrollToTop"
+      >
+        <span>•</span>
+      </Fab>
+
+      <Fab :show="filterIsVisible" label="Open Filter &amp; Search Modal">
+        <span>•</span>
+      </Fab>
+
+      <!-- <ButtonScroll :show-scroll-button="showScrollButton" />
+      <ButtonMenu /> -->
     </div>
   </nav>
 </template>
 
 <script>
 import Abacus from '@/components/organisms/Abacus.vue'
-import ButtonScroll from '@/components/organisms/site-header/SiteHeaderButtonScroll.vue'
-import ButtonMenu from '@/components/organisms/site-header/SiteHeaderButtonMenu.vue'
+import Fab from '@/components/atoms/Fab.vue'
+// import ButtonScroll from '@/components/organisms/site-header/SiteHeaderButtonScroll.vue'
+// import ButtonMenu from '@/components/organisms/site-header/SiteHeaderButtonMenu.vue'
 
 export default {
   components: {
     Abacus,
-    ButtonScroll,
-    ButtonMenu
+    // ButtonScroll,
+    // ButtonMenu,
+    Fab
   },
   props: {
     showScrollButton: {
@@ -43,6 +57,20 @@ export default {
   computed: {
     breakpoint() {
       return this.$store.state.device.breakpoint
+    },
+    isTransitioning() {
+      return this.$store.state.isTransitioning
+    },
+    filterIsVisible() {
+      return this.$store.state.filterIsVisible
+    }
+  },
+  methods: {
+    scrollToTop() {
+      console.log('scroll')
+      if (process.client) {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
     }
   }
 }
@@ -87,60 +115,15 @@ $trans-time: 250ms;
   display: flex;
 }
 
-// .wrap {
-//   display: grid;
-//   grid-gap: 8vw;
-//   grid-template-columns: 300px 1fr 300px;
-// }
+.isTransitioning {
+  .button {
+    pointer-events: none;
 
-.button {
-  display: block;
-  width: $height + ($inset * 2);
-  height: $height + ($inset * 2);
-  line-height: $height;
-  padding: 0;
-  margin: 0;
-  background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 10%), 100%);
-  appearance: none;
-  border: 0;
-  border-radius: 50%;
-  font-family: var(--mono);
-  margin-left: $gap;
-  cursor: pointer;
-
-  &:hover,
-  &:focus-visible {
-    background-color: var(--foreground);
-    color: var(--background);
-    // outline: none;
-    outline-offset: 4px;
-  }
-
-  &.--toggle-menu {
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: transform $trans-time 200ms ease-in-out,
-        opacity $trans-time ease-in-out;
-    }
-  }
-  &.--scroll-up {
-    @media screen and (prefers-reduced-motion: no-preference) {
-      transition: transform $trans-time 100ms ease-in-out,
-        opacity $trans-time ease-in-out;
-    }
-  }
-
-  @media screen and (prefers-reduced-motion: no-preference) {
-    &.fade-enter-active,
-    &.fade-leave-active {
       transition: transform $trans-time var(--ease),
         width $trans-time var(--ease), margin-left $trans-time var(--ease),
-        opacity $trans-time var(--ease);
-    }
-    &.fade-enter, &.fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-      transform: scale(0);
-      width: 0;
-      opacity: 0;
-      margin-left: 0;
+        opacity $trans-time var(--ease), background-color var(--transition-page),
+        color var(--transition-page);
     }
   }
 }
