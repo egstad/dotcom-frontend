@@ -12,6 +12,7 @@
     />
 
     <!-- <SiteHeaderMeta /> -->
+    <!-- <div class="backdrop"></div> -->
   </header>
 </template>
 
@@ -154,7 +155,11 @@ export default {
 .site-header {
   --gutter: 12px;
   // background-color: var(--background);
-  background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
+  // box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.008),
+  //   0 6.7px 5.3px rgba(0, 0, 0, 0.012), 0 12.5px 10px rgba(0, 0, 0, 0.015),
+  //   0 22.3px 17.9px rgba(0, 0, 0, 0.018), 0 41.8px 33.4px rgba(0, 0, 0, 0.022),
+  //   0 100px 80px rgba(0, 0, 0, 0.03);
+  // background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
 
   @media (min-width: 1024px) {
     --gutter: #{calc-vw(12px, 1024px)};
@@ -167,27 +172,28 @@ export default {
   padding-left: var(--gutter);
   padding-right: var(--gutter);
   display: flex;
-  // box-shadow: 0 0
 
   @media screen and (prefers-reduced-motion: no-preference) {
-    transition: transform var(--trans-medium) var(--ease),
-      background-color var(--transition-page), color var(--transition-page);
+    transition: transform var(--trans-medium) var(--ease);
   }
-  // &.navIsHidden {
-  //   @media screen and (prefers-reduced-motion: no-preference) {
-  //     transform: translate3d(0, calc(-200% - var(--gutter)), 0);
-  //   }
-  // }
+  &.navIsHidden {
+    transform: translate3d(0, calc(-200% - var(--gutter)), 0);
+    box-shadow: none;
+  }
 
   &.isWiggling {
     animation: shakeX 1s ease;
   }
 
   &.navIsAtTop {
-    transition: transform var(--trans-medium) var(--ease),
-      background-color var(--trans-short) 50ms, color var(--trans-short);
+    // box-shadow: none;
+    // background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 0%);
+    // transition: transform var(--trans-medium) var(--ease),
+    //   background-color var(--trans-short) 50ms, color var(--trans-short);
 
-    background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 0%);
+    // .backdrop {
+    //   transform: translate3d(0, -120%, 0);
+    // }
   }
 }
 
@@ -205,6 +211,24 @@ export default {
     }
   }
 }
+
+// .backdrop {
+//   transform: translate3d(0, 0, 0);
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   bottom: 0;
+//   z-index: -1;
+//   height: 100%;
+//   width: 100%;
+//   background-color: var(--background);
+//   transition: transform var(--trans-short) 200ms var(--ease);
+//   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.008),
+//     0 6.7px 5.3px rgba(0, 0, 0, 0.012), 0 12.5px 10px rgba(0, 0, 0, 0.015),
+//     0 22.3px 17.9px rgba(0, 0, 0, 0.018), 0 41.8px 33.4px rgba(0, 0, 0, 0.022),
+//     0 100px 80px rgba(0, 0, 0, 0.03);
+// }
 
 @keyframes shakeX {
   from,

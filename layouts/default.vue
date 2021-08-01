@@ -100,9 +100,10 @@ export default {
   --header-item-gap: 8px;
   --button-height: 36px;
   --button-click-offset: 16px;
-  // @media (min-width: 1024px) {
-  //   --button-click-offset: #{calc-vw(16px, 1024px)};
-  // }
+  @media (min-width: 1024px) {
+    --button-height: 28px;
+    --button-click-offset: #{calc-vw(16px, 1024px)};
+  }
 
   background-color: var(--background);
   color: var(--foreground);

@@ -189,7 +189,6 @@ export default {
   display: flex;
   width: 100%;
   flex: 1;
-  border-radius: var(--button-height);
   min-width: 240px;
 
   &__item {
@@ -201,7 +200,6 @@ export default {
 
   &__link {
     display: block;
-    border-radius: var(--button-height);
     flex: 1 1;
     color: var(--foreground);
     font-family: var(--mono);

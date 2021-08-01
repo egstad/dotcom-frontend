@@ -1,12 +1,12 @@
 <template>
   <transition name="fab" mode="out-in">
-    <div v-if="show" class="fab-wrap">
-      <button class="fab" :aria-label="label">
+    <button v-if="show" class="fab-wrap">
+      <div class="fab" :aria-label="label">
         <span class="fab__content">
           <slot></slot>
         </span>
-      </button>
-    </div>
+      </div>
+    </button>
   </transition>
 </template>
 
@@ -28,16 +28,21 @@ export default {
 
 <style lang="scss" scoped>
 .fab {
-  border: 0;
-  padding: 0;
-  appearance: none;
   border-radius: 100%;
-  width: 100%;
-  height: 100%;
+  width: var(--button-height);
+  height: var(--button-height);
   cursor: pointer;
   background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
   color: var(--foreground);
+  padding-top: var(--button-click-offset);
+  padding-bottom: var(--button-click-offset);
 
+  @media screen and (prefers-reduced-motion: no-preference) {
+    transition: background-color var(--trans-short) var(--ease),
+      color var(--trans-short) var(--ease);
+  }
+
+  // wraps icons
   &__content {
     display: flex;
     align-items: center;
@@ -55,26 +60,29 @@ export default {
       }
     }
   }
-
-  &:hover,
-  &:focus-visible {
-    background-color: var(--foreground);
-    color: var(--background);
-    outline-offset: 4px;
-
-    @media screen and (prefers-reduced-motion: no-preference) {
-      transition: background-color var(--trans-short) var(--ease),
-        color var(--trans-short) var(--ease);
-    }
-  }
 }
 
 .fab-wrap {
+  border: 0;
+  padding: 0;
+  appearance: none;
+  background: 0;
+  border: 0;
+  display: flex;
+  align-items: center;
   width: var(--button-height);
-  height: var(--button-height);
+  cursor: pointer;
+  // height: var(--button-height);
   position: relative;
-  top: var(--button-click-offset);
+  // top: var(--button-click-offset);
   margin-left: var(--header-item-gap);
+
+  &:hover .fab,
+  &:focus-visible .fab {
+    background-color: var(--foreground);
+    color: var(--background);
+    outline-offset: 4px;
+  }
 
   @media screen and (prefers-reduced-motion: no-preference) {
     &.fab-enter-active,
