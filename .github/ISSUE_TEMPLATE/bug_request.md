@@ -1,11 +1,12 @@
 ---
-
 name: "\U0001F41E Eww, a bug!"
 about: Create a bug report to help improve egstad.com
 title: "\U0001F41E[BUG] - Enter title here..."
 labels: bug
 assignees: egstad
----## 📝 Description
+---
+
+## 📝 Description
 
 _Tell me about this terrible, TERRIBLE bug that you saw._
 
