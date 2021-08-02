@@ -24,7 +24,7 @@ Original                | Updated
 
 ## Checklist
 
-- [ ] I didn't half ass these updates and feel proud of my work
+- [ ] I didn't half-ass these updates and feel proud of my work
 - [ ] Code has been commented for clarity, particularly in hard-to-understand areas
 - [ ] I have made corresponding changes to the documentation
 - [ ] My changes generate no new warnings
