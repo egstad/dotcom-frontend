@@ -8,5 +8,5 @@ const sanity = sanityClient({
 })
 
 export default ({ app, store }, inject) => {
-  inject('egstad', sanity)
+  inject('sanityClient', sanity)
 }

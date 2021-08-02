@@ -9,7 +9,7 @@ import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
 
 export default {
   mixins: [routeTransitionFade],
-  async asyncData({ $egstad, store }) {
+  async asyncData({ $sanityClient, store }) {
     const queryLength = 1
     const query = `
       *[_type == "about"][0]{
@@ -40,7 +40,7 @@ export default {
         }
       }
     `
-    const document = await $egstad.fetch(query)
+    const document = await $sanityClient.fetch(query)
 
     // set theme
     await store.commit('setCSSVars', {
