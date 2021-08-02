@@ -1,6 +1,6 @@
 <template>
   <header
-    :class="['site-header', { navIsHidden }, { navIsAtTop }, { isWiggling }]"
+    :class="['site-header', { navIsHidden }, { navIsAtTop }]"
     @mouseenter="showNav"
   >
     <SiteHeaderNavigation
@@ -28,7 +28,6 @@ export default {
       navIsHidden: 0,
       showScrollButton: false,
       highlightedIndex: null,
-      isWiggling: false,
       linksPrimary: [
         {
           title: 'Egstad',
@@ -85,7 +84,6 @@ export default {
     this.$nuxt.$on('window::scrollUp', this.scrollDirectionChange)
     this.$nuxt.$on('window::scrollDown', this.scrollDirectionChange)
     this.$nuxt.$on('nav::updateActiveItem', this.updateActiveItem)
-    this.$nuxt.$on('activeLinkClicked', this.wiggleNav)
 
     this.scrollHandler(0)
   },
@@ -130,16 +128,6 @@ export default {
     },
     updateActiveItem(val) {
       this.activeItem = val
-    },
-    wiggleNav() {
-      this.isWiggling = true
-
-      const onEnd = () => {
-        this.isWiggling = false
-        this.$el.removeEventListener('animationend', onEnd)
-      }
-
-      this.$el.addEventListener('animationend', onEnd)
     }
   }
 }
@@ -180,32 +168,6 @@ export default {
 
   &.navIsAtTop {
     background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) + 7%), 0%);
-  }
-
-  &.isWiggling {
-    animation: shakeX 1s ease;
-  }
-}
-
-@keyframes shakeX {
-  from,
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-
-  10%,
-  30%,
-  50%,
-  70%,
-  90% {
-    transform: translate3d(-10px, 0, 0);
-  }
-
-  20%,
-  40%,
-  60%,
-  80% {
-    transform: translate3d(10px, 0, 0);
   }
 }
 </style>
