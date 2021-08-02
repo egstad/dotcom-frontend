@@ -1,5 +1,8 @@
 <template>
-  <ul class="abacus" :class="[{ 'bead-is-trans': beadIsTransitioning }]">
+  <ul
+    class="abacus"
+    :class="[{ 'bead-is-trans': beadIsTransitioning, isWiggling }]"
+  >
     <li
       v-for="(link, i) in links"
       :key="i"
@@ -56,7 +59,8 @@ export default {
       hoveredIndex: undefined,
       hasClickedLink: false,
       showBead: false,
-      beadIsTransitioning: null
+      beadIsTransitioning: null,
+      isWiggling: false
     }
   },
   computed: {
@@ -118,8 +122,12 @@ export default {
       this.hasClickedLink = true
 
       // fire animation if clicked page is already active
-      if (this.activeIndex === this.getActiveIndex()) {
-        this.$nuxt.$emit('activeLinkClicked')
+      if (
+        this.activeIndex === this.getActiveIndex() &&
+        this.hoveredIndex === this.getActiveIndex() &&
+        this.activeIndex === this.getIndexOfPath(this.$route.path)
+      ) {
+        this.wiggle()
       }
     },
     styleBead() {
@@ -177,6 +185,16 @@ export default {
     },
     selectByActiveNuxtLink() {
       this.selectByIndex(this.getActiveIndex())
+    },
+    wiggle() {
+      this.isWiggling = true
+
+      const onEnd = () => {
+        this.isWiggling = false
+        this.$el.removeEventListener('animationend', onEnd)
+      }
+
+      this.$el.addEventListener('animationend', onEnd)
     }
   }
 }
@@ -189,6 +207,10 @@ export default {
   width: 100%;
   flex: 1;
   min-width: 240px;
+
+  &.isWiggling {
+    animation: shakeX 1s ease;
+  }
 
   &__item {
     position: relative;
@@ -291,6 +313,28 @@ export default {
     @media screen and (prefers-reduced-motion: no-preference) {
       transition: color var(--transition-page);
     }
+  }
+}
+
+@keyframes shakeX {
+  from,
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate3d(10px, 0, 0);
   }
 }
 </style>
