@@ -16,7 +16,7 @@ export default {
     Abacus
   },
   mixins: [routeTransitionFade],
-  async asyncData({ $egstad, store }) {
+  async asyncData({ $sanityClient, store }) {
     // fetch data
     const query = `
       *[_type == "homepage" && _id == "index"][0]{
@@ -47,7 +47,7 @@ export default {
         }
       }
     `
-    const document = await $egstad.fetch(query)
+    const document = await $sanityClient.fetch(query)
 
     // set theme
     await store.commit('setCSSVars', {

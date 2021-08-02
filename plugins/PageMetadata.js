@@ -52,8 +52,8 @@ export default ({ app }, inject) => {
     // Image for social
     if (pageImage) {
       const imageAsset = getImageAsset(pageImage, {
-        projectId: app.$egstad.clientConfig.projectId,
-        dataset: app.$egstad.clientConfig.dataset
+        projectId: app.$sanityClient.clientConfig.projectId,
+        dataset: app.$sanityClient.clientConfig.dataset
       })
       const croppedImage = `${imageAsset.url}?w=1200&height=627&auto=format&fit=clip`
 

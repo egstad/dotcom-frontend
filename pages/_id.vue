@@ -13,7 +13,7 @@ export default {
     Slices
   },
   mixins: [routeTransitionFade],
-  async asyncData({ $egstad, params, error, store }) {
+  async asyncData({ $sanityClient, params, error, store }) {
     const uid = params.id
     // query looks so odd because we're fetching internal link slugs
     const query = `
@@ -47,7 +47,7 @@ export default {
         },
         social,
       }`
-    const document = await $egstad.fetch(query).then((res) => {
+    const document = await $sanityClient.fetch(query).then((res) => {
       if (!res) {
         error({ statusCode: 404, message: `Document '${uid}' doesn't exist` })
       } else {

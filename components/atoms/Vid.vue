@@ -107,8 +107,8 @@ export default {
     },
     posterReference() {
       return getImageAsset(this.poster.asset, {
-        projectId: this.$egstad.clientConfig.projectId,
-        dataset: this.$egstad.clientConfig.dataset
+        projectId: this.$sanityClient.clientConfig.projectId,
+        dataset: this.$sanityClient.clientConfig.dataset
       })
     },
     posterSource() {

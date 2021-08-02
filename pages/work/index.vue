@@ -13,7 +13,7 @@ export default {
     Pieces
   },
   mixins: [routeTransitionFade],
-  async asyncData({ $egstad, store }) {
+  async asyncData({ $sanityClient, store }) {
     const queryLength = 1
     const query = `
       *[_type == "work"][0]{
@@ -44,7 +44,7 @@ export default {
         }
       }
     `
-    const document = await $egstad.fetch(query)
+    const document = await $sanityClient.fetch(query)
 
     // set theme
     await store.commit('setCSSVars', {
@@ -75,8 +75,6 @@ export default {
     setTimeout(() => {
       this.$store.commit('setFilterVisibility', true)
     }, 1000)
-
-    console.log(document.activeElement)
   },
   beforeDestroy() {
     this.$store.commit('setFilterVisibility', false)

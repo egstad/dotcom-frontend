@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  async asyncData({ $egstad }) {
+  async asyncData({ $sanityClient }) {
     const query = `*[_type == "work"][0]{
         _id,
         title,
@@ -29,7 +29,7 @@ export default {
       }`
 
     return {
-      document: await $egstad.fetch(query)
+      document: await $sanityClient.fetch(query)
     }
   },
   mounted() {
