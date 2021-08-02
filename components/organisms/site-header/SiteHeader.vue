@@ -6,24 +6,20 @@
     <SiteHeaderNavigation
       class="site-header__nav"
       :show-scroll-button="showScrollButton"
+      :show-time="navIsAtTop"
       :links-primary="linksPrimary"
       :links-secondary="linksSecondary"
       @activeLinkClicked="wiggleNav"
     />
-
-    <!-- <SiteHeaderMeta /> -->
-    <!-- <div class="backdrop"></div> -->
   </header>
 </template>
 
 <script>
 import SiteHeaderNavigation from '~/components/organisms/site-header/SiteHeaderNavigation.vue'
-// import SiteHeaderMeta from '~/components/organisms/site-header/SiteHeaderMeta.vue'
 
 export default {
   components: {
     SiteHeaderNavigation
-    // SiteHeaderNavPrimary,
     // SiteHeaderMeta
   },
   data() {
@@ -54,23 +50,23 @@ export default {
           path: '/work'
         },
         {
-          title: 'Design',
-          abbr: 'Dsgn',
+          title: '#Design',
+          abbr: '#Dsgn',
           path: '/work/design'
         },
         {
-          title: 'Development',
-          abbr: 'Devl',
+          title: '#Development',
+          abbr: '#Devl',
           path: '/work/development'
         },
         {
-          title: 'Typography',
-          abbr: 'Type',
+          title: '#Typography',
+          abbr: '#Type',
           path: '/work/development'
         },
         {
-          title: 'Illustration',
-          abbr: 'Illo',
+          title: '#Illustration',
+          abbr: '#Illo',
           path: '/testing-page'
         }
       ]
@@ -150,85 +146,46 @@ export default {
 </script>
 
 <style lang="scss">
-// var(--gutter): clamp(0.5em, 1.5vw, 2em);
-
 .site-header {
   --gutter: 12px;
-  // background-color: var(--background);
-  // box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.008),
-  //   0 6.7px 5.3px rgba(0, 0, 0, 0.012), 0 12.5px 10px rgba(0, 0, 0, 0.015),
-  //   0 22.3px 17.9px rgba(0, 0, 0, 0.018), 0 41.8px 33.4px rgba(0, 0, 0, 0.022),
-  //   0 100px 80px rgba(0, 0, 0, 0.03);
-  // background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
-
   @media (min-width: 1024px) {
     --gutter: #{calc-vw(12px, 1024px)};
   }
 
+  /* Positioning */
   position: fixed;
   z-index: 20;
   left: 0;
+
+  /* Display & Box Model */
+  display: flex;
   width: 100%;
   padding-left: var(--gutter);
   padding-right: var(--gutter);
-  display: flex;
 
-  @media screen and (prefers-reduced-motion: no-preference) {
-    transition: transform var(--trans-medium) var(--ease);
+  /* Color */
+  // background-color: var(--background);
+  // background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l)), 80%);
+
+  /* Other */
+  @include transition {
+    transition: transform var(--trans-medium) var(--ease),
+      background-color var(--trans-short) var(--trans-delay) var(--ease);
   }
+
   &.navIsHidden {
     transform: translate3d(0, calc(-200% - var(--gutter)), 0);
     box-shadow: none;
   }
 
+  &.navIsAtTop {
+    background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) + 7%), 0%);
+  }
+
   &.isWiggling {
     animation: shakeX 1s ease;
   }
-
-  &.navIsAtTop {
-    // box-shadow: none;
-    // background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 0%);
-    // transition: transform var(--trans-medium) var(--ease),
-    //   background-color var(--trans-short) 50ms, color var(--trans-short);
-
-    // .backdrop {
-    //   transform: translate3d(0, -120%, 0);
-    // }
-  }
 }
-
-.isTransitioning {
-  // .site-header {
-  //   background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 0%);
-  //   @media screen and (prefers-reduced-motion: no-preference) {
-  //     transition: background-color var(--trans-medium);
-  //   }
-  // }
-  .fab {
-    @media screen and (prefers-reduced-motion: no-preference) {
-      transition: background-color var(--transition-page),
-        color var(--transition-page);
-    }
-  }
-}
-
-// .backdrop {
-//   transform: translate3d(0, 0, 0);
-//   position: absolute;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   z-index: -1;
-//   height: 100%;
-//   width: 100%;
-//   background-color: var(--background);
-//   transition: transform var(--trans-short) 200ms var(--ease);
-//   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.008),
-//     0 6.7px 5.3px rgba(0, 0, 0, 0.012), 0 12.5px 10px rgba(0, 0, 0, 0.015),
-//     0 22.3px 17.9px rgba(0, 0, 0, 0.018), 0 41.8px 33.4px rgba(0, 0, 0, 0.022),
-//     0 100px 80px rgba(0, 0, 0, 0.03);
-// }
 
 @keyframes shakeX {
   from,

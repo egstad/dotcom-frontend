@@ -31,7 +31,6 @@
     </li>
 
     <div v-show="showBead" ref="bead" class="abacus__bead"></div>
-
     <div class="abacus__row"></div>
   </ul>
 </template>
@@ -62,7 +61,7 @@ export default {
   },
   computed: {
     largeBreakpoint() {
-      return this.$store.state.device.windWidth >= 1600
+      return this.$store.state.device.winWidth >= 1920
     }
   },
   watch: {
@@ -128,7 +127,7 @@ export default {
       const self = this.hoveredIndex ?? this.activeIndex
       this.hasClickedLink = false
       this.showBead = true
-      this.$refs.bead.style.transform = `scale(1.01) translate3d(${100 *
+      this.$refs.bead.style.transform = `scaleY(1.01) translate3d(${100 *
         self}%,-50%,0)`
       this.$refs.bead.style.width = `${100 / this.$refs.item.length}%`
 
@@ -211,6 +210,10 @@ export default {
     padding-top: var(--button-click-offset);
     padding-bottom: var(--button-click-offset);
     font-size: 14px;
+
+    @include bp($md) {
+      font-size: 12px;
+    }
 
     @media screen and (prefers-reduced-motion: no-preference) {
       transition: color var(--trans-short) var(--ease-back);

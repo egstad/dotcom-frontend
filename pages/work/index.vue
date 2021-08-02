@@ -75,6 +75,8 @@ export default {
     setTimeout(() => {
       this.$store.commit('setFilterVisibility', true)
     }, 1000)
+
+    console.log(document.activeElement)
   },
   beforeDestroy() {
     this.$store.commit('setFilterVisibility', false)

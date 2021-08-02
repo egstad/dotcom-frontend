@@ -86,6 +86,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/page-transition';
 .site {
   // transition
   --trans-long: 750ms;
@@ -101,17 +102,16 @@ export default {
   --button-height: 36px;
   --button-click-offset: 16px;
   @media (min-width: 1024px) {
-    --button-height: 28px;
+    --header-item-gap: 12px;
     --button-click-offset: #{calc-vw(16px, 1024px)};
   }
 
+  // @media (min-width: $xx) {
+  //   --button-height: 44px;
+  // }
+
   background-color: var(--background);
   color: var(--foreground);
-
-  @media screen and (prefers-reduced-motion: no-preference) {
-    transition: all var(--transition-page);
-    transition-property: background-color, color;
-  }
 
   ::selection {
     background: hsla(var(--a-h), var(--a-s), var(--a-l), 50%);
