@@ -1,6 +1,6 @@
 ---
 name: "\U0001F41E Eww, a bug!"
-about: Create a bug report to help improve egstad.com
+about: Create a bug report to help me improve egstad.com.
 title: "\U0001F41E[BUG] - Enter title here"
 labels: bug
 assignees: egstad
@@ -8,7 +8,7 @@ assignees: egstad
 ---
 
 ## 📝 Description
-_Tell me about this terrible, TERRIBLE bug that you saw._
+_First, thanks for taking the time to tell me about this terrible, TERRIBLE bug that you saw._
 
 ## 🔁 How to Reproduce
 _Re-trace your steps for a second. How can I find this nasty creepy-crawly?_
@@ -37,4 +37,4 @@ _If it's relevant, plz include a screnshot of the bug._
  - Version [e.g. 22]
 
 ## 💁🏽‍♂️ Additional context
-_Thanks for taking the time to report this little monster bug. Anything else you'd like to add?._
+_I appreciate you taking the time to report this. Peace and love. Anything else you'd like to add?_
