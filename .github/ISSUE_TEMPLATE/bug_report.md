@@ -30,4 +30,4 @@ _If it's relevant, plz include a screnshot of the bug._
  - Version [e.g. 22]
 
 ## 💁🏽‍♂️ Additional context
-Add any other context about the problem here.
+_Thanks for taking the time to report this little monster bug. Anything else you'd like to add?._
