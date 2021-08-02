@@ -9,7 +9,6 @@
       :show-time="navIsAtTop"
       :links-primary="linksPrimary"
       :links-secondary="linksSecondary"
-      @activeLinkClicked="wiggleNav"
     />
   </header>
 </template>
@@ -86,6 +85,7 @@ export default {
     this.$nuxt.$on('window::scrollUp', this.scrollDirectionChange)
     this.$nuxt.$on('window::scrollDown', this.scrollDirectionChange)
     this.$nuxt.$on('nav::updateActiveItem', this.updateActiveItem)
+    this.$nuxt.$on('activeLinkClicked', this.wiggleNav)
 
     this.scrollHandler(0)
   },

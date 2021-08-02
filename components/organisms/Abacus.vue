@@ -119,7 +119,7 @@ export default {
 
       // fire animation if clicked page is already active
       if (this.activeIndex === this.getActiveIndex()) {
-        this.$emit('activeLinkClicked')
+        this.$nuxt.$emit('activeLinkClicked')
       }
     },
     styleBead() {
@@ -209,11 +209,11 @@ export default {
     line-height: var(--button-height);
     padding-top: var(--button-click-offset);
     padding-bottom: var(--button-click-offset);
-    font-size: 14px;
+    font-size: 12px;
 
-    @include bp($md) {
-      font-size: 12px;
-    }
+    // @include bp($md) {
+    //   font-size: 12px;
+    // }
 
     @media screen and (prefers-reduced-motion: no-preference) {
       transition: color var(--trans-short) var(--ease-back);
@@ -244,7 +244,7 @@ export default {
     pointer-events: none;
     background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
     width: 100%;
-    // transform: scaleX(0.99);
+    // transform: scaleY(0.99);
 
     @media screen and (prefers-reduced-motion: no-preference) {
       transition: background-color var(--transition-page);
