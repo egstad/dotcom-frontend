@@ -78,7 +78,10 @@ export default {
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: 'var(--foreground)', continuous: true },
+  loading: {
+    color: 'var(--foreground)',
+    continuous: true
+  },
   /*
    ** Global CSS
    */
