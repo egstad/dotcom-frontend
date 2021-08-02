@@ -1,38 +1,33 @@
----
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
+# 🐞 Eww, a bug!
 
----
+## 📝 Description
+_Tell me about this terrible, TERRIBLE bug that you saw._
 
-**Describe the bug**
-A clear and concise description of what the bug is.
-
-**To Reproduce**
-Steps to reproduce the behavior:
+## 🔁 How to Reproduce
+_Re-trace your steps for a second. How can I find this nasty creepy-crawly?_
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+## 🕵🏾‍♂️ Expected Behavior
+_Ewwy gooey bugs aside, what did you expect to happen?_
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+## 📸 Screenshots
+_If it's relevant, plz include a screnshot of the bug._
 
-**Desktop (please complete the following information):**
+## 👩🏼‍🔧 Device Information
+
+### Desktop
  - OS: [e.g. iOS]
  - Browser [e.g. chrome, safari]
  - Version [e.g. 22]
 
-**Smartphone (please complete the following information):**
+### Smartphone
  - Device: [e.g. iPhone6]
  - OS: [e.g. iOS8.1]
  - Browser [e.g. stock browser, safari]
  - Version [e.g. 22]
 
-**Additional context**
+## 💁🏽‍♂️ Additional context
 Add any other context about the problem here.
