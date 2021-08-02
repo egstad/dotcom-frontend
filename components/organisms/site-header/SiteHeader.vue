@@ -4,29 +4,21 @@
     @mouseenter="showNav"
   >
     <SiteHeaderNavigation
-      :show-scroll-button="showScrollButton"
-      :links="primaryNav"
       class="site-header__nav"
-      @activeLinkClicked="wiggleNav"
+      :show-scroll-button="showScrollButton"
+      :show-time="navIsAtTop"
+      :links-primary="linksPrimary"
+      :links-secondary="linksSecondary"
     />
-
-    <Abacus :links="links" />
-    <Abacus :links="links" />
-    <Abacus :links="links" />
   </header>
 </template>
 
 <script>
-import Abacus from '@/components/organisms/Abacus.vue'
-
 import SiteHeaderNavigation from '~/components/organisms/site-header/SiteHeaderNavigation.vue'
-// import SiteHeaderMeta from '~/components/organisms/site-header/SiteHeaderMeta.vue'
 
 export default {
   components: {
-    Abacus,
     SiteHeaderNavigation
-    // SiteHeaderNavPrimary,
     // SiteHeaderMeta
   },
   data() {
@@ -37,7 +29,7 @@ export default {
       showScrollButton: false,
       highlightedIndex: null,
       isWiggling: false,
-      primaryNav: [
+      linksPrimary: [
         {
           title: 'Egstad',
           path: '/'
@@ -51,18 +43,30 @@ export default {
           path: 'profile'
         }
       ],
-      links: [
+      linksSecondary: [
         {
-          title: 'Egstad',
-          path: '/'
+          title: 'All',
+          path: '/work'
         },
         {
-          title: 'Work',
-          path: 'work'
+          title: '#Design',
+          abbr: '#Dsgn',
+          path: '/work/design'
         },
         {
-          title: 'About',
-          path: 'profile'
+          title: '#Development',
+          abbr: '#Devl',
+          path: '/work/development'
+        },
+        {
+          title: '#Typography',
+          abbr: '#Type',
+          path: '/work/development'
+        },
+        {
+          title: '#Illustration',
+          abbr: '#Illo',
+          path: '/testing-page'
         }
       ]
     }
@@ -81,6 +85,7 @@ export default {
     this.$nuxt.$on('window::scrollUp', this.scrollDirectionChange)
     this.$nuxt.$on('window::scrollDown', this.scrollDirectionChange)
     this.$nuxt.$on('nav::updateActiveItem', this.updateActiveItem)
+    this.$nuxt.$on('activeLinkClicked', this.wiggleNav)
 
     this.scrollHandler(0)
   },
@@ -140,44 +145,46 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-$margin: clamp(0.5em, 1.5vw, 2em);
-
+<style lang="scss">
 .site-header {
+  --gutter: 12px;
+  @media (min-width: 1024px) {
+    --gutter: #{calc-vw(12px, 1024px)};
+  }
+
+  /* Positioning */
   position: fixed;
   z-index: 20;
-  top: 3px;
   left: 0;
+
+  /* Display & Box Model */
+  display: flex;
   width: 100%;
-  min-width: 300px;
-  padding: $margin;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+
+  /* Color */
+  // background-color: var(--background);
+  // background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l)), 80%);
+
+  /* Other */
+  @include transition {
+    transition: transform var(--trans-medium) var(--ease),
+      background-color var(--trans-short) var(--trans-delay) var(--ease);
+  }
 
   &.navIsHidden {
-    @media screen and (prefers-reduced-motion: no-preference) {
-      ::v-deep .site-header__nav,
-      ::v-deep .--toggle-menu,
-      ::v-deep .--scroll-up {
-        transform: translate3d(0, calc(-150% - #{$margin}), 0);
-      }
-      ::v-deep .--toggle-menu {
-        transition-delay: 100ms;
-      }
-      ::v-deep .--scroll-up {
-        transition-delay: 50ms;
-      }
-    }
+    transform: translate3d(0, calc(-200% - var(--gutter)), 0);
+    box-shadow: none;
+  }
+
+  &.navIsAtTop {
+    background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) + 7%), 0%);
   }
 
   &.isWiggling {
     animation: shakeX 1s ease;
   }
-
-  // &.navIsAtTop {
-  //   .row {
-  //     background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 10%), 100%);
-  //     box-shadow: none;
-  //   }
-  // }
 }
 
 @keyframes shakeX {

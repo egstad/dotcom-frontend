@@ -2,12 +2,6 @@ import gsap from 'gsap'
 
 const tl = gsap.timeline()
 
-// const setTransitionToFalse = (doneCallback) => {
-//   console.log(this)
-//   this.$store.commit('setIsTransitioning', false)
-//   doneCallback()
-// }
-
 export const routeTransitionFade = {
   transition: {
     name: 'page',
@@ -15,7 +9,6 @@ export const routeTransitionFade = {
     css: false,
     beforeEnter(el) {
       if (this.$store.state.device.hideAnimations) return
-      this.$store.commit('setIsTransitioning', true)
 
       tl.set(el, {
         opacity: 0,
@@ -24,6 +17,7 @@ export const routeTransitionFade = {
     },
     enter(el, done) {
       if (this.$store.state.device.hideAnimations) done()
+      let transOverCalled = false
 
       tl.to(el, {
         ease: 'expo.out',
@@ -31,12 +25,28 @@ export const routeTransitionFade = {
         delay: 0.5,
         opacity: 1,
         y: 0,
+        onUpdate: () => {
+          // waiting until the end took too long,
+          // this waits until animatino has hit 50%
+          if (!transOverCalled && tl.progress() >= 0.5) {
+            transOverCalled = true
+            this.$store.commit('setIsTransitioning', false)
+          }
+        },
         onComplete: done
       })
     },
-    afterEnter() {
-      this.$store.commit('setIsTransitioning', false)
-    },
+    // afterEnter() {
+    //   if (this.$store.state.isTransitioning) {
+    //     this.$store.commit('setIsTransitioning', false)
+    //   }
+    // },
+    // beforeLeave() {
+    //   // this is set in Routes.js instead
+    //   if (!this.$store.state.isTransitioning) {
+    //     this.$store.commit('setIsTransitioning', true)
+    //   }
+    // },
     leave(el, done) {
       if (this.$store.state.device.hideAnimations) done()
 

@@ -1,5 +1,5 @@
 <template>
-  <ul class="abacus">
+  <ul class="abacus" :class="[{ 'bead-is-trans': beadIsTransitioning }]">
     <li
       v-for="(link, i) in links"
       :key="i"
@@ -9,20 +9,29 @@
         { 'is-hovered': i === hoveredIndex },
         { 'is-active': i === activeIndex }
       ]"
-      @mouseenter="onHover"
+      @mouseenter="onHover($event, i)"
       @mouseleave="onLeave"
     >
       <nuxt-link
-        v-touch:tap.self="onClick"
+        ref="link"
         class="abacus__link"
         :to="link.path"
-        @focus.native="onFocus"
+        @click.native="onClick"
+        @focus.native="onFocus($event, i)"
         @blur.native="init"
       >
-        {{ link.title }}
+        <template v-if="link.abbr">
+          <span v-if="largeBreakpoint">{{ link.title }}</span>
+          <abbr v-else :title="link.title">{{ link.abbr }}</abbr>
+        </template>
+        <template v-else>
+          {{ link.title }}
+        </template>
       </nuxt-link>
     </li>
-    <div v-show="mounted" ref="bead" class="abacus__bead"></div>
+
+    <div v-show="showBead" ref="bead" class="abacus__bead"></div>
+    <div class="abacus__row"></div>
   </ul>
 </template>
 
@@ -32,63 +41,112 @@ export default {
     links: {
       type: Array,
       required: true
+    },
+    route: {
+      type: String,
+      required: false,
+      default: '/'
     }
   },
   data() {
     return {
       mounted: false,
       activeIndex: null,
+      // lastIndex: null,
       hoveredIndex: undefined,
-      hasClickedLink: false
+      hasClickedLink: false,
+      showBead: false,
+      beadIsTransitioning: null
+    }
+  },
+  computed: {
+    largeBreakpoint() {
+      return this.$store.state.device.winWidth >= 1920
     }
   },
   watch: {
     hoveredIndex(newValue) {
-      if (newValue === undefined) return
-      this.styleActiveLinkByIndex(newValue)
+      // if (newValue === undefined) return
+      this.styleBead(newValue)
+    },
+    route(newValue) {
+      // no route?
+      const routeNotListed = this.getIndexOfPath(newValue) === undefined
+      // highlight the first item
+      this.selectByIndex(routeNotListed ? 0 : this.getIndexOfPath(newValue))
+      this.styleBead()
     }
   },
   mounted() {
     this.init()
-    this.$nuxt.$on('window::resize', this.styleActiveLinkByIndex)
-    this.$nuxt.$on('page::mounted', this.setToActiveLink)
-    this.mounted = true
+    this.$nuxt.$on('window::resize', this.styleBead)
   },
   beforeDestroy() {
-    this.$nuxt.$off('window::resize', this.styleActiveLinkByIndex)
-    this.$nuxt.$off('page::mounted', this.setToActiveLink)
+    this.$nuxt.$off('window::resize', this.styleBead)
+
+    if (this.$refs.bead)
+      this.$refs.bead.removeEventListener(
+        'transitionend',
+        this.beadOnTransitionEnd
+      )
   },
   methods: {
     init() {
-      this.activeIndex = this.getActiveLinkIndex()
-      this.hoveredIndex = this.activeIndex
+      this.selectByActiveNuxtLink()
+      // this.lastIndex = this.activeIndex
       this.hasClickedLink = false
     },
-    onHover(ev) {
-      this.hoveredIndex = this.getElementIndex(ev.target)
+    onHover(ev, index) {
+      this.hoveredIndex = index
+      this.showBead = true
+    },
+    selectByIndex(index) {
+      // this.lastIndex = this.activeIndex
+      this.activeIndex = index
+      this.hoveredIndex = index
     },
     onLeave() {
+      // if clicked, don't snap back to active
       if (this.hasClickedLink) return
-      this.setToActiveLink()
+
+      this.selectByActiveNuxtLink()
     },
-    onFocus(ev) {
-      this.hoveredIndex = this.getElementIndex(ev.target.parentNode)
+    onFocus(ev, index) {
+      this.hoveredIndex = index
     },
-    onClick(ev) {
-      this.activeIndex = this.getElementIndex(ev.target.parentNode)
+    onClick() {
       this.hasClickedLink = true
 
       // fire animation if clicked page is already active
-      if (this.activeIndex === this.getActiveLinkIndex()) {
-        this.$emit('activeLinkClicked')
+      if (this.activeIndex === this.getActiveIndex()) {
+        this.$nuxt.$emit('activeLinkClicked')
       }
     },
-    styleActiveLinkByIndex() {
+    styleBead() {
+      if (!this.$refs.bead) return
       const self = this.hoveredIndex ?? this.activeIndex
-      this.$refs.bead.style.transform = `translate3d(${100 * self}%,0,0)`
+      this.hasClickedLink = false
+      this.showBead = true
+      this.$refs.bead.style.transform = `scaleY(1.01) translate3d(${100 *
+        self}%,-50%,0)`
       this.$refs.bead.style.width = `${100 / this.$refs.item.length}%`
+
+      // update state
+      this.beadIsTransitioning = true
+      this.$refs.bead.addEventListener(
+        'transitionend',
+        this.beadOnTransitionEnd
+      )
     },
-    getActiveLinkIndex() {
+    beadOnTransitionEnd() {
+      if (!this.$refs.bead) return
+      this.$refs.bead.removeEventListener(
+        'transitionend',
+        this.beadOnTransitionEnd
+      )
+      this.beadIsTransitioning = false
+    },
+    getActiveIndex() {
       let activeLinkIndex
       this.$refs.item.forEach((listItem, index) => {
         if (listItem.children[0].classList.contains('nuxt-link-exact-active'))
@@ -105,33 +163,32 @@ export default {
 
       return activeLinkIndex
     },
-    getElementIndex(element) {
-      return [...element.parentNode.children].indexOf(element)
+    getIndexOfPath(path) {
+      let activeLinkIndex
+
+      this.$refs.link.forEach((nuxtLink, index) => {
+        const url = new URL(nuxtLink.$el.href)
+        const rel = url.toString().substring(url.origin.length)
+
+        if (rel === path) activeLinkIndex = index
+      })
+
+      return activeLinkIndex
     },
-    setToActiveLink() {
-      this.activeIndex = this.getActiveLinkIndex()
-      this.hoveredIndex = this.activeIndex
+    selectByActiveNuxtLink() {
+      this.selectByIndex(this.getActiveIndex())
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-$height: 36px;
-$inset: 0px;
-$gap: 8px;
-$blur: 8px;
-$trans-time: 250ms;
-
 .abacus {
-  overflow-x: hidden;
   position: relative;
   display: flex;
   width: 100%;
   flex: 1;
-  border-radius: $height;
-  background-color: var(--accent);
-  background: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
+  min-width: 240px;
 
   &__item {
     position: relative;
@@ -142,9 +199,6 @@ $trans-time: 250ms;
 
   &__link {
     display: block;
-    border-radius: $height;
-    height: $height;
-    outline: none;
     flex: 1 1;
     color: var(--foreground);
     font-family: var(--mono);
@@ -152,72 +206,90 @@ $trans-time: 250ms;
     text-transform: uppercase;
     text-decoration: none;
     text-align: center;
-    line-height: $height + ($inset * 2);
-    font-size: 0.9em;
-    padding-left: 0 1em;
+    line-height: var(--button-height);
+    padding-top: var(--button-click-offset);
+    padding-bottom: var(--button-click-offset);
+    font-size: 12px;
+
+    // @include bp($md) {
+    //   font-size: 12px;
+    // }
 
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: color 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
+      transition: color var(--trans-short) var(--ease-back);
     }
 
-    @media (max-width: 400px) {
-      font-size: 0.9em;
-    }
-
-    // update text color on hover
-    :not(.is-active):not(.is-hovered) &,
     .is-active:not(.is-hovered) & {
       color: var(--foreground);
     }
 
-    // update background on hover
     .is-hovered &,
-    .is-hovered.is-active & {
-      color: var(--background) !important;
+    .is-active & {
+      color: var(--background);
+    }
+
+    abbr {
+      text-decoration: none;
+    }
+  }
+
+  &__row {
+    position: absolute;
+    z-index: 0;
+    top: var(--button-click-offset);
+    left: 0;
+    right: 0;
+    height: var(--button-height);
+    border-radius: 100vw;
+    pointer-events: none;
+    background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
+    width: 100%;
+    // transform: scaleY(0.99);
+
+    @media screen and (prefers-reduced-motion: no-preference) {
+      transition: background-color var(--transition-page);
     }
   }
 
   &__bead {
     position: absolute;
-    height: calc(100% - #{$inset});
-    border-radius: $height;
+    height: var(--button-height);
+    border-radius: var(--button-height);
     z-index: 1;
-    top: $inset;
-    bottom: $inset;
+    top: 50%;
     left: 0;
     background-color: var(--foreground);
     pointer-events: none;
     transform: translate3d(0, -50%, 0);
+    // transform-origin: top;
 
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: transform 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
+      transition: background-color var(--transition-page),
+        transform var(--trans-medium) var(--ease-back);
     }
   }
 }
 
-.isTransitioning {
-  .abacus {
-    @media screen and (prefers-reduced-motion: no-preference) {
-      transition: background-color 750ms 250ms ease-in-out;
-    }
-  }
-
+// quickly transition text color when the bead is moving
+.bead-is-trans {
   .abacus__link {
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: color 750ms 250ms ease-in-out;
-
-      // update background on hover
-      .is-hovered &,
-      .is-hovered.is-active & {
-        transition: color 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
-      }
+      transition: color var(--trans-short) var(--ease);
     }
   }
+}
 
-  .abacus__bead {
+// page is transitioning
+.isTransitioning {
+  // disable hovers
+  .abacus {
+    pointer-events: none;
+  }
+
+  // match page transition
+  .abacus__link {
     @media screen and (prefers-reduced-motion: no-preference) {
-      transition: background-color 750ms 250ms ease-in-out,
-        transform 400ms cubic-bezier(0.375, 0.39, 0, 1.175);
+      transition: color var(--transition-page);
     }
   }
 }

@@ -15,7 +15,7 @@
     </div>
 
     <!-- <Debug /> -->
-    <Scrim />
+    <!-- <Scrim /> -->
   </div>
 </template>
 
@@ -24,13 +24,13 @@ import SiteHeader from '@/components/organisms/site-header/SiteHeader'
 import SiteFooter from '@/components/organisms/site-footer/SiteFooter'
 
 // import Debug from '@/components/templates/Debug'
-import Scrim from '@/components/templates/Scrim'
+// import Scrim from '@/components/templates/Scrim'
 
 export default {
   components: {
     SiteHeader,
-    SiteFooter,
-    Scrim
+    SiteFooter
+    // Scrim
     // Debug
   },
   computed: {
@@ -55,38 +55,15 @@ export default {
     isTransitioning() {
       return this.$store.state.isTransitioning
     }
-    // layoutHasMounted() {
-    //   return this.$store.state.layoutHasMounted
-    // }
   },
   watch: {
-    $route(to, from) {
-      this.$nuxt.$emit('route::updated', to)
-
-      if (to.name === 'work') {
-        this.$nuxt.$emit('filter::show')
-      } else {
-        this.$nuxt.$emit('filter::hide')
-      }
-      // this.$nuxt.$emit('filter::hide')
-    },
-    // isTouch(state) {
-    //   this.toggleDocClass('is-touch', state)
-    // },
-    // isCursor(state) {
-    //   this.toggleDocClass('is-cursor', state)
-    // },
-    // isMobile(state) {
-    //   this.toggleDocClass('is-mobile', state)
-    // },
-    // isTransitioning(state) {
-    //   this.toggleDocClass('is-transitioning', state)
-    // },
     cssVars(state) {
       return state
     }
   },
   mounted() {
+    // remove when scrim is back
+    this.$store.commit('setIsTransitioning', false)
     this.$store.commit('layoutHasMounted', true)
   },
   methods: {
@@ -109,14 +86,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/page-transition';
 .site {
+  // transition
+  --trans-long: 750ms;
+  --trans-medium: 400ms;
+  --trans-short: 200ms;
+  --trans-delay: 250ms;
+  --ease: ease-in-out;
+  --ease-back: cubic-bezier(0.375, 0.39, 0, 1.175);
+  --transition-page: var(--trans-long) var(--trans-delay) var(--ease);
+
+  // site header and abacuses
+  --header-item-gap: 8px;
+  --button-height: 36px;
+  --button-click-offset: 16px;
+
+  @media (min-width: 1024px) {
+    --header-item-gap: 12px;
+    --button-click-offset: 16px;
+  }
+
+  // @media (min-width: $xx) {
+  //   --button-height: 44px;
+  // }
+
   background-color: var(--background);
   color: var(--foreground);
-
-  @media screen and (prefers-reduced-motion: no-preference) {
-    transition: all 750ms 250ms ease-in-out;
-    transition-property: background-color, color;
-  }
 
   ::selection {
     background: hsla(var(--a-h), var(--a-s), var(--a-l), 50%);
