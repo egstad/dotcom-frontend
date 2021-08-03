@@ -16,6 +16,22 @@
     }
   }
 
+  .site-menu {
+    // background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) + 7%), 0%);
+
+    @include transition {
+      transition: background-color var(--transition-page);
+    }
+
+    ::v-deep .menu__link,
+    ::v-deep .menu__link.nuxt-link-exact-active {
+      @include transition {
+        transition: background-color var(--transition-page),
+          color var(--transition-page);
+      }
+    }
+  }
+
   // Floating Action Button
   ::v-deep .fab__wrapper {
     @include transition {

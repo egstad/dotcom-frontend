@@ -6,6 +6,12 @@
       <Fab
         :show="filterIsVisible && !largeBreakpoint"
         label="Open Filter &amp; Search Modal"
+        :style="[
+          menuIsTransitioning
+            ? { pointerEvents: 'none' }
+            : { pointerEvents: 'auto' }
+        ]"
+        @click.native="onFilterClick"
       >
         <IconEllipsis />
       </Fab>
@@ -76,6 +82,9 @@ export default {
     largeBreakpoint() {
       // XX breakpoint
       return this.$store.state.device.winWidth >= 1300
+    },
+    menuIsTransitioning() {
+      return this.$store.state.menuIsTransitioning
     }
   },
   methods: {
@@ -83,6 +92,9 @@ export default {
       if (process.client) {
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }
+    },
+    onFilterClick() {
+      this.$store.commit('setMenuVisibility', !this.$store.state.menuIsOpen)
     }
   }
 }

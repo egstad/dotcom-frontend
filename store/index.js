@@ -7,6 +7,8 @@ export const state = () => ({
   layoutHasMounted: null,
   isTransitioning: null,
   activeNavigationRoute: null,
+  menuIsOpen: false,
+  menuIsTransitioning: false,
   filterIsVisible: null,
   cssVars: null
 })
@@ -26,6 +28,12 @@ export const mutations = {
   },
   setFilterVisibility(state, val) {
     state.filterIsVisible = val
+  },
+  setMenuVisibility(state, val) {
+    state.menuIsOpen = val
+  },
+  setMenuTransitionState(state, val) {
+    state.menuIsTransitioning = val
   }
 }
 

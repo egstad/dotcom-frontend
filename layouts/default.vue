@@ -14,6 +14,9 @@
       <SiteFooter />
     </div>
 
+    <!-- <LazyTime v-if="timeInView" ref="time" :show="true" /> -->
+
+    <SiteMenu ref="menu" />
     <!-- <Debug /> -->
     <!-- <Scrim /> -->
   </div>
@@ -22,6 +25,8 @@
 <script>
 import SiteHeader from '@/components/organisms/site-header/SiteHeader'
 import SiteFooter from '@/components/organisms/site-footer/SiteFooter'
+import SiteMenu from '@/components/organisms/site-menu/SiteMenu'
+// import LazyTime from '~/components/atoms/LazyTime.vue'
 
 // import Debug from '@/components/templates/Debug'
 // import Scrim from '@/components/templates/Scrim'
@@ -29,9 +34,16 @@ import SiteFooter from '@/components/organisms/site-footer/SiteFooter'
 export default {
   components: {
     SiteHeader,
-    SiteFooter
+    SiteFooter,
+    SiteMenu
+    // LazyTime
     // Scrim
     // Debug
+  },
+  data() {
+    return {
+      timeInView: false
+    }
   },
   computed: {
     isCursor() {
@@ -62,10 +74,18 @@ export default {
     }
   },
   mounted() {
+    setTimeout(() => {
+      this.timeInView = true
+    }, 2000)
+
+    setTimeout(() => {
+      this.timeInView = false
+    }, 4000)
     // remove when scrim is back
     this.$store.commit('setIsTransitioning', false)
     this.$store.commit('layoutHasMounted', true)
   },
+
   methods: {
     toggleDocClass(className, valIsTrue) {
       const doc = document.documentElement
