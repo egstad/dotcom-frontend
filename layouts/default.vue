@@ -87,8 +87,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import '@/assets/styles/page-transition';
+<style lang="scss" scoped>
 .site {
   // transition
   --trans-long: 750ms;
@@ -147,6 +146,48 @@ export default {
     width: 100%;
     overflow: hidden;
     flex: 1 0 auto;
+  }
+}
+
+.site.isTransitioning {
+  // Site-wide
+  background-color: var(--background);
+  color: var(--foreground);
+
+  @include transition {
+    transition: all var(--transition-page);
+    transition-property: background-color, color;
+  }
+
+  .site-header {
+    background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) + 7%), 0%);
+
+    @include transition {
+      transition: background-color var(--trans-short) var(--ease);
+    }
+  }
+
+  .site-menu {
+    // background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) + 7%), 0%);
+
+    @include transition {
+      transition: background-color var(--transition-page);
+    }
+
+    ::v-deep .menu__link {
+      @include transition {
+        transition: background-color var(--transition-page),
+          color var(--transition-page);
+      }
+    }
+  }
+
+  // Floating Action Button
+  ::v-deep .fab__wrapper {
+    @include transition {
+      transition: background-color var(--transition-page),
+        color var(--transition-page);
+    }
   }
 }
 

@@ -105,28 +105,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
-$height: 36px;
-$inset: 0px;
-$gap: 8px;
-$blur: 8px;
-$trans-time: 250ms;
-
-.site-header__nav {
-  /* Positioning */
-  position: relative;
-
-  /* Display & Box Model */
-  display: flex;
-  width: 100%;
-
-  /* Other */
-  user-select: none;
-  @include transition {
-    transition: transform $trans-time ease-in-out;
-  }
-}
-
+<style lang="scss" scoped>
 .nav__primary {
   /* Display & Box Model */
   display: inline-flex;
@@ -136,7 +115,7 @@ $trans-time: 250ms;
     width: auto;
   }
 
-  > .abacus {
+  ::v-deep .abacus {
     flex: 1;
 
     @include bp($md) {
@@ -152,7 +131,7 @@ $trans-time: 250ms;
   justify-content: flex-end;
   flex: 1;
 
-  > .abacus {
+  ::v-deep .abacus {
     transform: translate3d(0, -100%, 0);
 
     @include bp($md) {
