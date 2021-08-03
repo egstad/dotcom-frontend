@@ -14,7 +14,7 @@
       <SiteFooter />
     </div>
 
-    <SiteMenu class="site-menu" ref="menu" />
+    <SiteMenu class="site-menu" />
     <!-- <Debug /> -->
     <!-- <Scrim /> -->
   </div>
@@ -188,17 +188,19 @@ export default {
 
     // match page transition
     &__link {
-      @media screen and (prefers-reduced-motion: no-preference) {
+      @include transition {
         transition: color var(--transition-page);
       }
     }
   }
 
   // Floating Action Button
-  ::v-deep .fab__wrapper {
-    @include transition {
-      transition: background-color var(--transition-page),
-        color var(--transition-page);
+  ::v-deep .fab {
+    &__wrapper {
+      @include transition {
+        transition: background-color var(--transition-page),
+          color var(--transition-page);
+      }
     }
   }
 }
