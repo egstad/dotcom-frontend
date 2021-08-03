@@ -4,8 +4,9 @@
       <Abacus :route="nextRoute" :links="linksPrimary" />
 
       <Fab
-        :show="filterIsVisible && !largeBreakpoint"
+        :show="(filterIsVisible && !largeBreakpoint) || menuIsOpen"
         label="Open Filter &amp; Search Modal"
+        class="menu-toggle"
         :is-active="menuIsOpen"
         :style="[
           menuIsTransitioning
@@ -21,7 +22,7 @@
     <div class="nav__secondary">
       <transition name="filter" mode="out-in">
         <Abacus
-          v-if="filterIsVisible && largeBreakpoint"
+          v-if="filterIsVisible && largeBreakpoint && !menuIsOpen"
           :links="linksSecondary"
         />
       </transition>

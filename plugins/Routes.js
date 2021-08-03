@@ -25,9 +25,7 @@ export default ({ app }) => {
   const waitForHeaderTransitionToComplete = async (nextRoute) => {
     await app.store.commit('setActiveNavigationRoute', nextRoute.path)
 
-    if (reduceMotion) {
-      await new Promise((resolve) => setTimeout(resolve, getDelayDuration()))
-    }
+    await new Promise((resolve) => setTimeout(resolve, getDelayDuration()))
   }
 
   /**
@@ -36,6 +34,9 @@ export default ({ app }) => {
    */
   const getDelayDuration = () => {
     if (process.server) return
+
+    if (reduceMotion) return 0
+
     return parseFloat(
       getComputedStyle(document.querySelector('.site')).getPropertyValue(
         '--trans-short'

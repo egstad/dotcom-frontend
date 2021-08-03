@@ -23,8 +23,7 @@
       transition: background-color var(--transition-page);
     }
 
-    ::v-deep .menu__link,
-    ::v-deep .menu__link.nuxt-link-exact-active {
+    ::v-deep .menu__link {
       @include transition {
         transition: background-color var(--transition-page),
           color var(--transition-page);

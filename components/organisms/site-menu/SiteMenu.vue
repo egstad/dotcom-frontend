@@ -6,7 +6,13 @@
     @leave="leave"
     @after-leave="afterLeave"
   >
-    <div v-show="menuIsOpen" class="site-menu">
+    <div
+      v-show="menuIsOpen"
+      class="site-menu"
+      role="dialog"
+      aria-label="Filter work by category. To close this modal, press Escape."
+      :aria-modal="menuIsOpen"
+    >
       <ul class="menu__list">
         <li v-for="(link, i) in links" :key="i" ref="item" class="menu__item">
           <nuxt-link ref="link" class="menu__link" :to="link.path">
@@ -36,6 +42,11 @@ export default {
   data() {
     return {
       tl: null,
+      trappedEls: null,
+      trappedFirst: null,
+      trappedLast: null,
+      trappedToggle: null,
+      trappedCurrentIndex: null,
       links: [
         {
           title: '#All',
@@ -94,10 +105,15 @@ export default {
     menuIsOpen(isOpen) {
       if (isOpen) {
         document.body.style.overflowY = 'hidden'
+        this.trapInit()
       } else {
         document.body.style.overflowY = ''
+        this.trapDestroy()
       }
     }
+  },
+  mounted() {
+    this.trapGetEls()
   },
   beforeDestroy() {
     if (this.tl) this.tl.kill()
@@ -106,6 +122,8 @@ export default {
     beforeEnter(el) {
       this.tl = gsap.timeline()
       this.$store.commit('setMenuTransitionState', true)
+
+      if (this.hideAnimations) return
 
       // hide element
       this.tl.set(el, {
@@ -162,6 +180,61 @@ export default {
     afterLeave() {
       this.$store.commit('setMenuTransitionState', false)
       this.tl.kill()
+    },
+    trapGetEls() {
+      // fetch all tabbable links
+      const filters = this.$refs.link.map((component) => component.$el)
+      // include the menu toggle
+      const toggle = this.$parent.$el.querySelector('.menu-toggle')
+      // include menu links
+      const nav = this.$parent.$el.querySelectorAll(
+        '.nav__primary .abacus__link'
+      )
+
+      this.trappedToggle = toggle
+      this.trappedEls = [toggle, ...filters, ...nav]
+
+      // Save the first and last focusable elements
+      this.trappedFirst = this.trappedEls[0]
+      this.trappedLast = this.trappedEls[this.trappedEls.length - 1]
+    },
+    trapInit() {
+      window.addEventListener('keydown', this.onKeydown)
+      this.trappedCurrentIndex = 0
+    },
+    trapDestroy() {
+      window.removeEventListener('keydown', this.onKeydown)
+      this.trappedToggle.focus()
+    },
+    onKeydown(ev) {
+      const isTabPressed = ev.key === 'Tab' || ev.keyCode === 9
+
+      if (!isTabPressed) {
+        return
+      }
+
+      ev.preventDefault()
+
+      if (ev.shiftKey) {
+        if (document.activeElement === this.trappedFirst) {
+          this.trappedCurrentIndex = this.trappedEls.length - 1
+        } else {
+          this.trappedCurrentIndex -= 1
+        }
+      }
+      // tab was pressed at the last element
+      else if (document.activeElement === this.trappedLast) {
+        this.trappedCurrentIndex = 0
+      }
+      // default tab press
+      else {
+        this.trappedCurrentIndex += 1
+      }
+
+      this.trappedEls[this.trappedCurrentIndex].focus()
+    },
+    menuClose() {
+      this.$store.commit('setMenuVisibility', false)
     }
   }
 }
@@ -203,16 +276,12 @@ export default {
   /* Other */
 }
 
-.menu__item {
-  opacity: 0;
-}
-
 .menu__link {
   /* Display & Box Model */
   display: block;
   padding: 0.6em 1.2em;
   border-radius: 100vw;
-
+  outline-offset: 0.1em;
   /* Color */
   background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
   /* Text */

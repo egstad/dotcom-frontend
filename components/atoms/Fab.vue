@@ -1,6 +1,6 @@
 <template>
   <transition name="fab" mode="out-in">
-    <button v-if="show" class="fab" :class="['fab', { isActive }]">
+    <button v-show="show" class="fab" :class="['fab', { isActive }]">
       <div class="fab__wrapper" :aria-label="label">
         <span class="fab__content">
           <slot></slot>
