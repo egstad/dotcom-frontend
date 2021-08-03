@@ -104,10 +104,10 @@ export default {
   watch: {
     menuIsOpen(isOpen) {
       if (isOpen) {
-        document.body.style.overflowY = 'hidden'
+        document.documentElement.style.overflow = 'hidden'
         this.trapInit()
       } else {
-        document.body.style.overflowY = ''
+        document.documentElement.style.overflow = ''
         this.trapDestroy()
       }
     }
@@ -127,7 +127,8 @@ export default {
 
       // hide element
       this.tl.set(el, {
-        y: '100%'
+        // y: '100%',
+        opacity: 0
       })
 
       // hide links
@@ -142,7 +143,8 @@ export default {
         .to(
           el,
           {
-            y: 0,
+            // y: 0,
+            opacity: 1,
             duration: this.hideAnimations ? 0 : 1,
             ease: 'Power4.easeInOut',
             onComplete: done
@@ -171,7 +173,8 @@ export default {
 
       // hide menu
       this.tl.to(el, {
-        y: '-100%',
+        // y: '-100%',
+        opacity: 0,
         duration: this.hideAnimations ? 0 : 1,
         ease: 'Power4.easeInOut',
         onComplete: done
@@ -251,6 +254,7 @@ export default {
   top: 0;
   left: 0;
   overflow-y: auto;
+  backdrop-filter: blur(clamp(2em, 2vw, 8em)) brightness(80%) saturate(200%);
   /* Display & Box Model */
   display: grid;
   grid-template-rows: 1fr var(--header-height);
@@ -258,11 +262,12 @@ export default {
   height: 100vh;
   height: -webkit-fill-available;
   /* Color */
-  background-color: var(--background);
+  background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 50%);
+  /* Other */
+  overscroll-behavior: contain;
 }
 
 .menu__list {
-  /* Positioning */
   /* Display & Box Model */
   display: flex;
   flex-direction: column;
@@ -270,10 +275,6 @@ export default {
   align-items: center;
   margin-top: var(--header-height);
   padding: calc(var(--header-height) * 0.25) 0;
-
-  /* Color */
-  /* Text */
-  /* Other */
 }
 
 .menu__link {
@@ -321,7 +322,10 @@ export default {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  /* Color */
+  padding-left: calc(var(--button-click-offset) * 1.5);
+  padding-right: calc(var(--button-click-offset) * 1.5);
+  font-size: 12px;
+  text-transform: uppercase;
   /* Text */
   line-height: var(--header-height);
   /* Other */

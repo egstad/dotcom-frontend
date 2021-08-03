@@ -2,7 +2,13 @@
   <div
     class="site"
     :style="cssVars"
-    :class="[{ isCursor }, { isTouch }, { isMobile }, { isTransitioning }]"
+    :class="[
+      { isCursor },
+      { isTouch },
+      { isMobile },
+      { isTransitioning },
+      { isMenuOpen }
+    ]"
   >
     <SiteHeader class="site-header" />
 
@@ -58,7 +64,7 @@ export default {
     isTransitioning() {
       return this.$store.state.isTransitioning
     },
-    menuIsOpen() {
+    isMenuOpen() {
       return this.$store.state.menuIsOpen
     }
   },

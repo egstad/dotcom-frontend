@@ -52,13 +52,20 @@ export default {
   background: 0;
   border: 0;
   padding: 0;
+  // outline: none;
 
   /* Other */
   cursor: pointer;
 
+  // &:hover,
+  // &:focus-visible {
+  //   color: var(--background);
+  //   background-color: var(--foreground);
+  // }
+
   &.isActive .fab__wrapper,
   &:hover .fab__wrapper,
-  &:focus-visible .fab_wrapper {
+  &:focus-within .fab_wrapper {
     background-color: var(--foreground);
     color: var(--background);
     outline-offset: 4px;
