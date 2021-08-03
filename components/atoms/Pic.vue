@@ -1,5 +1,6 @@
 <template>
-  <div class="pic__wrap" :style="{ backgroundColor: background }">
+  <!-- <div class="pic__wrap" :style="{ backgroundColor: background }"> -->
+  <div class="pic__wrap">
     <img
       ref="pic"
       class="pic"
@@ -11,6 +12,10 @@
       :alt="alt"
       :width="image.metadata.dimensions.width"
       :height="image.metadata.dimensions.height"
+      :style="{
+        backgroundColor: background,
+        backgroundImage: `url('${image.url}?w=320&auto=format&fit=max');`
+      }"
       @load="onLoad($event)"
       @error="onError($event)"
     />
@@ -113,14 +118,20 @@ export default {
   width: 100%;
   height: auto;
 
-  @media screen and (prefers-reduced-motion: no-preference) {
-    transition: opacity 400ms 400ms var(--ease);
+  @include transition {
+    transition: opacity 400ms 400ms var(--ease), blur 400ms 400ms var(--ease);
   }
-}
-.pic.is-loading {
-  opacity: 0;
-}
 
-/* .pic.has-errored {} */
-/* .pic.has-loaded {} */
+  &.is-loading {
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(15px);
+  }
+
+  &.has-loaded {
+    filter: blur(0);
+  }
+
+  // &.has-errored {}
+}
 </style>

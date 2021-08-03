@@ -4,8 +4,16 @@
       <Abacus :route="nextRoute" :links="linksPrimary" />
 
       <Fab
-        :show="filterIsVisible && !largeBreakpoint"
+        :show="(filterIsVisible && !largeBreakpoint) || menuIsOpen"
         label="Open Filter &amp; Search Modal"
+        class="menu-toggle"
+        :is-active="menuIsOpen"
+        :style="[
+          menuIsTransitioning
+            ? { pointerEvents: 'none' }
+            : { pointerEvents: 'auto' }
+        ]"
+        @click.native="onFilterClick"
       >
         <IconEllipsis />
       </Fab>
@@ -14,7 +22,7 @@
     <div class="nav__secondary">
       <transition name="filter" mode="out-in">
         <Abacus
-          v-if="filterIsVisible && largeBreakpoint"
+          v-if="filterIsVisible && largeBreakpoint && !menuIsOpen"
           :links="linksSecondary"
         />
       </transition>
@@ -76,6 +84,12 @@ export default {
     largeBreakpoint() {
       // XX breakpoint
       return this.$store.state.device.winWidth >= 1300
+    },
+    menuIsTransitioning() {
+      return this.$store.state.menuIsTransitioning
+    },
+    menuIsOpen() {
+      return this.$store.state.menuIsOpen
     }
   },
   methods: {
@@ -83,33 +97,15 @@ export default {
       if (process.client) {
         window.scrollTo({ top: 0, behavior: 'smooth' })
       }
+    },
+    onFilterClick() {
+      this.$store.commit('setMenuVisibility', !this.$store.state.menuIsOpen)
     }
   }
 }
 </script>
 
-<style lang="scss">
-$height: 36px;
-$inset: 0px;
-$gap: 8px;
-$blur: 8px;
-$trans-time: 250ms;
-
-.site-header__nav {
-  /* Positioning */
-  position: relative;
-
-  /* Display & Box Model */
-  display: flex;
-  width: 100%;
-
-  /* Other */
-  user-select: none;
-  @include transition {
-    transition: transform $trans-time ease-in-out;
-  }
-}
-
+<style lang="scss" scoped>
 .nav__primary {
   /* Display & Box Model */
   display: inline-flex;
@@ -119,7 +115,7 @@ $trans-time: 250ms;
     width: auto;
   }
 
-  > .abacus {
+  ::v-deep .abacus {
     flex: 1;
 
     @include bp($md) {
@@ -135,7 +131,7 @@ $trans-time: 250ms;
   justify-content: flex-end;
   flex: 1;
 
-  > .abacus {
+  ::v-deep .abacus {
     transform: translate3d(0, -100%, 0);
 
     @include bp($md) {

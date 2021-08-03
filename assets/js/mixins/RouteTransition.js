@@ -14,9 +14,14 @@ export const routeTransitionFade = {
         opacity: 0,
         y: 50
       })
+
+      if (this.$store.state.menuIsOpen) {
+        this.$store.commit('setMenuVisibility', false)
+      }
     },
     enter(el, done) {
       if (this.$store.state.device.hideAnimations) done()
+
       let transOverCalled = false
 
       tl.to(el, {
@@ -33,7 +38,9 @@ export const routeTransitionFade = {
             this.$store.commit('setIsTransitioning', false)
           }
         },
-        onComplete: done
+        onComplete: () => {
+          done()
+        }
       })
     },
     // afterEnter() {
@@ -41,6 +48,7 @@ export const routeTransitionFade = {
     //     this.$store.commit('setIsTransitioning', false)
     //   }
     // },
+
     // beforeLeave() {
     //   // this is set in Routes.js instead
     //   if (!this.$store.state.isTransitioning) {

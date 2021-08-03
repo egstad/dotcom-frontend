@@ -50,17 +50,17 @@ export default {
         {
           title: '#Design',
           abbr: '#Dsgn',
-          path: '/work/design'
+          path: '/'
         },
         {
           title: '#Development',
           abbr: '#Devl',
-          path: '/work/development'
+          path: '/work'
         },
         {
           title: '#Typography',
           abbr: '#Type',
-          path: '/work/development'
+          path: '/profile'
         },
         {
           title: '#Illustration',
@@ -133,7 +133,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .site-header {
   --gutter: 12px;
   @media (min-width: 1024px) {
@@ -168,6 +168,21 @@ export default {
 
   &.navIsAtTop {
     background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) + 7%), 0%);
+  }
+}
+
+.site-header__nav {
+  /* Positioning */
+  position: relative;
+
+  /* Display & Box Model */
+  display: flex;
+  width: 100%;
+
+  /* Other */
+  user-select: none;
+  @include transition {
+    transition: transform var(--trans-medium) ease-in-out;
   }
 }
 </style>

@@ -4,7 +4,7 @@
     :style="cssVars"
     :class="[{ isCursor }, { isTouch }, { isMobile }, { isTransitioning }]"
   >
-    <SiteHeader />
+    <SiteHeader class="site-header" />
 
     <div class="site-content" :style="mainStyle">
       <main class="site-main">
@@ -14,6 +14,7 @@
       <SiteFooter />
     </div>
 
+    <SiteMenu class="site-menu" />
     <!-- <Debug /> -->
     <!-- <Scrim /> -->
   </div>
@@ -22,14 +23,16 @@
 <script>
 import SiteHeader from '@/components/organisms/site-header/SiteHeader'
 import SiteFooter from '@/components/organisms/site-footer/SiteFooter'
-
+import SiteMenu from '@/components/organisms/site-menu/SiteMenu'
 // import Debug from '@/components/templates/Debug'
 // import Scrim from '@/components/templates/Scrim'
 
 export default {
   components: {
     SiteHeader,
-    SiteFooter
+    SiteFooter,
+    SiteMenu
+    // LazyTime
     // Scrim
     // Debug
   },
@@ -54,6 +57,9 @@ export default {
     },
     isTransitioning() {
       return this.$store.state.isTransitioning
+    },
+    menuIsOpen() {
+      return this.$store.state.menuIsOpen
     }
   },
   watch: {
@@ -62,20 +68,16 @@ export default {
     }
   },
   mounted() {
+    setTimeout(() => {
+      this.timeInView = true
+    }, 2000)
+
+    setTimeout(() => {
+      this.timeInView = false
+    }, 4000)
     // remove when scrim is back
     this.$store.commit('setIsTransitioning', false)
     this.$store.commit('layoutHasMounted', true)
-  },
-  methods: {
-    toggleDocClass(className, valIsTrue) {
-      const doc = document.documentElement
-
-      if (valIsTrue) {
-        doc.classList.add(className)
-      } else {
-        doc.classList.remove(className)
-      }
-    }
   }
   // this was from the @nuxtjs/sanity package days...
   // maybe it'll come in handy tho?
@@ -86,7 +88,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/page-transition';
 .site {
   // transition
   --trans-long: 750ms;
@@ -145,6 +146,62 @@ export default {
     width: 100%;
     overflow: hidden;
     flex: 1 0 auto;
+  }
+}
+
+.site.isTransitioning {
+  // Site-wide
+  background-color: var(--background);
+  color: var(--foreground);
+
+  @include transition {
+    transition: all var(--transition-page);
+    transition-property: background-color, color;
+  }
+
+  .site-header {
+    background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) + 7%), 0%);
+
+    @include transition {
+      transition: background-color var(--trans-short) var(--ease);
+    }
+  }
+
+  .site-menu {
+    // background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) + 7%), 0%);
+
+    @include transition {
+      transition: background-color var(--transition-page);
+    }
+
+    ::v-deep .menu__link {
+      @include transition {
+        transition: background-color var(--transition-page),
+          color var(--transition-page);
+      }
+    }
+  }
+
+  // disable hovers
+  ::v-deep .abacus {
+    pointer-events: none;
+
+    // match page transition
+    &__link {
+      @include transition {
+        transition: color var(--transition-page);
+      }
+    }
+  }
+
+  // Floating Action Button
+  ::v-deep .fab {
+    &__wrapper {
+      @include transition {
+        transition: background-color var(--transition-page),
+          color var(--transition-page);
+      }
+    }
   }
 }
 
