@@ -10,8 +10,7 @@
       :class="[
         'abacus__item',
         { 'is-hovered': i === hoveredIndex },
-        { 'is-active': i === activeIndex },
-        { 'is-last': i === lastIndex }
+        { 'is-active': i === activeIndex }
       ]"
       @mouseenter="onHover($event, i)"
       @mouseleave="onLeave"
@@ -56,7 +55,7 @@ export default {
     return {
       mounted: false,
       activeIndex: null,
-      lastIndex: null,
+      // lastIndex: null,
       hoveredIndex: undefined,
       hasClickedLink: false,
       showBead: false,
@@ -98,7 +97,7 @@ export default {
   methods: {
     init() {
       this.selectByActiveNuxtLink()
-      this.lastIndex = this.activeIndex
+      // this.lastIndex = this.activeIndex
       this.hasClickedLink = false
     },
     onHover(ev, index) {
@@ -219,17 +218,9 @@ export default {
     display: flex;
     flex: 1;
 
-    ::v-deep &.is-active:not(.is-hovered) .abacus__link,
-    ::v-deep &.is-last:not(.is-hovered) .abacus__link {
+    ::v-deep &.is-active:not(.is-hovered) .abacus__link {
       color: var(--foreground);
     }
-
-    // ::v-deep &.is-last .abacus__link:not(.nuxt-link-exact-active) {
-    //   background: #000;
-    //   // @include transition {
-    //   //   transition: color var(--trans-short) var(--ease-back);
-    //   // }
-    // }
 
     &.is-hovered ::v-deep .abacus__link,
     &.is-active ::v-deep .abacus__link {
