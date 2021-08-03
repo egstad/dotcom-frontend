@@ -6,7 +6,7 @@
     @leave="leave"
     @after-leave="afterLeave"
   >
-    <div v-if="menuIsOpen" class="site-menu">
+    <div v-show="menuIsOpen" class="site-menu">
       <ul class="menu__list">
         <li v-for="(link, i) in links" :key="i" ref="item" class="menu__item">
           <nuxt-link ref="link" class="menu__link" :to="link.path">
@@ -35,7 +35,7 @@ import gsap from 'gsap'
 export default {
   data() {
     return {
-      tl: gsap.timeline(),
+      tl: null,
       links: [
         {
           title: '#All',
@@ -83,26 +83,33 @@ export default {
     largeBreakpoint() {
       return this.$store.state.device.winWidth >= 375
     },
-    menuIsOpen() {
-      return this.$store.state.menuIsOpen
-    },
     hideAnimations() {
       return this.$store.state.device.hideAnimations
+    },
+    menuIsOpen() {
+      return this.$store.state.menuIsOpen
     }
   },
-  mounted() {
-    document.body.style.overflowY = 'hidden'
+  watch: {
+    menuIsOpen(isOpen) {
+      if (isOpen) {
+        document.body.style.overflowY = 'hidden'
+      } else {
+        document.body.style.overflowY = ''
+      }
+    }
   },
   beforeDestroy() {
-    document.body.style.overflowY = ''
-    this.tl.kill()
+    if (this.tl) this.tl.kill()
   },
   methods: {
     beforeEnter(el) {
+      this.tl = gsap.timeline()
       this.$store.commit('setMenuTransitionState', true)
+
       // hide element
       this.tl.set(el, {
-        y: this.$store.state.device.winHeight
+        y: '100%'
       })
 
       // hide links
@@ -112,22 +119,31 @@ export default {
       })
     },
     enter(el, done) {
-      // show nav
-      this.tl.to(el, {
-        y: 0,
-        duration: this.hideAnimations ? 0 : 1,
-        ease: 'Power4.easeInOut',
-        onComplete: done
-      })
-
-      gsap.to(this.$refs.item, {
-        delay: this.hideAnimations ? 0 : 0.6,
-        opacity: 1,
-        y: 0,
-        stagger: this.hideAnimations ? 0 : 0.15,
-        duration: this.hideAnimations ? 0 : 0.5,
-        ease: 'back.out(1.5)'
-      })
+      this.tl
+        // animate menu into place
+        .to(
+          el,
+          {
+            y: 0,
+            duration: this.hideAnimations ? 0 : 1,
+            ease: 'Power4.easeInOut',
+            onComplete: done
+          },
+          'menuShow'
+        )
+        // stagger menu items into place
+        .to(
+          this.$refs.item,
+          {
+            delay: this.hideAnimations ? 0 : 0.6,
+            opacity: 1,
+            y: 0,
+            stagger: this.hideAnimations ? 0 : 0.15,
+            duration: this.hideAnimations ? 0 : 0.5,
+            ease: 'back.out(1.5)'
+          },
+          'menuShow'
+        )
     },
     afterEnter() {
       this.$store.commit('setMenuTransitionState', false)
@@ -137,7 +153,7 @@ export default {
 
       // hide menu
       this.tl.to(el, {
-        y: -this.$store.state.device.winHeight,
+        y: '-100%',
         duration: this.hideAnimations ? 0 : 1,
         ease: 'Power4.easeInOut',
         onComplete: done
@@ -145,6 +161,7 @@ export default {
     },
     afterLeave() {
       this.$store.commit('setMenuTransitionState', false)
+      this.tl.kill()
     }
   }
 }
@@ -166,6 +183,7 @@ export default {
   grid-template-rows: 1fr var(--header-height);
   width: 100vw;
   height: 100vh;
+  height: -webkit-fill-available;
   /* Color */
   background-color: var(--background);
 }

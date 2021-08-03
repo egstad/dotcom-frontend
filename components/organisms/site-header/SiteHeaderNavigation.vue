@@ -6,6 +6,7 @@
       <Fab
         :show="filterIsVisible && !largeBreakpoint"
         label="Open Filter &amp; Search Modal"
+        :is-active="menuIsOpen"
         :style="[
           menuIsTransitioning
             ? { pointerEvents: 'none' }
@@ -85,6 +86,9 @@ export default {
     },
     menuIsTransitioning() {
       return this.$store.state.menuIsTransitioning
+    },
+    menuIsOpen() {
+      return this.$store.state.menuIsOpen
     }
   },
   methods: {

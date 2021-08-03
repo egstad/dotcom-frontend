@@ -1,6 +1,6 @@
 <template>
   <transition name="fab" mode="out-in">
-    <button v-if="show" class="fab">
+    <button v-if="show" class="fab" :class="['fab', { isActive }]">
       <div class="fab__wrapper" :aria-label="label">
         <span class="fab__content">
           <slot></slot>
@@ -21,6 +21,11 @@ export default {
       type: Boolean,
       required: false,
       default: true
+    },
+    isActive: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }
@@ -51,6 +56,7 @@ export default {
   /* Other */
   cursor: pointer;
 
+  &.isActive .fab__wrapper,
   &:hover .fab__wrapper,
   &:focus-visible .fab_wrapper {
     background-color: var(--foreground);

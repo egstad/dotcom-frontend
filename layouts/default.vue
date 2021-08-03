@@ -14,8 +14,6 @@
       <SiteFooter />
     </div>
 
-    <!-- <LazyTime v-if="timeInView" ref="time" :show="true" /> -->
-
     <SiteMenu ref="menu" />
     <!-- <Debug /> -->
     <!-- <Scrim /> -->
@@ -26,8 +24,6 @@
 import SiteHeader from '@/components/organisms/site-header/SiteHeader'
 import SiteFooter from '@/components/organisms/site-footer/SiteFooter'
 import SiteMenu from '@/components/organisms/site-menu/SiteMenu'
-// import LazyTime from '~/components/atoms/LazyTime.vue'
-
 // import Debug from '@/components/templates/Debug'
 // import Scrim from '@/components/templates/Scrim'
 
@@ -39,11 +35,6 @@ export default {
     // LazyTime
     // Scrim
     // Debug
-  },
-  data() {
-    return {
-      timeInView: false
-    }
   },
   computed: {
     isCursor() {
@@ -66,6 +57,9 @@ export default {
     },
     isTransitioning() {
       return this.$store.state.isTransitioning
+    },
+    menuIsOpen() {
+      return this.$store.state.menuIsOpen
     }
   },
   watch: {
@@ -84,18 +78,6 @@ export default {
     // remove when scrim is back
     this.$store.commit('setIsTransitioning', false)
     this.$store.commit('layoutHasMounted', true)
-  },
-
-  methods: {
-    toggleDocClass(className, valIsTrue) {
-      const doc = document.documentElement
-
-      if (valIsTrue) {
-        doc.classList.add(className)
-      } else {
-        doc.classList.remove(className)
-      }
-    }
   }
   // this was from the @nuxtjs/sanity package days...
   // maybe it'll come in handy tho?
