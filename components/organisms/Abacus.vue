@@ -294,24 +294,9 @@ export default {
 
 // quickly transition text color when the bead is moving
 .bead-is-trans {
-  .abacus__link {
+  ::v-deep .abacus__link {
     @media screen and (prefers-reduced-motion: no-preference) {
       transition: color var(--trans-short) var(--ease);
-    }
-  }
-}
-
-// page is transitioning
-.isTransitioning {
-  // disable hovers
-  .abacus {
-    pointer-events: none;
-  }
-
-  // match page transition
-  .abacus__link {
-    @media screen and (prefers-reduced-motion: no-preference) {
-      transition: color var(--transition-page);
     }
   }
 }

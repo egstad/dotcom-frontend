@@ -4,7 +4,7 @@
     :style="cssVars"
     :class="[{ isCursor }, { isTouch }, { isMobile }, { isTransitioning }]"
   >
-    <SiteHeader />
+    <SiteHeader class="site-header" />
 
     <div class="site-content" :style="mainStyle">
       <main class="site-main">
@@ -14,7 +14,7 @@
       <SiteFooter />
     </div>
 
-    <SiteMenu ref="menu" />
+    <SiteMenu class="site-menu" ref="menu" />
     <!-- <Debug /> -->
     <!-- <Scrim /> -->
   </div>
@@ -178,6 +178,18 @@ export default {
       @include transition {
         transition: background-color var(--transition-page),
           color var(--transition-page);
+      }
+    }
+  }
+
+  // disable hovers
+  ::v-deep .abacus {
+    pointer-events: none;
+
+    // match page transition
+    &__link {
+      @media screen and (prefers-reduced-motion: no-preference) {
+        transition: color var(--transition-page);
       }
     }
   }
