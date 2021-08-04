@@ -1,7 +1,11 @@
 <template>
   <nav class="wrap">
     <div class="nav__primary">
-      <Abacus :route="nextRoute" :links="linksPrimary" />
+      <Abacus
+        :route="nextRoute"
+        :links="linksPrimary"
+        :bead-is-hidden="menuIsOpen"
+      />
 
       <Fab
         :show="(filterIsVisible && !largeBreakpoint) || menuIsOpen"
@@ -120,6 +124,10 @@ $maxLinkWidth: 100px;
     width: auto;
   }
 
+  @include bp(1920px) {
+    width: ($numberOfPrimaryItems * $maxLinkWidth) * 1.75;
+  }
+
   @include transition {
     transition: transform var(--trans-medium) var(--ease-back);
   }
@@ -162,6 +170,10 @@ $maxLinkWidth: 100px;
 
     @include bp($xl) {
       transform: translate3d(0, 0, 0);
+    }
+
+    @include bp(1920px) {
+      width: ($numberOfSecondaryItems * $maxLinkWidth) * 1.75;
     }
 
     @include transition {
