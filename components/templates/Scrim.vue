@@ -64,6 +64,8 @@ export default {
     leave(el, done) {
       if (this.hideAnimations) done()
 
+      let transOverCalled = false
+
       this.tl.to(this.$refs.scrim, {
         ease: 'Power4.easeInOut',
         duration: 1,
@@ -77,6 +79,14 @@ export default {
         //   //   stagger: 0.1
         //   // })
         // },
+        onUpdate: () => {
+          // waiting until the end took too long,
+          // this waits until animatino has hit 50%
+          if (!transOverCalled && this.tl.progress() >= 0.75) {
+            transOverCalled = true
+            this.$store.commit('setHeaderVisibility', true)
+          }
+        },
         onComplete: () => {
           this.$store.commit('setIsTransitioning', false)
           done()

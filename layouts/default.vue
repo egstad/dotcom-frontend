@@ -22,7 +22,7 @@
 
     <SiteMenu class="site-menu" />
     <!-- <Debug /> -->
-    <!-- <Scrim /> -->
+    <Scrim />
   </div>
 </template>
 
@@ -31,15 +31,15 @@ import SiteHeader from '@/components/organisms/site-header/SiteHeader'
 import SiteFooter from '@/components/organisms/site-footer/SiteFooter'
 import SiteMenu from '@/components/organisms/site-menu/SiteMenu'
 // import Debug from '@/components/templates/Debug'
-// import Scrim from '@/components/templates/Scrim'
+import Scrim from '@/components/templates/Scrim'
 
 export default {
   components: {
     SiteHeader,
     SiteFooter,
-    SiteMenu
+    SiteMenu,
     // LazyTime
-    // Scrim
+    Scrim
     // Debug
   },
   computed: {

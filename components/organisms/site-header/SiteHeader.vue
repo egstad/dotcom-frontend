@@ -1,6 +1,6 @@
 <template>
   <header
-    :class="['site-header', { navIsHidden }, { navIsAtTop }]"
+    :class="['site-header', { navIsHidden: !headerIsVisible }, { navIsAtTop }]"
     @mouseenter="showNav"
   >
     <SiteHeaderNavigation
@@ -25,7 +25,7 @@ export default {
     return {
       activeItem: null,
       navIsAtTop: true,
-      navIsHidden: 0,
+      // navIsHidden: true,
       showScrollButton: false,
       highlightedIndex: null,
       linksPrimary: [
@@ -76,6 +76,9 @@ export default {
     },
     winHeight() {
       return this.$store.state.device.winHeight
+    },
+    headerIsVisible() {
+      return this.$store.state.headerIsVisible
     }
   },
   mounted() {
@@ -113,18 +116,18 @@ export default {
       const nearBottomOffset = 25
       const nearBottom = this.winHeight + y + nearBottomOffset >= this.docHeight
 
-      if (hasScrolledUp && this.navIsHidden) this.showNav()
-      if (hasScrolledDown && !this.navIsHidden) this.hideNav()
-      if (nearBottom && this.navIsHidden) this.showNav()
-      if (nearTop && this.navIsHidden) this.showNav()
+      if (hasScrolledUp && !this.headerIsVisible) this.showNav()
+      if (hasScrolledDown && this.headerIsVisible) this.hideNav()
+      if (nearBottom && !this.headerIsVisible) this.showNav()
+      if (nearTop && !this.headerIsVisible) this.showNav()
       this.navIsAtTop = nearTop
       this.showScrollButton = !nearTop
     },
     showNav() {
-      this.navIsHidden = 0
+      this.$store.commit('setHeaderVisibility', true)
     },
     hideNav() {
-      this.navIsHidden = 1
+      this.$store.commit('setHeaderVisibility', false)
     },
     updateActiveItem(val) {
       this.activeItem = val
