@@ -1,6 +1,7 @@
 <template>
-  <section>
-    <Grid>
+  <section style="margin-top: 20vh;">
+    <Grid class="wrap">
+      <button @click="toggle()">c</button>
       <Column>
         <Type :size="6" tag="h2">typography</Type>
       </Column>
@@ -38,3 +39,29 @@
     </Grid> -->
   </section>
 </template>
+
+<script>
+import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
+
+export default {
+  mixins: [routeTransitionFade],
+  async asyncData({ store }) {
+    await store.commit('setCSSVars', 'light')
+
+    return {
+      theme: 'light'
+    }
+  },
+  methods: {
+    toggle() {
+      if (this.theme === 'light') {
+        this.theme = 'dark'
+      } else {
+        this.theme = 'light'
+      }
+
+      this.$store.commit('setCSSVars', this.theme)
+    }
+  }
+}
+</script>

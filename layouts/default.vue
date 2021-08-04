@@ -103,6 +103,7 @@ export default {
   --ease: ease-in-out;
   --ease-back: cubic-bezier(0.375, 0.39, 0, 1.175);
   --transition-page: var(--trans-long) var(--trans-delay) var(--ease);
+  --a11y-color: rgba(15, 86, 240, 0.8);
 
   // site header and abacuses
   --header-item-gap: 8px;
@@ -121,26 +122,13 @@ export default {
   background-color: var(--background);
   color: var(--foreground);
 
+  @include transition {
+    transition: all var(--transition-page);
+    transition-property: background-color, color;
+  }
+
   ::selection {
     background: hsla(var(--a-h), var(--a-s), var(--a-l), 50%);
-    color: var(--foreground);
-  }
-
-  a[href]:not([tabindex='-1']),
-  area[href]:not([tabindex='-1']),
-  input:not([disabled]):not([tabindex='-1']),
-  select:not([disabled]):not([tabindex='-1']),
-  textarea:not([disabled]):not([tabindex='-1']),
-  button:not([disabled]):not([tabindex='-1']),
-  video:not([disabled]):not([tabindex='-1']),
-  iframe,
-  [tabindex],
-  [contentEditable='true'] {
-    outline-color: var(--accent);
-  }
-
-  a {
-    color: var(--accent);
   }
 
   &-content {
@@ -156,15 +144,6 @@ export default {
 }
 
 .site.isTransitioning {
-  // Site-wide
-  background-color: var(--background);
-  color: var(--foreground);
-
-  @include transition {
-    transition: all var(--transition-page);
-    transition-property: background-color, color;
-  }
-
   .site-header {
     background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) + 7%), 0%);
 
@@ -193,7 +172,7 @@ export default {
     pointer-events: none;
 
     // match page transition
-    &__link {
+    .abacus__link {
       @include transition {
         transition: color var(--transition-page);
       }
@@ -202,7 +181,7 @@ export default {
 
   // Floating Action Button
   ::v-deep .fab {
-    &__wrapper {
+    .fab__wrapper {
       @include transition {
         transition: background-color var(--transition-page),
           color var(--transition-page);
@@ -216,6 +195,7 @@ export default {
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('~assets/fonts/S85.ttf') format('truetype');
+  src: url('~assets/fonts/ABCD.ttf') format('truetype');
+  font-feature-settings: 'ss04', 'ss05', 'ss06', 'ss07';
 }
 </style>

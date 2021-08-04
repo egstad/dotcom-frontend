@@ -211,6 +211,12 @@ export default {
     },
     onKeydown(ev) {
       const isTabPressed = ev.key === 'Tab' || ev.keyCode === 9
+      const isEscPressed = ev.key === 'Escape'
+
+      if (isEscPressed) {
+        this.menuClose()
+        return
+      }
 
       if (!isTabPressed) {
         return
@@ -284,7 +290,7 @@ export default {
   border-radius: 100vw;
   outline-offset: 0.1em;
   /* Color */
-  background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
+  background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
   /* Text */
   font-size: clamp(32px, 5vh, 96px);
   margin: 0.125em;
@@ -305,6 +311,11 @@ export default {
   &:focus-visible {
     color: var(--background);
     background-color: var(--foreground);
+  }
+
+  &:focus-visible {
+    outline-offset: 4px;
+    outline: 4px solid var(--a11y-color);
   }
 
   &.nuxt-link-exact-active {

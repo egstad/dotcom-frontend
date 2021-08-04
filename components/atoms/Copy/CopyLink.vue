@@ -45,4 +45,14 @@ export default {
 .link {
   position: relative;
 }
+
+::v-deep a {
+  color: inherit;
+  text-decoration-color: hsl(var(--a-h), var(--a-s), var(--a-l), 100%);
+
+  &:focus-within {
+    outline-offset: 4px;
+    outline: 4px solid var(--a11y-color);
+  }
+}
 </style>

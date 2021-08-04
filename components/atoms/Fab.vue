@@ -52,23 +52,23 @@ export default {
   background: 0;
   border: 0;
   padding: 0;
-  // outline: none;
+  outline: none;
 
   /* Other */
   cursor: pointer;
 
-  // &:hover,
-  // &:focus-visible {
-  //   color: var(--background);
-  //   background-color: var(--foreground);
-  // }
-
   &.isActive .fab__wrapper,
   &:hover .fab__wrapper,
-  &:focus-within .fab_wrapper {
-    background-color: var(--foreground);
-    color: var(--background);
+  &:focus-within .fab__wrapper {
+    background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
+    color: hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
+    box-shadow: 0 1.3px 5.3px rgba(0, 0, 0, 0.061),
+      0 4.5px 17.9px rgba(0, 0, 0, 0.089), 0 20px 80px rgba(0, 0, 0, 0.15);
+  }
+
+  &:focus-visible .fab__wrapper {
     outline-offset: 4px;
+    outline: 4px solid var(--a11y-color);
   }
 
   @include transition {
@@ -98,12 +98,15 @@ export default {
   height: var(--button-height);
 
   /* Color */
-  background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
-  color: var(--foreground);
+  background-color: hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
+  color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
+  box-shadow: none;
 
   @include transition {
     transition: background-color var(--trans-short) var(--ease),
-      color var(--trans-short) var(--ease);
+      color var(--trans-short) var(--ease),
+      box-shadow var(--trans-short) var(--ease),
+      transform var(--trans-short) var(--ease);
   }
 }
 

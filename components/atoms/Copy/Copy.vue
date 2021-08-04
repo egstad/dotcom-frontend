@@ -48,7 +48,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .copy {
   strong {
     font-family: 'Lars Black';
@@ -58,10 +58,19 @@ export default {
     font-style: italic;
   }
 
-  a {
+  ::v-deep a {
     position: relative;
-    color: currentColor;
+    color: inherit;
   }
+
+  // ::v-deep a {
+  //   color: inherit;
+
+  //   &:focus-within {
+  //     outline-offset: 4px;
+  //     outline: 4px solid var(--a11y-color);
+  //   }
+  // }
 
   li {
     counter-increment: item;
