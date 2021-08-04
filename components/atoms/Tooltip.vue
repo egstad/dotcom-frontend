@@ -1,7 +1,7 @@
 <template>
   <transition name="bounce">
     <span v-if="isHover" class="tooltip" aria-hidden="true">
-      {{ content }}
+      <span class="tooltip__text">{{ content }}&nbsp;&#x2192;</span>
     </span>
   </transition>
 </template>
@@ -58,18 +58,28 @@ export default {
   border-radius: 100vw;
 
   /* Color */
-  background-color: hsl(var(--b-h), var(--b-s), var(--b-l), 100%);
-  // background: var(--foreground);
+  background-color: hsl(var(--f-h), var(--f-s), var(--f-l), 100%);
   color: var(--background);
 
   /* Text */
   font-size: 75%;
+  letter-spacing: 0.1em;
   font-variation-settings: 'wght' 420, 'MONO' 1, 'ital' 0;
   white-space: nowrap;
   text-overflow: ellipsis;
 
   /* Other */
   pointer-events: none;
+
+  &__text {
+    position: relative;
+    top: 0.08em;
+  }
+
+  @include transition {
+    transition: all 100ms ease;
+    transition-property: left, top;
+  }
 }
 
 .bounce-enter-active {

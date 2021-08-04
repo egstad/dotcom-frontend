@@ -4,14 +4,13 @@
 
 <style lang="scss">
 .ts-highlight {
-  background: hsla(var(--f-h), var(--f-s), var(--f-l), 20%);
-  color: var(--foreground);
+  background-color: hsla(var(--a-h), var(--a-s), var(--a-l), 50%);
+  color: inherit;
   padding: 0 0.3em;
   border-radius: 0.1em;
 
-  &::selection {
-    background: hsla(var(--b-h), var(--b-s), var(--b-l), 70%);
-    color: var(--foreground);
+  @include transition {
+    transition: background-color var(--transition-page);
   }
 }
 </style>

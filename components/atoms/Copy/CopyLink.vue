@@ -4,7 +4,6 @@
       :href="href"
       :target="blank ? true : false"
       :rel="blank ? 'falsenoopener noreferer' : null"
-      style="text-underline-offset: 0.08em; text-decoration-thickness: 0.08em;"
       @mouseenter="$refs.tooltip.showTooltip()"
       @mousemove="$refs.tooltip.mouseHandler($event)"
       @mouseleave="$refs.tooltip.hideTooltip()"
@@ -49,6 +48,9 @@ export default {
 ::v-deep a {
   color: inherit;
   text-decoration-color: hsl(var(--a-h), var(--a-s), var(--a-l), 100%);
+  text-underline-offset: 1.5em;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.125em;
 
   &:focus-within {
     outline-offset: 4px;

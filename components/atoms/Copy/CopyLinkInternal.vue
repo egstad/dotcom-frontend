@@ -3,7 +3,6 @@
     <nuxt-link
       :to="slug === 'index' ? '/' : slug"
       class="link"
-      style="text-underline-offset: 0.08em; text-decoration-thickness: 0.08em;"
       @mouseenter.native="$refs.tooltip.showTooltip()"
       @mousemove.native="$refs.tooltip.mouseHandler($event)"
       @mouseleave.native="$refs.tooltip.hideTooltip()"
@@ -46,6 +45,9 @@ export default {
 
 ::v-deep a {
   color: inherit;
+  text-decoration-color: hsl(var(--a-h), var(--a-s), var(--a-l), 100%);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.125em;
 
   &:focus-within {
     outline-offset: 4px;

@@ -195,7 +195,7 @@ export default {
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('~assets/fonts/ABCD.ttf') format('truetype');
+  src: url('~assets/fonts/ABCD.woff2') format('woff2');
   font-feature-settings: 'ss04', 'ss05', 'ss06', 'ss07';
 }
 </style>
