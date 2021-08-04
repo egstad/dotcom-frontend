@@ -255,7 +255,7 @@ export default {
     text-align: center;
 
     &:focus-visible {
-      outline-offset: 4px;
+      outline-offset: -4px;
       outline: 4px solid var(--a11y-color);
     }
 

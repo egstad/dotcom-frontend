@@ -62,12 +62,13 @@ export default {
   &:focus-within .fab__wrapper {
     background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
     color: hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
+    border: 4px solid hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
     box-shadow: 0 1.3px 5.3px rgba(0, 0, 0, 0.061),
       0 4.5px 17.9px rgba(0, 0, 0, 0.089), 0 20px 80px rgba(0, 0, 0, 0.15);
   }
 
-  &:focus-visible .fab__wrapper {
-    outline-offset: 4px;
+  &:focus-visible {
+    outline-offset: -4px;
     outline: 4px solid var(--a11y-color);
   }
 
@@ -96,17 +97,17 @@ export default {
   width: 100%;
   height: 100%;
   height: var(--button-height);
+  overflow: hidden;
 
   /* Color */
   background-color: hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
   color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
   box-shadow: none;
+  border: 4px solid transparent;
 
   @include transition {
-    transition: background-color var(--trans-short) var(--ease),
-      color var(--trans-short) var(--ease),
-      box-shadow var(--trans-short) var(--ease),
-      transform var(--trans-short) var(--ease);
+    transition: all var(--trans-short) var(--ease);
+    transition-property: background-color, color, transform, border-color;
   }
 }
 

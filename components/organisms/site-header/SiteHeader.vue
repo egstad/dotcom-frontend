@@ -1,12 +1,18 @@
 <template>
   <header
-    :class="['site-header', { navIsHidden: !headerIsVisible }, { navIsAtTop }]"
-    @mouseenter="showNav"
+    :class="[
+      'site-header',
+      { headerIsVisible },
+      { headerIsAtTop },
+      { headerIsPeaking }
+    ]"
+    @mouseenter="headerIsPeaking = true"
+    @mouseleave="headerIsPeaking = false"
   >
     <SiteHeaderNavigation
       class="site-header__nav"
       :show-scroll-button="showScrollButton"
-      :show-time="navIsAtTop"
+      :show-time="headerIsAtTop"
       :links-primary="linksPrimary"
       :links-secondary="linksSecondary"
     />
@@ -24,8 +30,8 @@ export default {
   data() {
     return {
       activeItem: null,
-      navIsAtTop: true,
-      // navIsHidden: true,
+      headerIsAtTop: true,
+      headerIsPeaking: false,
       showScrollButton: false,
       highlightedIndex: null,
       linksPrimary: [
@@ -120,7 +126,7 @@ export default {
       if (hasScrolledDown && this.headerIsVisible) this.hideNav()
       if (nearBottom && !this.headerIsVisible) this.showNav()
       if (nearTop && !this.headerIsVisible) this.showNav()
-      this.navIsAtTop = nearTop
+      this.headerIsAtTop = nearTop
       this.showScrollButton = !nearTop
     },
     showNav() {
@@ -162,12 +168,30 @@ export default {
       background-color var(--trans-short) var(--trans-delay) var(--ease);
   }
 
-  &.navIsHidden {
-    transform: translate3d(0, calc(-200% - var(--button-click-offset)), 0);
-    box-shadow: none;
+  ::v-deep .nav__primary,
+  ::v-deep .nav__secondary {
+    transform: translate3d(0, calc(-150% - var(--button-click-offset)), 0);
   }
 
-  &.navIsAtTop {
+  &.headerIsVisible,
+  &.headerIsPeaking {
+    box-shadow: none;
+
+    ::v-deep .nav__primary,
+    ::v-deep .nav__secondary {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  // offset delay to avoid unwanted animation
+  &.headerIsPeaking {
+    ::v-deep .nav__primary,
+    ::v-deep .nav__secondary {
+      transition-delay: 150ms;
+    }
+  }
+
+  &.headerIsAtTop {
     background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 0%);
     box-shadow: none;
   }
