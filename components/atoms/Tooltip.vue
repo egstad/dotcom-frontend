@@ -41,26 +41,37 @@ export default {
 
 <style lang="scss" scoped>
 .tooltip {
-  display: block;
+  /* Positioning */
+  transform: translate3d(-50%, -150%, 0);
   position: absolute;
-  pointer-events: none;
-  padding: 0.4em 0.6em;
-  border-radius: 0.2em;
-  background: var(--foreground);
-  color: var(--background);
-  font-family: 'Lars Mono';
-  font-size: 75%;
-  line-height: 1;
-  width: auto;
-  white-space: nowrap;
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
   left: 0;
   top: 0;
-  transform: translate3d(-50%, -150%, 0);
+
+  /* Display & Box Model */
+  display: block;
+  width: auto;
+  max-width: 200px;
+  padding: 0.4em 1.2em;
+  border-radius: 0.2em;
+  text-transform: uppercase;
+  overflow: hidden;
+  border-radius: 100vw;
+
+  /* Color */
+  background-color: hsl(var(--b-h), var(--b-s), var(--b-l), 100%);
+  // background: var(--foreground);
+  color: var(--background);
+
+  /* Text */
+  font-size: 75%;
+  font-variation-settings: 'wght' 420, 'MONO' 1, 'ital' 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  /* Other */
+  pointer-events: none;
 }
+
 .bounce-enter-active {
   animation: bounce-in 0.4s;
 }

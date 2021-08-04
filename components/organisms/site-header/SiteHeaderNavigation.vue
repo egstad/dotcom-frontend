@@ -83,7 +83,7 @@ export default {
     },
     largeBreakpoint() {
       // XX breakpoint
-      return this.$store.state.device.winWidth >= 1300
+      return this.$store.state.device.winWidth >= 1024
     },
     menuIsTransitioning() {
       return this.$store.state.menuIsTransitioning
@@ -106,6 +106,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$numberOfPrimaryItems: 3;
+$numberOfSecondaryItems: 5;
+$minLinkWidth: 75px;
+$maxLinkWidth: 100px;
+
 .nav__primary {
   /* Display & Box Model */
   display: inline-flex;
@@ -119,7 +124,11 @@ export default {
     flex: 1;
 
     @include bp($md) {
-      width: clamp(300px, calc(40vw), #{300px * 1.5});
+      width: clamp(
+        #{$numberOfPrimaryItems * $minLinkWidth},
+        calc(60vw),
+        #{$numberOfPrimaryItems * $maxLinkWidth}
+      );
     }
   }
 }
@@ -136,10 +145,14 @@ export default {
 
     @include bp($md) {
       flex: initial;
-      width: clamp(500px, calc(60vw), #{500px * 1.5});
+      width: clamp(
+        #{$numberOfSecondaryItems * $minLinkWidth},
+        calc(60vw),
+        #{$numberOfSecondaryItems * $maxLinkWidth}
+      );
     }
 
-    @include bp($xx) {
+    @include bp($xl) {
       transform: translate3d(0, 0, 0);
     }
 

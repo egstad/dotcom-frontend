@@ -14,10 +14,6 @@ export const routeTransitionFade = {
         opacity: 0,
         y: 50
       })
-
-      if (this.$store.state.menuIsOpen) {
-        this.$store.commit('setMenuVisibility', false)
-      }
     },
     enter(el, done) {
       if (this.$store.state.device.hideAnimations) done()
@@ -40,6 +36,9 @@ export const routeTransitionFade = {
         },
         onComplete: () => {
           done()
+          if (this.$store.state.menuIsOpen) {
+            this.$store.commit('setMenuVisibility', false)
+          }
         }
       })
     },

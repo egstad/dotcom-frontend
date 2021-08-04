@@ -28,12 +28,15 @@ const theme = {
     // return newArr
   },
   set(colors) {
+    let theme = colors
+    if (typeof colors === 'string') theme = this.getDefaultTheme(colors)
+
     const allowedKeys = ['h', 's', 'l', 'a']
 
     // sanitize objects
-    const background = this.filterObjectByKey(colors.background, allowedKeys)
-    const foreground = this.filterObjectByKey(colors.foreground, allowedKeys)
-    const accent = this.filterObjectByKey(colors.accent, allowedKeys)
+    const background = this.filterObjectByKey(theme.background, allowedKeys)
+    const foreground = this.filterObjectByKey(theme.foreground, allowedKeys)
+    const accent = this.filterObjectByKey(theme.accent, allowedKeys)
 
     // add css prefixes to object keys
     const bHSLA = hslaPrefixObject(background, 'b', 'background')
@@ -45,6 +48,63 @@ const theme = {
       ...fHSLA,
       ...aHSLA
     }
+  },
+  getDefaultTheme(colors) {
+    let theme
+
+    switch (colors) {
+      case 'dark':
+        theme = {
+          background: {
+            h: 0,
+            s: 0,
+            l: 0,
+            a: 1
+          },
+          foreground: {
+            h: 44,
+            s: 0.15,
+            l: 0.87,
+            a: 1
+          },
+          accent: {
+            h: 242,
+            s: 0.39,
+            l: 0.6,
+            a: 1
+          }
+        }
+        break
+      case 'light':
+        theme = {
+          background: {
+            h: 0,
+            s: 0,
+            l: 100,
+            a: 1
+          },
+          foreground: {
+            h: 44,
+            s: 0.08,
+            l: 0.16,
+            a: 1
+          },
+          accent: {
+            h: 242,
+            s: 0.39,
+            l: 0.77,
+            a: 1
+          }
+        }
+        break
+      default:
+        console.error(
+          'ThemeChanger error: This is not a registered default theme.'
+        )
+        break
+    }
+
+    return theme
   }
 }
 

@@ -43,4 +43,13 @@ export default {
 .link {
   position: relative;
 }
+
+::v-deep a {
+  color: inherit;
+
+  &:focus-within {
+    outline-offset: 4px;
+    outline: 4px solid var(--a11y-color);
+  }
+}
 </style>

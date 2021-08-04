@@ -1,8 +1,5 @@
 <template>
-  <ul
-    class="abacus"
-    :class="[{ 'bead-is-trans': beadIsTransitioning, isWiggling }]"
-  >
+  <ul class="abacus" :class="[{ beadIsTransitioning, isWiggling }]">
     <li
       v-for="(link, i) in links"
       :key="i"
@@ -23,13 +20,15 @@
         @focus.native="onFocus($event, i)"
         @blur.native="init"
       >
-        <template v-if="link.abbr">
-          <span v-if="largeBreakpoint">{{ link.title }}</span>
-          <abbr v-else :title="link.title">{{ link.abbr }}</abbr>
-        </template>
-        <template v-else>
-          {{ link.title }}
-        </template>
+        <span class="abacus__text">
+          <template v-if="link.abbr">
+            <span v-if="largeBreakpoint">{{ link.title }}</span>
+            <abbr v-else :title="link.title">{{ link.abbr }}</abbr>
+          </template>
+          <template v-else>
+            {{ link.title }}
+          </template>
+        </span>
       </nuxt-link>
     </li>
 
@@ -135,8 +134,7 @@ export default {
       const self = this.hoveredIndex ?? this.activeIndex
       this.hasClickedLink = false
       this.showBead = true
-      this.$refs.bead.style.transform = `scaleY(1.01) translate3d(${100 *
-        self}%,-50%,0)`
+      this.$refs.bead.style.transform = `translate3d(${100 * self}%,0,0)`
       this.$refs.bead.style.width = `${100 / this.$refs.item.length}%`
 
       // update state
@@ -208,10 +206,21 @@ export default {
   flex: 1;
   min-width: 240px;
 
+  // quickly transition text color when the bead is moving
+  &.beadIsTransitioning {
+    ::v-deep .abacus__link {
+      @include transition {
+        transition: color var(--trans-short) var(--ease);
+      }
+    }
+  }
+
+  // wiggle animation when user clicks
   &.isWiggling {
     animation: shakeX 1s ease;
   }
 
+  // list item
   &__item {
     position: relative;
     z-index: 2;
@@ -219,31 +228,46 @@ export default {
     flex: 1;
 
     ::v-deep &.is-active:not(.is-hovered) .abacus__link {
-      color: var(--foreground);
+      color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
     }
 
     &.is-hovered ::v-deep .abacus__link,
     &.is-active ::v-deep .abacus__link {
-      color: var(--background);
+      color: hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
     }
   }
 
+  // nuxt-link
   &__link {
     display: block;
-    flex: 1 1;
-    color: var(--foreground);
+    flex: 1;
+    color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
     font-family: var(--mono);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    text-decoration: none;
-    text-align: center;
     line-height: var(--button-height);
     padding-top: var(--button-click-offset);
     padding-bottom: var(--button-click-offset);
     font-size: 12px;
+    font-feature-settings: 'ss04', 'ss05', 'ss06', 'ss07';
+    letter-spacing: 0.1em;
+    font-variation-settings: 'wght' 420, 'MONO' 1, 'ital' 0;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+
+    &:focus-visible {
+      outline-offset: 4px;
+      outline: 4px solid var(--a11y-color);
+    }
+
+    // &:focus-within,
+    // &:hover {
+    //   @include transition {
+    //     transition: color var(--trans-short) var(--ease-back);
+    //   }
+    // }
 
     @include transition {
-      transition: color var(--trans-short) var(--ease-back);
+      transition: color var(--transition-page);
     }
 
     abbr {
@@ -251,6 +275,13 @@ export default {
     }
   }
 
+  // span inside &__link
+  &__text {
+    position: relative;
+    top: 0.07em;
+  }
+
+  // background
   &__row {
     position: absolute;
     z-index: 0;
@@ -260,39 +291,31 @@ export default {
     height: var(--button-height);
     border-radius: 100vw;
     pointer-events: none;
-    background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l) - 7%), 100%);
+    background-color: hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
     width: 100%;
-    // transform: scaleY(0.99);
 
-    @media screen and (prefers-reduced-motion: no-preference) {
+    @include transition {
       transition: background-color var(--transition-page);
     }
   }
 
+  // active/hover element background
   &__bead {
     position: absolute;
     height: var(--button-height);
     border-radius: var(--button-height);
     z-index: 1;
-    top: 50%;
+    top: var(--button-click-offset);
     left: 0;
-    background-color: var(--foreground);
+    background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
     pointer-events: none;
-    transform: translate3d(0, -50%, 0);
+    border: 4px solid hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
     // transform-origin: top;
 
-    @media screen and (prefers-reduced-motion: no-preference) {
+    @include transition {
       transition: background-color var(--transition-page),
-        transform var(--trans-medium) var(--ease-back);
-    }
-  }
-}
-
-// quickly transition text color when the bead is moving
-.bead-is-trans {
-  ::v-deep .abacus__link {
-    @media screen and (prefers-reduced-motion: no-preference) {
-      transition: color var(--trans-short) var(--ease);
+        transform var(--trans-medium) var(--ease-back),
+        border-color var(--transition-page);
     }
   }
 }
