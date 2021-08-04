@@ -1,11 +1,12 @@
 <template>
   <transition @leave="leave">
     <div v-if="!layoutHasMounted && isShowing" ref="scrim" class="scrim">
-      <div ref="text" class="text">
+      <div ref="text" class="scrim__text">
         <span
           v-for="(letter, index) in loadingText"
           :key="`letter${index}`"
           ref="letter"
+          class="scrim__letter"
           >{{ letter }}</span
         >
       </div>
@@ -45,8 +46,7 @@ export default {
     }
   },
   mounted() {
-    this.animateLetters()
-    // this.$nuxt.$on('page::mounted', this.hide)
+    if (!this.$nuxt.context.isDev) this.animateLetters()
   },
   beforeDestroy() {
     clearTimeout(this.loadTimeout)
@@ -82,7 +82,7 @@ export default {
         onUpdate: () => {
           // waiting until the end took too long,
           // this waits until animatino has hit 50%
-          if (!transOverCalled && this.tl.progress() >= 0.75) {
+          if (!transOverCalled && this.tl.progress() >= 0.2) {
             transOverCalled = true
             this.$store.commit('setHeaderVisibility', true)
           }
@@ -116,65 +116,58 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .scrim {
-  // blur
-  // background-color: hsl(var(--b-h), var(--b-s), var(--b-l), 80%);
-  // backdrop-filter: blur(5vmin);
-  // color: var(--foreground);
-
-  // background-color: var(--foreground);
-  // color: var(--background);
-
-  // @media (prefers-color-scheme: dark) {
-  //   background-color: hsl(var(--b-h), var(--b-s), 40%, 100%);
-  //   color: hsl(var(--f-h), var(--f-s), 55%, 100%);
-  // }
-
-  user-select: none;
-  background-color: var(--foreground);
-  color: var(--background);
-
-  z-index: 0;
+  /* Positioning */
   position: fixed;
+  z-index: 1000;
+  z-index: 0;
   top: 0;
   left: 0;
+
+  /* Display & Box Model */
   height: 100%;
   width: 100%;
-  opacity: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
-  line-height: 0.9;
-  z-index: 1000;
+  opacity: 1;
 
-  @media (min-width: 1024px) {
+  /* Color */
+  background-color: var(--foreground);
+  color: var(--background);
+
+  /* Other */
+  user-select: none;
+
+  @include bp($xl) {
     align-items: center;
+  }
 
-    .text {
+  &__text {
+    /* Positioning */
+    transform: translateX(-0.11em);
+
+    /* Display & Box Model */
+    display: flex;
+
+    /* Text */
+    font-family: var(--mono);
+    font-size: 24vw;
+    text-transform: uppercase;
+    letter-spacing: -0.08em;
+
+    /* Other */
+    pointer-events: none;
+
+    @include bp($xl) {
       font-size: clamp(96px, 40vmin, 200px) !important;
     }
   }
 
-  .text {
-    pointer-events: none;
-    font-family: sans-serif;
-    font-size: 26vw;
-    transform: translateX(-0.11em);
-    letter-spacing: -0.08em;
-    text-transform: uppercase;
-    display: flex;
-
-    .letter {
-      opacity: 0;
-      text-indent: 0;
-    }
+  &__letter {
+    opacity: 0;
   }
-}
-
-.script {
-  font-family: sans-serif;
-  color: var(--background);
 }
 </style>

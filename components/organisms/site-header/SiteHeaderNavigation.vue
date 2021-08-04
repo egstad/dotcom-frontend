@@ -120,6 +120,10 @@ $maxLinkWidth: 100px;
     width: auto;
   }
 
+  @include transition {
+    transition: transform var(--trans-medium) var(--ease-back);
+  }
+
   ::v-deep .abacus {
     flex: 1;
 
@@ -139,6 +143,10 @@ $maxLinkWidth: 100px;
   display: flex;
   justify-content: flex-end;
   flex: 1;
+
+  @include transition {
+    transition: transform var(--trans-medium) var(--ease-back);
+  }
 
   ::v-deep .abacus {
     transform: translate3d(0, -100%, 0);
