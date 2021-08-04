@@ -4,25 +4,19 @@ https://github.com/rdunk/sanity-blocks-vue-component/tree/legacy#sanity-blocks-v
 -->
 
 <template>
-  <BlockContent :blocks="blocks" :serializers="serializers" class="copy" />
+  <div class="copy">
+    <BlockContent :blocks="blocks" :serializers="serializers" />
+  </div>
 </template>
 
 <script>
+// info on serializers: https://github.com/rdunk/sanity-blocks-vue-component
 import BlockContent from 'sanity-blocks-vue-component'
-// import { SanityContent } from '@nuxtjs/sanity/dist/components/sanity-content'
 import CopyLinkInternal from '@/components/atoms/Copy/CopyLinkInternal'
 import CopyLink from '@/components/atoms/Copy/CopyLink'
-// import CopyH2 from '@/components/atoms/Copy/CopyH2'
-// import CopyH3 from '@/components/atoms/Copy/CopyH3'
-// import CopyH4 from '@/components/atoms/Copy/CopyH4'
-// import CopyH5 from '@/components/atoms/Copy/CopyH5'
-// import CopyH6 from '@/components/atoms/Copy/CopyH6'
-// import CopyP from '@/components/atoms/Copy/CopyP'
-// import CopyListItem from '@/components/atoms/Copy/CopyListItem'
 import CopyCode from '@/components/atoms/Copy/CopyCode'
 import CopyUnderline from '@/components/atoms/Copy/CopyUnderline'
 import CopyHighlight from '@/components/atoms/Copy/CopyHighlight'
-// info on serializers: https://github.com/rdunk/sanity-blocks-vue-component
 
 export default {
   components: { BlockContent },
@@ -50,6 +44,9 @@ export default {
 
 <style lang="scss" scoped>
 .copy {
+  padding-left: var(--button-click-offset);
+  padding-right: var(--button-click-offset);
+
   strong {
     font-family: 'Lars Black';
   }
@@ -119,6 +116,10 @@ export default {
   ol,
   p {
     margin-bottom: 1em;
+  }
+
+  h2 {
+    font-size: clamp(32px, 2vw, 72px);
   }
 }
 </style>
