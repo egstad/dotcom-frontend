@@ -1,5 +1,8 @@
 <template>
-  <ul class="abacus" :class="[{ beadIsTransitioning, isWiggling }]">
+  <ul
+    class="abacus"
+    :class="[{ beadIsTransitioning, beadIsHidden, isWiggling }]"
+  >
     <li
       v-for="(link, i) in links"
       :key="i"
@@ -20,15 +23,17 @@
         @focus.native="onFocus($event, i)"
         @blur.native="init"
       >
-        <span class="abacus__text">
-          <template v-if="link.abbr">
-            <span v-if="largeBreakpoint">{{ link.title }}</span>
-            <abbr v-else :title="link.title">{{ link.abbr }}</abbr>
-          </template>
-          <template v-else>
+        <template v-if="link.abbr">
+          <span class="abacus__text">
+            <span class="--full">{{ link.title }}</span>
+            <abbr class="--abbr">{{ link.abbr }}</abbr>
+          </span>
+        </template>
+        <template v-else>
+          <span class="abacus__text">
             {{ link.title }}
-          </template>
-        </span>
+          </span>
+        </template>
       </nuxt-link>
     </li>
 
@@ -48,6 +53,11 @@ export default {
       type: String,
       required: false,
       default: '/'
+    },
+    beadIsHidden: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data() {
@@ -60,11 +70,6 @@ export default {
       showBead: false,
       beadIsTransitioning: null,
       isWiggling: false
-    }
-  },
-  computed: {
-    largeBreakpoint() {
-      return this.$store.state.device.winWidth >= 1920
     }
   },
   watch: {
@@ -206,6 +211,24 @@ export default {
   flex: 1;
   min-width: 240px;
 
+  &.beadIsHidden {
+    .abacus__bead {
+      opacity: 0;
+
+      @include transition {
+        transition: opacity var(--trans-short) var(--ease);
+      }
+    }
+
+    .is-active ::v-deep .abacus__link {
+      color: var(--background);
+
+      @include transition {
+        transition: color var(--trans-short) var(--ease);
+      }
+    }
+  }
+
   // quickly transition text color when the bead is moving
   &.beadIsTransitioning {
     ::v-deep .abacus__link {
@@ -279,6 +302,22 @@ export default {
   &__text {
     position: relative;
     top: 0.07em;
+
+    > .--full {
+      display: none;
+
+      @include bp(1920px) {
+        display: block;
+      }
+    }
+
+    > .--abbr {
+      display: block;
+
+      @include bp(1920px) {
+        display: none;
+      }
+    }
   }
 
   // background
@@ -315,7 +354,7 @@ export default {
     @include transition {
       transition: background-color var(--transition-page),
         transform var(--trans-medium) var(--ease-back),
-        border-color var(--transition-page);
+        opacity var(--transition-page), border-color var(--transition-page);
     }
   }
 }

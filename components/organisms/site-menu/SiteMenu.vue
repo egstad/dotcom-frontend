@@ -50,7 +50,7 @@ export default {
       links: [
         {
           title: 'All',
-          path: '/work'
+          path: '/works'
         },
         {
           title: '#Design',
@@ -290,13 +290,13 @@ export default {
   border-radius: 100vw;
   outline-offset: 0.1em;
   /* Color */
-  background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
+  background-color: var(--foreground);
+  color: var(--background);
   /* Text */
   font-size: clamp(32px, 5vh, 96px);
   margin: 0.125em;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--foreground);
 
   @media screen and (min-height: 600px) {
     font-size: clamp(28px, 5vmin, 200px);
@@ -309,8 +309,8 @@ export default {
 
   &:hover,
   &:focus-visible {
-    color: var(--background);
-    background-color: var(--foreground);
+    background-color: var(--background);
+    color: var(--foreground);
   }
 
   &:focus-visible {
@@ -319,8 +319,8 @@ export default {
   }
 
   &.nuxt-link-exact-active {
-    background-color: var(--foreground);
-    color: var(--background);
+    background-color: var(--background);
+    color: var(--foreground);
   }
 
   > abbr {
