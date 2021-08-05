@@ -13,8 +13,7 @@
       :width="image.metadata.dimensions.width"
       :height="image.metadata.dimensions.height"
       :style="{
-        backgroundColor: background,
-        backgroundImage: `url('${image.url}?w=320&auto=format&fit=max');`
+        background: `url(${image.url}?w=320&auto=format&fit=max);`
       }"
       @load="onLoad($event)"
       @error="onError($event)"
@@ -123,13 +122,14 @@ export default {
   }
 
   &.is-loading {
-    background-size: cover;
-    background-repeat: no-repeat;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
     filter: blur(15px);
   }
 
   &.has-loaded {
     filter: blur(0);
+    background: none !important;
   }
 
   // &.has-errored {}

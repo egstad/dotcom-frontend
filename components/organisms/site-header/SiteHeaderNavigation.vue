@@ -1,5 +1,5 @@
 <template>
-  <nav class="wrap">
+  <nav class="site-header__nav">
     <div class="nav__primary">
       <Abacus
         :route="nextRoute"
@@ -115,65 +115,49 @@ $numberOfSecondaryItems: 5;
 $minLinkWidth: 75px;
 $maxLinkWidth: 100px;
 
-.nav__primary {
+.site-header__nav {
+  /* Positioning */
+  position: relative;
+
   /* Display & Box Model */
-  display: inline-flex;
+  display: flex;
+  justify-content: space-between;
   width: 100%;
 
-  @include bp($md) {
-    width: auto;
+  /* Other */
+  user-select: none;
+  @include transition {
+    transition: transform var(--trans-medium) ease-in-out;
   }
+}
 
-  @include bp(1920px) {
-    width: ($numberOfPrimaryItems * $maxLinkWidth) * 1.75;
-  }
+.nav__primary {
+  /* Display & Box Model */
+  display: flex;
+  width: 100%;
 
   @include transition {
     transition: transform var(--trans-medium) var(--ease-back);
-  }
-
-  ::v-deep .abacus {
-    flex: 1;
-
-    @include bp($md) {
-      width: clamp(
-        #{$numberOfPrimaryItems * $minLinkWidth},
-        calc(60vw),
-        #{$numberOfPrimaryItems * $maxLinkWidth}
-      );
-    }
   }
 }
 
 .nav__secondary {
   /* Display & Box Model */
-  width: auto;
   display: flex;
-  justify-content: flex-end;
-  flex: 1;
 
   @include transition {
     transition: transform var(--trans-medium) var(--ease-back);
   }
 
+  @media (max-width: $lg) {
+    display: none;
+  }
+
   ::v-deep .abacus {
     transform: translate3d(0, -100%, 0);
 
-    @include bp($md) {
-      flex: initial;
-      width: clamp(
-        #{$numberOfSecondaryItems * $minLinkWidth},
-        calc(60vw),
-        #{$numberOfSecondaryItems * $maxLinkWidth}
-      );
-    }
-
     @include bp($xl) {
       transform: translate3d(0, 0, 0);
-    }
-
-    @include bp(1920px) {
-      width: ($numberOfSecondaryItems * $maxLinkWidth) * 1.75;
     }
 
     @include transition {
@@ -188,6 +172,24 @@ $maxLinkWidth: 100px;
     &.filter-enter,
     &.filter-leave-to {
       transform: translate3d(0, -100%, 0);
+    }
+  }
+}
+
+.nav__primary,
+.nav__secondary {
+  @include bp($lg) {
+    width: auto;
+
+    ::v-deep .abacus__item {
+      width: 100px;
+      width: clamp(100px, 10vw, 175px);
+    }
+  }
+
+  @include bp($mx) {
+    ::v-deep .abacus__item {
+      width: calc-vw(175px, $mx);
     }
   }
 }

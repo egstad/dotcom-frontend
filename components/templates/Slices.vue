@@ -43,6 +43,7 @@
 
       <template v-else-if="slice._type === 'richText'">
         <Copy :key="slice._key" :blocks="slice.text" />
+        <!-- <pre :key="slice._key + 'h'">{{ slice.text }}</pre> -->
       </template>
     </template>
   </div>

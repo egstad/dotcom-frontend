@@ -115,7 +115,7 @@ export default {
 
   styleResources: {
     hoistUseStatements: true,
-    scss: ['~/assets/styles/_vars.scss']
+    scss: ['~/assets/styles/_vars.scss', '~/assets/styles/typography.scss']
   },
   /*
    ** Nuxt.js modules

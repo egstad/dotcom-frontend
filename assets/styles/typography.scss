@@ -1,0 +1,41 @@
+/*-----------------------------------------------------------------------------
+ | Typography.scss
+ *-----------------------------------------------------------------------------
+ | Globally available typographic helper classes
+ *---------------------------------------------------------------------------*/
+
+.t-1 {
+  @include fluidScale(12px, $baseline);
+  font-variation-settings: 'wght' 450;
+  letter-spacing: 0.02em;
+}
+
+.t-2 {
+  @include fluidScale(16px, $baseline * 1.25);
+  letter-spacing: 0.02em;
+}
+
+.t-3 {
+  @include fluidScale(18px, $baseline * 1.5);
+  letter-spacing: 0.01em;
+}
+
+.t-4 {
+  @include fluidScale(27px, $baseline * 2);
+  letter-spacing: -0.01em;
+}
+
+.t-5 {
+  @include fluidScale(44px, $baseline * 3);
+  letter-spacing: -0.015em;
+}
+
+.t-6 {
+  @include fluidScale(62px, $baseline * 4);
+  letter-spacing: -0.03em;
+}
+
+.t-mono {
+  font-variation-settings: 'wght' 420, 'MONO' 1, 'ital' 0;
+  letter-spacing: 0.1em;
+}

@@ -29,6 +29,31 @@ export default {
   data() {
     return {
       serializers: {
+        // types: {
+        //   block: (props) => {
+        //     const {
+        //       node: { children, style }
+        //     } = props
+
+        //     switch (style) {
+        //       case 'h1':
+        //         return <h1>{children}</h1>
+        //       case 'h2':
+        //         return <h2>{children}</h2>
+        //       case 'h3':
+        //         return <h3>{children}</h3>
+        //       case 'h4':
+        //         return <h4>{children}</h4>
+        //       case 'h5':
+        //         return <h5>{children}</h5>
+        //       case 'h6':
+        //         return <h6>{children}</h6>
+        //       case 'normal':
+        //         return <p>{children}</p>
+        //       default:
+        //     }
+        //   }
+        // },
         marks: {
           link: CopyLink,
           internalLink: CopyLinkInternal,
@@ -44,30 +69,14 @@ export default {
 
 <style lang="scss" scoped>
 .copy {
-  padding-left: var(--button-click-offset);
-  padding-right: var(--button-click-offset);
-
   strong {
-    font-family: 'Lars Black';
+    font-variation-settings: 'wght' 1000, 'MONO' 0, 'ital' 0;
   }
 
   em {
+    font-variation-settings: 'ital' 1;
     font-style: italic;
   }
-
-  ::v-deep a {
-    position: relative;
-    color: inherit;
-  }
-
-  // ::v-deep a {
-  //   color: inherit;
-
-  //   &:focus-within {
-  //     outline-offset: 4px;
-  //     outline: 4px solid var(--a11y-color);
-  //   }
-  // }
 
   li {
     counter-increment: item;

@@ -43,6 +43,7 @@ export default {
 <style lang="scss" scoped>
 .link {
   position: relative;
+  display: inline-block;
 }
 
 ::v-deep a {
@@ -52,7 +53,7 @@ export default {
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.125em;
 
-  &:focus-within {
+  &:focus-visible {
     outline-offset: 4px;
     outline: 4px solid var(--a11y-color);
   }

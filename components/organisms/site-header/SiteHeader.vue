@@ -146,7 +146,7 @@ export default {
 .site-header {
   /* Positioning */
   position: fixed;
-  z-index: 20;
+  z-index: 800;
   left: 0;
 
   /* Display & Box Model */
@@ -194,21 +194,6 @@ export default {
   &.headerIsAtTop {
     background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 0%);
     box-shadow: none;
-  }
-}
-
-.site-header__nav {
-  /* Positioning */
-  position: relative;
-
-  /* Display & Box Model */
-  display: flex;
-  width: 100%;
-
-  /* Other */
-  user-select: none;
-  @include transition {
-    transition: transform var(--trans-medium) ease-in-out;
   }
 }
 </style>
