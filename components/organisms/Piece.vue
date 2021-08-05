@@ -1,11 +1,19 @@
 <template>
   <section class="piece">
     <article class="piece__content" :class="[size, { 'is-visible': inView }]">
-      <header class="piece__header" :class="headerClasses">
-        <Type tag="h2" :size="1" class="piece__title">
-          <span>{{ title }}</span>
-        </Type>
-      </header>
+      <div class="piece__info t-1" :class="headerClasses">
+        <div class="col-1">
+          <header class="header">
+            <h2 class="piece__title">{{ title }}</h2>
+          </header>
+          <Copy v-if="credits" :blocks="credits" class="piece__credits" />
+        </div>
+        <div class="col-2">
+          <time v-if="date" :datetime="date" class="piece__date t-mono">{{
+            date.substring(0, 4)
+          }}</time>
+        </div>
+      </div>
 
       <template v-for="slice in [content]">
         <template v-if="slice._type === 'video'">
@@ -46,13 +54,15 @@
 <script>
 import Pic from '@/components/atoms/Pic'
 import Vid from '@/components/atoms/Vid'
+import Copy from '@/components/atoms/Copy/Copy'
 import Slideshow from '@/components/organisms/SlideshowNew'
 
 export default {
   components: {
     Slideshow,
     Pic,
-    Vid
+    Vid,
+    Copy
   },
   props: {
     piece: {
@@ -76,6 +86,9 @@ export default {
       return this.piece.titleOverride
         ? this.piece.titleOverride
         : this.piece.title
+    },
+    credits() {
+      return this.piece.credits
     },
     colProps() {
       switch (this.size) {
@@ -118,6 +131,9 @@ export default {
     },
     headerClasses() {
       return this.size === 'full' ? 'padded' : null
+    },
+    date() {
+      return this.piece.date
     }
   },
   methods: {
@@ -132,149 +148,193 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$captionHeight: 16px;
+$captionHeight: 21px;
 
 .piece {
   position: relative;
   display: flex;
-  margin-bottom: $captionHeight;
+  padding-top: $captionHeight;
+  padding-left: calc(var(--button-click-offset) * 0.5);
+  padding-right: calc(var(--button-click-offset) * 0.5);
+  border-bottom: 1px solid var(--foreground);
 
   @include bp($xl) {
     margin-bottom: calc-vw($captionHeight, $xl);
   }
 
   &__content {
-    width: 100%;
-    max-width: 200vmin;
-    padding-left: $captionHeight;
-    padding-right: $captionHeight;
-
-    @include bp($xl) {
-      padding-left: calc-vw($captionHeight, $xl);
-      padding-right: calc-vw($captionHeight, $xl) !important;
-    }
-
-    &.small {
-      width: 85%;
-
-      @include bp($sm) {
-        width: 70%;
-      }
-
-      @include bp($md) {
-        width: 60%;
-      }
-
-      @include bp($lg) {
-        width: 50%;
-      }
-
-      @include bp($xx) {
-        width: 40%;
-        max-width: 60vmin;
-      }
-    }
-
-    &.medium {
-      width: 85%;
-
-      @include bp($sm) {
-        width: 80%;
-      }
-
-      @include bp($md) {
-        width: 70%;
-      }
-
-      @include bp($lg) {
-        width: 65%;
-      }
-
-      @include bp($xx) {
-        width: 55%;
-      }
-    }
-
-    &.large {
-      width: 100%;
-
-      @include bp($sm) {
-        width: 90%;
-      }
-
-      @include bp($md) {
-        width: 80%;
-      }
-
-      @include bp($lg) {
-        width: 75%;
-      }
-
-      @include bp($xx) {
-        width: 70%;
-      }
-    }
-
-    &.xlarge {
-      width: 100%;
-
-      @include bp($md) {
-        width: 90%;
-      }
-
-      @include bp($xx) {
-        width: 85%;
-      }
-    }
-
-    &.full {
-      width: 100%;
-      max-width: none;
-      padding-left: 0;
-      padding-right: 0;
-    }
-  }
-
-  &__content {
     display: flex;
     flex-direction: column;
-    // transition: opacity 500ms 250ms ease-in-out, transform 700ms ease-in-out;
-    // transform: translate3d(0, 5vw, 0);
-    // opacity: 0;
+    width: 100%;
+    max-width: 200vmin;
 
-    // &.is-visible {
-    //   opacity: 1;
-    //   transform: translate3d(0, 0, 0);
+    // @include bp($xl) {
+    //   padding-left: calc-vw($captionHeight, $xl);
+    //   padding-right: calc-vw($captionHeight, $xl) !important;
+    // }
+
+    // &.small {
+    //   width: 85%;
+
+    //   @include bp($sm) {
+    //     width: 70%;
+    //   }
+
+    //   @include bp($md) {
+    //     width: 60%;
+    //   }
+
+    //   @include bp($lg) {
+    //     width: 50%;
+    //   }
+
+    //   @include bp($xx) {
+    //     width: 40%;
+    //     max-width: 60vmin;
+    //   }
+    // }
+
+    // &.medium {
+    //   width: 85%;
+
+    //   @include bp($sm) {
+    //     width: 80%;
+    //   }
+
+    //   @include bp($md) {
+    //     width: 70%;
+    //   }
+
+    //   @include bp($lg) {
+    //     width: 65%;
+    //   }
+
+    //   @include bp($xx) {
+    //     width: 55%;
+    //   }
+    // }
+
+    // &.large {
+    //   width: 100%;
+
+    //   @include bp($sm) {
+    //     width: 90%;
+    //   }
+
+    //   @include bp($md) {
+    //     width: 80%;
+    //   }
+
+    //   @include bp($lg) {
+    //     width: 75%;
+    //   }
+
+    //   @include bp($xx) {
+    //     width: 70%;
+    //   }
+    // }
+
+    // &.xlarge {
+    //   width: 100%;
+
+    //   @include bp($md) {
+    //     width: 90%;
+    //   }
+
+    //   @include bp($xx) {
+    //     width: 85%;
+    //   }
+    // }
+
+    // &.full {
+    //   width: 100%;
+    //   max-width: none;
+    //   padding-left: 0;
+    //   padding-right: 0;
     // }
   }
 
-  &__header {
-    order: 2;
-  }
-
-  &__title {
+  &__info {
+    /* Positioning */
     display: flex;
-    justify-content: space-between;
-    min-height: $captionHeight;
-    line-height: $captionHeight !important;
+    align-content: center;
+    order: 2;
+    margin-top: 0.1em;
+    height: $captionHeight;
+    // line-height: $captionHeight;
 
-    @include bp($xl) {
-      min-height: calc-vw($captionHeight, $xl);
-      line-height: calc-vw($captionHeight, $xl) !important;
+    @include bp($xx) {
+      height: calc-vw($captionHeight, $xx);
     }
 
-    span {
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding-left: 1em;
-      text-align: right;
+    /* Display & Box Model */
+    display: grid;
+    grid-template-columns: auto 1fr auto; // number, caption, date
+
+    /* Text */
+    font-variation-settings: 'wght' 600;
+
+    // caption and date columns
+    > * {
+      display: flex;
+      align-items: baseline;
     }
 
+    // title & credits
+    .col-1 {
+      justify-self: center;
+    }
+
+    // .piece__title{}
+    // .piece__credits{}
+    // .piece__date{}
+
+    // strip default styles
+    ::v-deep p {
+      margin-bottom: 0;
+      font-variation-settings: 'wght' 350;
+
+      &:before {
+        content: '•';
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+      }
+    }
+
+    // counter
     &::before {
+      @extend .t-mono;
       content: counters(piece, '.', decimal-leading-zero);
     }
+
+    &::before,
+    .piece__date {
+      font-variation-settings: 'wght' 350, 'MONO' 1000;
+      letter-spacing: 0;
+    }
   }
+
+  // &__title {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   min-height: $captionHeight;
+  //   line-height: $captionHeight !important;
+
+  //   @include bp($xl) {
+  //     min-height: calc-vw($captionHeight, $xl);
+  //     line-height: calc-vw($captionHeight, $xl) !important;
+  //   }
+
+  //   span {
+  //     width: 100%;
+  //     white-space: nowrap;
+  //     overflow: hidden;
+  //     text-overflow: ellipsis;
+  //     padding-left: 1em;
+  //     text-align: right;
+  //   }
+
+  //
+  // }
 }
 </style>

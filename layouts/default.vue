@@ -112,7 +112,11 @@ export default {
 
   @media (min-width: 1024px) {
     --header-item-gap: 12px;
-    --button-click-offset: 16px;
+  }
+
+  @include bp($mx) {
+    --button-height: #{calc-vw(36px, $mx)};
+    --button-click-offset: #{calc-vw(16px, $mx)};
   }
 
   // @media (min-width: $xx) {

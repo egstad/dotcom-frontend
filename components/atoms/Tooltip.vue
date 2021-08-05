@@ -48,10 +48,10 @@ export default {
   top: 0;
 
   /* Display & Box Model */
-  display: block;
+  display: flex;
   width: auto;
   max-width: 200px;
-  padding: 0.4em 1.2em;
+  padding: 0.2em 1em;
   border-radius: 0.2em;
   text-transform: uppercase;
   overflow: hidden;
@@ -62,7 +62,6 @@ export default {
   color: var(--background);
 
   /* Text */
-  font-size: 75%;
   letter-spacing: 0.1em;
   font-variation-settings: 'wght' 420, 'MONO' 1, 'ital' 0;
   white-space: nowrap;
@@ -73,7 +72,7 @@ export default {
 
   &__text {
     position: relative;
-    top: 0.08em;
+    top: 0.1em;
   }
 
   @include transition {

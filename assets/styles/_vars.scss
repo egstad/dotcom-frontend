@@ -5,6 +5,7 @@ $md: 500px;
 $lg: 700px;
 $xl: 1024px;
 $xx: 1300px;
+$mx: 2048px;
 
 .site {
   // --aH: 0; // num:  0-360
@@ -83,5 +84,23 @@ $xx: 1300px;
     @media screen and (min-width: $lg) {
       #{$type}: $max-font-size;
     }
+  }
+}
+
+// baseline grid
+$baseline: 16px;
+
+@mixin fluidScale(
+  $sizeInPixels,
+  $baselineInPixels: $baseline,
+  $breakpointInPixels: $xx
+) {
+  font-size: $sizeInPixels;
+  line-height: $baselineInPixels;
+  font-feature-settings: 'ss04', 'ss05', 'ss06', 'ss07';
+
+  @media (min-width: $breakpointInPixels) {
+    font-size: calc-vw($sizeInPixels, $breakpointInPixels);
+    line-height: calc-leading($baselineInPixels, $sizeInPixels);
   }
 }

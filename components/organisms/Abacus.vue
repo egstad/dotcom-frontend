@@ -17,7 +17,7 @@
     >
       <nuxt-link
         ref="link"
-        class="abacus__link"
+        class="abacus__link t-1 t-mono"
         :to="link.path"
         @click.native="onClick"
         @focus.native="onFocus($event, i)"
@@ -261,33 +261,35 @@ export default {
   }
 
   // nuxt-link
+
   &__link {
-    display: block;
+    /* Display & Box Model */
+    display: flex;
+    justify-content: center;
     flex: 1;
-    color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
-    font-family: var(--mono);
-    line-height: var(--button-height);
     padding-top: var(--button-click-offset);
     padding-bottom: var(--button-click-offset);
-    font-size: 12px;
-    font-feature-settings: 'ss04', 'ss05', 'ss06', 'ss07';
-    letter-spacing: 0.1em;
-    font-variation-settings: 'wght' 420, 'MONO' 1, 'ital' 0;
+
+    /* Color */
+    color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
+
+    /* Text */
+    font-family: var(--mono);
+    line-height: var(--button-height);
     text-transform: uppercase;
     text-decoration: none;
     text-align: center;
+    font-size: 12px;
+    font-feature-settings: 'ss04', 'ss05', 'ss06', 'ss07';
+    @media (min-width: $mx) {
+      font-size: calc-vw(12px, $mx);
+      line-height: calc-leading(36px, 12px);
+    }
 
     &:focus-visible {
       outline-offset: -4px;
       outline: 4px solid var(--a11y-color);
     }
-
-    // &:focus-within,
-    // &:hover {
-    //   @include transition {
-    //     transition: color var(--trans-short) var(--ease-back);
-    //   }
-    // }
 
     @include transition {
       transition: color var(--transition-page);

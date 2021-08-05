@@ -196,19 +196,4 @@ export default {
     box-shadow: none;
   }
 }
-
-.site-header__nav {
-  /* Positioning */
-  position: relative;
-
-  /* Display & Box Model */
-  display: flex;
-  width: 100%;
-
-  /* Other */
-  user-select: none;
-  @include transition {
-    transition: transform var(--trans-medium) ease-in-out;
-  }
-}
 </style>

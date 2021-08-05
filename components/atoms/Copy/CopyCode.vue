@@ -9,13 +9,13 @@
   display: inline-block;
   padding: 0.2em 0.4em;
   border-radius: 0.2em;
-  background: var(--foreground);
+  background: var(--accent);
   color: var(--background);
   font-family: 'Lars Mono';
 
-  &::selection {
-    color: var(--foreground);
-    background: var(--background);
-  }
+  // &::selection {
+  //   color: var(--foreground);
+  //   background: var(--background);
+  // }
 }
 </style>

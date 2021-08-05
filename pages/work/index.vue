@@ -30,6 +30,7 @@ export default {
             ...,
             "title": data->title,
             "titleOverride": title,
+            "date": data->date,
             size,
             "content": data->content[0] {
               ...,

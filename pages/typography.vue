@@ -1,28 +1,96 @@
 <template>
   <section style="margin-top: 20vh;">
-    <Grid class="wrap">
-      <button @click="toggle()">c</button>
-      <Column>
-        <Type :size="6" tag="h2">typography</Type>
-      </Column>
-
-      <Column :md="8" :lg="6">
-        <Type :size="3" :xs-start="1"
-          >Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident,
-          fuga! Eum assumenda fuga excepturi animi quos rerum recusandae
-          quibusdam a iste consequuntur suscipit ad, omnis magni deserunt saepe
-          consequatur maiores.</Type
-        >
+    <button @click="toggle()">c</button>
+    <Grid align-items="baseline">
+      <Column v-for="num in 6" :key="num" :sm="12" :md="2">
+        <p :class="`t-${num}`">
+          Aa
+        </p>
       </Column>
     </Grid>
 
     <Grid align-items="baseline">
-      <Column v-for="item in 2" :key="item" :xs="12" :sm="6" :md="4" :xl="2">
-        <Type :size="1"
-          >George orwell’s, “WHY I WRITE” — This material remains under
-          copyright and is reproduced by kind permission of the Orwell Estate
-          and Penguin Books.</Type
-        >
+      <Column>
+        <p class="t-6">
+          <strong>Aesthetic enthusiasm.</strong> Perception of beauty in the
+          external world, or, on the other hand, in words and their right
+          arrangement. Pleasure in the impact of one sound on another, in the
+          firmness of good prose or the rhythm of a good story. Desire to share
+          an experience which one feels is valuable and ought not to be missed.
+          The aesthetic motive is very feeble in a lot of writers, but even a
+          pamphleteer or writer of textbooks will have pet words and phrases
+          which appeal to him for non-utilitarian reasons; or he may feel
+          strongly about typography, width of margins, etc. Above the level of a
+          railway guide, no book is quite free from aesthetic considerations.
+        </p>
+      </Column>
+    </Grid>
+    <Grid align-items="baseline">
+      <Column>
+        <p class="t-5">
+          <strong>Aesthetic enthusiasm.</strong> Perception of beauty in the
+          external world, or, on the other hand, in words and their right
+          arrangement. Pleasure in the impact of one sound on another, in the
+          firmness of good prose or the rhythm of a good story. Desire to share
+          an experience which one feels is valuable and ought not to be missed.
+          The aesthetic motive is very feeble in a lot of writers, but even a
+          pamphleteer or writer of textbooks will have pet words and phrases
+          which appeal to him for non-utilitarian reasons; or he may feel
+          strongly about typography, width of margins, etc. Above the level of a
+          railway guide, no book is quite free from aesthetic considerations.
+        </p>
+      </Column>
+      <Column v-for="num in 2" :key="num" :md="6">
+        <p class="t-4">
+          <strong>Aesthetic enthusiasm.</strong> Perception of beauty in the
+          external world, or, on the other hand, in words and their right
+          arrangement. Pleasure in the impact of one sound on another, in the
+          firmness of good prose or the rhythm of a good story. Desire to share
+          an experience which one feels is valuable and ought not to be missed.
+          The aesthetic motive is very feeble in a lot of writers, but even a
+          pamphleteer or writer of textbooks will have pet words and phrases
+          which appeal to him for non-utilitarian reasons; or he may feel
+          strongly about typography, width of margins, etc. Above the level of a
+          railway guide, no book is quite free from aesthetic considerations.
+        </p>
+      </Column>
+      <Column v-for="num in 2" :key="num" :md="6">
+        <p class="t-3">
+          <strong>Aesthetic enthusiasm.</strong> Perception of beauty in the
+          external world, or, on the other hand, in words and their right
+          arrangement. Pleasure in the impact of one sound on another, in the
+          firmness of good prose or the rhythm of a good story. Desire to share
+          an experience which one feels is valuable and ought not to be missed.
+          The aesthetic motive is very feeble in a lot of writers, but even a
+          pamphleteer or writer of textbooks will have pet words and phrases
+          which appeal to him for non-utilitarian reasons; or he may feel
+          strongly about typography, width of margins, etc. Above the level of a
+          railway guide, no book is quite free from aesthetic considerations.
+        </p>
+      </Column>
+      <Column v-for="num in 2" :key="num" :md="6">
+        <p class="t-2">
+          <strong>Aesthetic enthusiasm.</strong> Perception of beauty in the
+          external world, or, on the other hand, in words and their right
+          arrangement. Pleasure in the impact of one sound on another, in the
+          firmness of good prose or the rhythm of a good story. Desire to share
+          an experience which one feels is valuable and ought not to be missed.
+          The aesthetic motive is very feeble in a lot of writers, but even a
+          pamphleteer or writer of textbooks will have pet words and phrases
+          which appeal to him for non-utilitarian reasons; or he may feel
+          strongly about typography, width of margins, etc. Above the level of a
+          railway guide, no book is quite free from aesthetic considerations.
+        </p>
+      </Column>
+      <Column v-for="num in 4" :key="num" :sm="6" :md="3">
+        <p class="t-1">
+          <strong>Political purpose.</strong> Using the word ‘political’ in the
+          widest possible sense. Desire to push the world in a certain
+          direction, to alter other people’s idea of the kind of society that
+          they should strive after. Once again, no book is genuinely free from
+          political bias. The opinion that art should have nothing to do with
+          politics is itself a political attitude.
+        </p>
       </Column>
     </Grid>
     <br />

@@ -13,7 +13,6 @@
       :width="image.metadata.dimensions.width"
       :height="image.metadata.dimensions.height"
       :style="{
-        backgroundColor: background,
         backgroundImage: `url('${image.url}?w=320&auto=format&fit=max');`
       }"
       @load="onLoad($event)"
