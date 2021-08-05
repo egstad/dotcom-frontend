@@ -158,9 +158,9 @@ $captionHeight: 21px;
   padding-right: calc(var(--button-click-offset) * 0.5);
   border-bottom: 1px solid var(--foreground);
 
-  @include bp($xl) {
-    margin-bottom: calc-vw($captionHeight, $xl);
-  }
+  // @include bp($xl) {
+  //   margin-bottom: calc-vw($captionHeight, $xl);
+  // }
 
   &__content {
     display: flex;

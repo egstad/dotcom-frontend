@@ -146,7 +146,7 @@ export default {
 .site-header {
   /* Positioning */
   position: fixed;
-  z-index: 20;
+  z-index: 800;
   left: 0;
 
   /* Display & Box Model */
