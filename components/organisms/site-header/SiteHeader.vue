@@ -6,8 +6,8 @@
       { headerIsAtTop },
       { headerIsPeaking }
     ]"
-    @mouseenter="headerIsPeaking = true"
-    @mouseleave="headerIsPeaking = false"
+    @pointerenter="headerIsPeaking = true"
+    @pointerleave="headerIsPeaking = false"
   >
     <SiteHeaderNavigation
       class="site-header__nav"

@@ -14,7 +14,7 @@ export default {
   },
   mixins: [routeTransitionFade],
   async asyncData({ $sanityClient, store }) {
-    const queryLength = 1
+    const queryLength = 20
     const query = `
       *[_type == "work"][0]{
         _id,
@@ -26,7 +26,7 @@ export default {
 				},
         social,
         content {
-          pieces[] {
+          pieces[0...${queryLength}] {
             ...,
             "title": data->title,
             "titleOverride": title,
@@ -55,6 +55,7 @@ export default {
     })
 
     return {
+      hasMorePostsToLoad: document.content.pieces.length > queryLength,
       queryLength,
       document
     }
@@ -63,7 +64,6 @@ export default {
     return {
       nextQuery: 0,
       currentlyFetching: false,
-      hasMorePostsToLoad: true,
       date: null
     }
   },
@@ -72,40 +72,64 @@ export default {
   },
   mounted() {
     this.$nuxt.$emit('page::mounted')
+    this.$nuxt.$on('window::scrollNearBottom', this.scrollHandler)
 
-    setTimeout(() => {
-      this.$store.commit('setFilterVisibility', true)
-    }, 1000)
+    // setTimeout(() => {
+    this.$store.commit('setFilterVisibility', true)
+    // }, 1000)
   },
   beforeDestroy() {
     this.$store.commit('setFilterVisibility', false)
+    this.$nuxt.$off('window::scrollNearBottom', this.scrollHandler)
+  },
+  methods: {
+    scrollHandler(ev) {
+      if (this.currentlyFetching || !this.hasMorePostsToLoad) return
+
+      this.fetchNextPage()
+    },
+    async fetchNextPage() {
+      if (!this.hasMorePostsToLoad) return
+
+      this.lastQuery = this.document.content.pieces.length
+      this.nextQuery = this.lastQuery + this.queryLength
+      this.currentlyFetching = true
+
+      // fetch items from sanity
+      const query = `
+          *[_type == "work"][0]{
+            content {
+              pieces[${this.lastQuery}...${this.nextQuery}] {
+                ...,
+                "title": data->title,
+                "titleOverride": title,
+                "date": data->date,
+                size,
+                "content": data->content[0] {
+                  ...,
+                  "paletteVideo": poster.asset->metadata.palette,
+                  "paletteImage": asset->metadata.palette,
+                  "slides": slides[]{
+                    ...,
+                    "paletteImage":asset->metadata.palette
+                  }
+                }
+              }
+            }
+          }
+        `
+
+      const nextPosts = await this.$sanityClient.fetch(query)
+
+      // add items to array
+      this.document.content.pieces.push(...nextPosts.content.pieces)
+      this.currentlyFetching = false
+
+      // determine if there are more posts to load or not
+      if (nextPosts.content.pieces < this.queryLength)
+        this.hasMorePostsToLoad = false
+    }
   }
-  // methods: {
-  //   scrollHandler(ev) {
-  //     if (!this.currentlyFetching) this.fetchNextPage()
-  //   },
-  //   async fetchNextPage() {
-  //     if (this.hasMorePostsToLoad) {
-  //       this.lastQuery = this.pieces.length
-  //       this.nextQuery = this.lastQuery + this.queryLength
-  //       this.currentlyFetching = true
-
-  //       // fetch items from sanity
-  //       const query = groq`
-  //       *[_type == "piece"] | order(order asc)
-  //         [${this.lastQuery}...${this.nextQuery}]
-  //         { _id, content }`
-  //       const nextPosts = await this.$sanity.fetch(query)
-
-  //       // add items to array
-  //       this.pieces.push(...nextPosts)
-  //       this.currentlyFetching = false
-
-  //       // determine if there are more posts to load or not
-  //       if (nextPosts.length < this.queryLength) this.hasMorePostsToLoad = false
-  //     }
-  //   }
-  // }
 }
 </script>
 
