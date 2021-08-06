@@ -111,8 +111,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$captionHeight: 21px;
-$paddingTopBottom: clamp(var(--button-click-offset), 10vw, 96px);
+$paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
 
 .piece {
   /* Positioning */
@@ -124,7 +123,6 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 96px);
   align-items: center;
 
   &.full + .piece.full {
-    display: none;
     margin-top: $paddingTopBottom;
   }
 }
