@@ -204,15 +204,8 @@ export default {
   width: 100%;
   height: auto;
 
-  @media screen and (prefers-reduced-motion: no-preference) {
-    transition: opacity 400ms 400ms var(--ease);
-  }
+  // &.is-loading {}
+  // &.has-loaded {}
+  // &.has-errored {}
 }
-
-.vid.is-loading {
-  opacity: 0;
-}
-
-/* .vid.has-errored {} */
-/* .vid.has-loaded {} */
 </style>

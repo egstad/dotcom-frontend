@@ -114,7 +114,6 @@ export default {
   height: auto;
 
   // &.is-loading {}
-  // &.has-loaded {}
   // &.has-errored {}
 }
 </style>
