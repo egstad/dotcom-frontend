@@ -4,6 +4,7 @@ Vue.directive('animate', {
   // init
   inserted: (el, binding, vnode) => {
     el.options = { rootMargin: '0px 0px 0px 0px', threshold: 0 }
+    el.modifiers = binding.modifiers
     el.classes = {
       here: 'is-here',
       above: 'is-above',
@@ -17,6 +18,9 @@ Vue.directive('animate', {
     const onEnter = (instance) => {
       instance.target.classList.add(el.classes.here)
       instance.target.classList.remove(el.classes.above, el.classes.below)
+
+      // unobserve if once modifier is defined
+      if (el.modifiers.once) window.$observer.unobserve(el, el.options)
     }
 
     /**

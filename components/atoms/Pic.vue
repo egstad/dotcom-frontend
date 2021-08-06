@@ -113,16 +113,7 @@ export default {
   width: 100%;
   height: auto;
 
-  @include transition {
-    transition: opacity 400ms 400ms var(--ease), blur 400ms 400ms var(--ease);
-  }
-
-  &.is-loading {
-    background-size: cover !important;
-    background-repeat: no-repeat !important;
-    filter: blur(15px);
-  }
-
+  // &.is-loading {}
   // &.has-loaded {}
   // &.has-errored {}
 }

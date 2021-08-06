@@ -1,11 +1,7 @@
 <template>
   <li class="piece" :class="[size]">
     <article class="piece__wrapper">
-      <header
-        v-animate
-        class="piece__info t-1"
-        :class="[{ 'small-header': !padding }]"
-      >
+      <header class="piece__info t-1" :class="[{ 'small-header': !padding }]">
         <Copy
           v-if="titleOverride"
           :blocks="titleOverride"
@@ -19,7 +15,7 @@
       </header>
 
       <div
-        v-animate
+        v-animate.once
         class="piece__content"
         :class="[size, padding, { 'is-visible': inView }]"
       >
@@ -128,9 +124,14 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   align-items: center;
 
   // space the full sized items out if they are siblings
-  &.full + .piece.full {
+  &.piece + .full {
     margin-top: $paddingTopBottom;
   }
+
+  // space the full sized items out if they are siblings
+  // &.full + .piece.full {
+  //   margin-top: $paddingTopBottom;
+  // }
 }
 
 .piece__wrapper {
@@ -145,18 +146,21 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   max-width: 200vmin;
 
   @include transition {
-    transition: transform 600ms var(--ease-back);
+    opacity: 0;
+    transition: transform 600ms var(--ease-back),
+      opacity 500ms 100ms var(--ease);
 
     &.is-here {
       transform: translate3d(0, 0, 0);
+      opacity: 1;
     }
 
     &.is-above {
-      transform: translate3d(0, -5vmax, 0);
+      transform: translate3d(0, -8vmax, 0);
     }
 
     &.is-below {
-      transform: translate3d(0, 5vmax, 0);
+      transform: translate3d(0, 8vmax, 0);
     }
   }
 
@@ -214,23 +218,6 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   border-bottom: 1px solid var(--foreground);
   width: 100%;
   width: calc(100% - var(--button-click-offset) * 2);
-
-  /* Other */
-  @include transition {
-    transition: transform 600ms var(--ease-back);
-
-    &.is-here {
-      transform: translate3d(0, 0, 0);
-    }
-
-    &.is-above {
-      transform: translate3d(0, -5vmax, 0);
-    }
-
-    &.is-below {
-      transform: translate3d(0, 5vmax, 0);
-    }
-  }
 
   // small bp
   padding-top: $paddingTopBottom;
