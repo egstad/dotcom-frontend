@@ -63,7 +63,7 @@ export default {
 
   /* Text */
   letter-spacing: 0.1em;
-  font-variation-settings: 'wght' 420, 'MONO' 1, 'ital' 0 !important;
+  font-variation-settings: 'wght' 300, 'MONO' 1, 'ital' 0 !important;
   font-style: normal;
   white-space: nowrap;
   text-overflow: ellipsis;

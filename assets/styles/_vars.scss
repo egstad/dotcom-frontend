@@ -41,8 +41,8 @@ $navBreakpoint: 1920px;
   --mono: 'S85', monospace;
 }
 
-@mixin bp($size: $sm) {
-  @media (min-width: $size) {
+@mixin bp($size: $sm, $prop: min-width) {
+  @media screen and ($prop: $size) {
     @content;
   }
 }

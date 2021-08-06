@@ -1,56 +1,58 @@
 <template>
-  <article class="piece">
-    <div class="piece__info t-1" :class="[{ 'small-header': !padding }]">
-      <Copy
-        v-if="titleOverride"
-        :blocks="titleOverride"
-        class="piece__credits"
-      />
-      <h2 v-else class="piece__title">{{ title }}</h2>
+  <li class="piece" :class="[size]">
+    <article class="piece__wrapper">
+      <header class="piece__info t-1" :class="[{ 'small-header': !padding }]">
+        <Copy
+          v-if="titleOverride"
+          :blocks="titleOverride"
+          class="piece__title --alt"
+        />
+        <h2 v-else class="piece__title">{{ title }}</h2>
 
-      <time v-if="date" :datetime="date" class="piece__date t-mono">{{
-        date.substring(0, 4)
-      }}</time>
-    </div>
+        <time v-if="date" :datetime="date" class="piece__date t-mono">{{
+          date.substring(0, 4)
+        }}</time>
+      </header>
 
-    <div
-      class="piece__content"
-      :class="[size, padding, { 'is-visible': inView }]"
-    >
-      <template v-for="slice in [content]">
-        <template v-if="slice._type === 'video'">
-          <Vid
-            :key="slice._key"
-            :alt="slice.alt"
-            :asset="slice.url"
-            :poster="slice.poster"
-            :config="slice.settings"
-            :palette="slice.paletteVideo"
-          />
-          <!-- <pre :key="slice._key">{{ content }}</pre> -->
+      <div
+        class="piece__content"
+        :class="[size, padding, { 'is-visible': inView }]"
+      >
+        <template v-for="slice in [content]">
+          <template v-if="slice._type === 'video'">
+            <Vid
+              :key="slice._key"
+              :alt="slice.alt"
+              :asset="slice.url"
+              :poster="slice.poster"
+              :config="slice.settings"
+              :palette="slice.paletteVideo"
+            />
+            <!-- <pre :key="slice._key">{{ content }}</pre> -->
+          </template>
+
+          <template v-else-if="slice._type === 'picture'">
+            <Pic
+              :key="slice._key"
+              :alt="slice.alt"
+              :asset="slice.asset._ref"
+              :palette="slice.paletteImage"
+            />
+            <!-- <pre :key="slice._key + 'pre'">{{ slice.paletteImage }}</pre> -->
+          </template>
+
+          <template v-else-if="slice._type === 'slideshow'">
+            <Slideshow
+              :key="slice._key"
+              :content="slice.slides"
+              :options="slice.options"
+            />
+            <!-- <pre :key="'pre-' + slice._key">{{ slice.options }}</pre> -->
+          </template>
         </template>
-
-        <template v-else-if="slice._type === 'picture'">
-          <Pic
-            :key="slice._key"
-            :alt="slice.alt"
-            :asset="slice.asset._ref"
-            :palette="slice.paletteImage"
-          />
-          <!-- <pre :key="slice._key + 'pre'">{{ slice.paletteImage }}</pre> -->
-        </template>
-
-        <template v-else-if="slice._type === 'slideshow'">
-          <Slideshow
-            :key="slice._key"
-            :content="slice.slides"
-            :options="slice.options"
-          />
-          <!-- <pre :key="'pre-' + slice._key">{{ slice.options }}</pre> -->
-        </template>
-      </template>
-    </div>
-  </article>
+      </div>
+    </article>
+  </li>
 </template>
 
 <script>
@@ -120,14 +122,22 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 96px);
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  &.full + .piece.full {
+    display: none;
+    margin-top: $paddingTopBottom;
+  }
 }
 
-.piece__content {
+.piece__wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   width: 100%;
+}
+
+.piece__content {
   max-width: 200vmin;
 
   &.padded {
@@ -212,7 +222,7 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 96px);
     display: flex;
     align-items: flex-end;
     font-variation-settings: 'wght' 600;
-    padding: 0.25em 0;
+    padding: 0.5em 0;
   }
 
   // strip default styles
@@ -225,7 +235,7 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 96px);
   }
 
   .piece__title,
-  ::v-deep .piece__credits {
+  ::v-deep .piece__title {
     width: 100%;
     padding-right: 3em;
 
@@ -235,12 +245,34 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 96px);
       justify-content: center;
     }
 
-    > * {
+    > h2 {
       width: 100%;
+
+      em {
+        font-variation-settings: 'wght' 600, 'ital' 0;
+        color: hsl(var(--f-h), var(--f-s), var(--f-l), 50%);
+      }
+
+      a {
+        font-variation-settings: 'wght' 600, 'ital' 1000;
+      }
     }
   }
 
-  // counter
+  // place the counter inline for mobile devices
+  ::v-deep .piece__title.--alt > *,
+  .piece__title:not(.--alt) {
+    &::before {
+      @extend .t-mono;
+
+      @include bp($lg, max-width) {
+        content: counters(piece, '.', decimal-leading-zero);
+        margin-right: 1em;
+      }
+    }
+  }
+
+  // on larger screens, position the counter in left column
   &::before {
     @extend .t-mono;
     content: counters(piece, '.', decimal-leading-zero);
@@ -251,6 +283,7 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 96px);
     }
   }
 
+  // numbers should be monospaced, thank yew
   &::before,
   .piece__date {
     font-variation-settings: 'wght' 350, 'MONO' 1000;
@@ -258,7 +291,6 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 96px);
   }
 
   .piece__date {
-    // align-self: baseline;
     justify-self: flex-end;
 
     @include bp($lg) {

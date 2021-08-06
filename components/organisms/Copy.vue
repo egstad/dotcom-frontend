@@ -75,7 +75,7 @@ export default {
 
   em {
     font-variation-settings: 'ital' 1;
-    font-style: italic;
+    font-style: none;
   }
 
   li {
