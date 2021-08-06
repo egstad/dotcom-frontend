@@ -154,13 +154,6 @@ export default {
   width: 100%;
   padding-left: var(--button-click-offset);
   padding-right: var(--button-click-offset);
-  // box-shadow: 0 1.3px 6.7px -15px rgba(0, 0, 0, 0.061),
-  //   0 4.2px 22.3px -15px rgba(0, 0, 0, 0.089),
-  //   0 19px 100px -15px rgba(0, 0, 0, 0.15);
-
-  /* Color */
-  // background-color: var(--background);
-  // background-color: hsla(var(--b-h), var(--b-s), calc(var(--b-l)), 80%);
 
   /* Other */
   @include transition {
