@@ -94,11 +94,13 @@ export default {
     { src: '~/plugins/ThemeChanger.js' },
     { src: '~/plugins/ThemeScroller.js' },
     { src: '~/plugins/Device.client.js' },
+    { src: '~/plugins/Sanity.js' },
+    { src: '~/plugins/Routes.js' },
     { src: '~/plugins/Grid.js' },
     { src: '~/plugins/Type.js' },
     { src: '~/plugins/VueSwipeEvents.client.js' },
-    { src: '~/plugins/Sanity.js' },
-    { src: '~/plugins/Routes.js' }
+    { src: '~/plugins/IntersectionObserver.client.js' },
+    { src: '~/plugins/ViewportAnimations.client.js' }
     // { src: '~/plugins/Scroll.client.js' }
   ],
   /*

@@ -71,6 +71,9 @@ export default {
   watch: {
     cssVars(state) {
       return state
+    },
+    $route(newRoute) {
+      if (newRoute) this.$nuxt.$emit('route::updated')
     }
   },
   mounted() {

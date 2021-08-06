@@ -12,9 +12,7 @@
       :alt="alt"
       :width="image.metadata.dimensions.width"
       :height="image.metadata.dimensions.height"
-      :style="{
-        background: `url(${image.url}?w=320&auto=format&fit=max);`
-      }"
+      :style="{ backgroundColor: background }"
       @load="onLoad($event)"
       @error="onError($event)"
     />
@@ -22,7 +20,6 @@
 </template>
 
 <script>
-import IntersectionObserverAdmin from 'intersection-observer-admin'
 import { getImageAsset } from '@sanity/asset-utils'
 
 export default {
@@ -53,8 +50,7 @@ export default {
       hasErrored: null,
       sizes: [320, 640, 1280, 2560, 3200],
       srcSet: [],
-      observer: new IntersectionObserverAdmin(),
-      observerOptions: {}
+      observerOptions: { rootMargin: `100% 0px`, threshold: 0 }
     }
   },
   computed: {
@@ -81,12 +77,12 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.observer.addEnterCallback(this.$refs.pic, this.inView)
-      this.observer.observe(this.$refs.pic)
+      window.$observer.addEnterCallback(this.$refs.pic, this.inView)
+      window.$observer.observe(this.$refs.pic, this.observerOptions)
     })
   },
   beforeDestroy() {
-    this.observer.destroy()
+    window.$observer.unobserve(this.$refs.pic, this.observerOptions)
   },
   methods: {
     onLoad(ev) {
@@ -105,7 +101,7 @@ export default {
     },
     inView() {
       this.setSource()
-      this.observer.destroy()
+      window.$observer.unobserve(this.$refs.pic, this.observerOptions)
     }
   }
 }
@@ -117,21 +113,7 @@ export default {
   width: 100%;
   height: auto;
 
-  @include transition {
-    transition: opacity 400ms 400ms var(--ease), blur 400ms 400ms var(--ease);
-  }
-
-  &.is-loading {
-    background-size: cover !important;
-    background-repeat: no-repeat !important;
-    filter: blur(15px);
-  }
-
-  &.has-loaded {
-    filter: blur(0);
-    background: none !important;
-  }
-
+  // &.is-loading {}
   // &.has-errored {}
 }
 </style>

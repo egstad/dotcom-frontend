@@ -15,6 +15,7 @@
       </header>
 
       <div
+        v-animate.once
         class="piece__content"
         :class="[size, padding, { 'is-visible': inView }]"
       >
@@ -122,9 +123,15 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   flex-direction: column;
   align-items: center;
 
-  &.full + .piece.full {
+  // space the full sized items out if they are siblings
+  &.piece + .full {
     margin-top: $paddingTopBottom;
   }
+
+  // space the full sized items out if they are siblings
+  // &.full + .piece.full {
+  //   margin-top: $paddingTopBottom;
+  // }
 }
 
 .piece__wrapper {
@@ -137,6 +144,25 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
 
 .piece__content {
   max-width: 200vmin;
+
+  @include transition {
+    opacity: 0;
+    transition: transform 600ms var(--ease-back),
+      opacity 500ms 100ms var(--ease);
+
+    &.is-here {
+      transform: translate3d(0, 0, 0);
+      opacity: 1;
+    }
+
+    &.is-above {
+      transform: translate3d(0, -8vmax, 0);
+    }
+
+    &.is-below {
+      transform: translate3d(0, 8vmax, 0);
+    }
+  }
 
   &.padded {
     padding-left: var(--button-click-offset);
@@ -186,7 +212,6 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
 
 .piece__info {
   /* Display & Box Model */
-
   width: 100%;
   display: grid;
   order: 2;

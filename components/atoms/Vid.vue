@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import IntersectionObserverAdmin from 'intersection-observer-admin'
 import { getImageAsset } from '@sanity/asset-utils'
 
 export default {
@@ -75,9 +74,8 @@ export default {
       hasBeenInteractedWith: false,
       width: null,
       height: null,
-      observerAutoplay: new IntersectionObserverAdmin(),
-      observerLazyload: new IntersectionObserverAdmin(),
-      observerLazyloadOptions: {}
+      observerAutoplayOptions: { rootMargin: `0px 0px 0px 0px`, threshold: 0 },
+      observerLazyloadOptions: { rootMargin: '100% 0px', threshold: 0 }
     }
   },
   computed: {
@@ -130,18 +128,20 @@ export default {
   mounted() {
     // setup an observer to handle the lazyloading of this video
     this.observerLazyloadOptions = { rootMargin: `100% 0px` }
-    this.observerLazyload.addEnterCallback(this.$el, this.setSource)
-    this.observerLazyload.observe(this.$el, this.observerLazyloadOptions)
+
+    // lazyload the video
+    window.$observer.addEnterCallback(this.$el, this.setSource)
+    window.$observer.observe(this.$el, this.observerLazyloadOptions)
 
     // setup an additional observer to handle our autoplaying videos
-    this.observerAutoplay.addEnterCallback(this.$el, this.autoplayInView)
-    this.observerAutoplay.addExitCallback(this.$el, this.autoplayOutOfView)
-    this.observerAutoplay.observe(this.$el)
+    window.$observer.addEnterCallback(this.$refs.video, this.autoplayInView)
+    window.$observer.addExitCallback(this.$refs.video, this.autoplayOutOfView)
+    window.$observer.observe(this.$refs.video, this.observerAutoplayOptions)
   },
   beforeDestroy() {
     // good bye, sweetie!
-    this.observerAutoplay.destroy()
-    this.observerLazyload.destroy()
+    window.$observer.unobserve(this.$refs.video, this.observerLazyloadOptions)
+    window.$observer.unobserve(this.$refs.video, this.observerAutoplayOptions)
   },
   methods: {
     play() {
@@ -183,7 +183,7 @@ export default {
       // update the src & garbage collect
       this.$refs.video.src = this.$refs.video.dataset.src
       this.$refs.video.removeAttribute('data-src')
-      this.observerLazyload.destroy()
+      window.$observer.unobserve(this.$refs.video, this.observerLazyloadOptions)
 
       // ask the browser to immediately load
       this.$refs.video.load()
@@ -204,15 +204,8 @@ export default {
   width: 100%;
   height: auto;
 
-  @media screen and (prefers-reduced-motion: no-preference) {
-    transition: opacity 400ms 400ms var(--ease);
-  }
+  // &.is-loading {}
+  // &.has-loaded {}
+  // &.has-errored {}
 }
-
-.vid.is-loading {
-  opacity: 0;
-}
-
-/* .vid.has-errored {} */
-/* .vid.has-loaded {} */
 </style>
