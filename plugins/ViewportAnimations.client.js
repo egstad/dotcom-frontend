@@ -1,7 +1,13 @@
 import Vue from 'vue'
 
 Vue.directive('animate', {
-  // init
+  /**
+   * INSERTED
+   * Runs when When the bound element is inserted into the DOM
+   * @param {HTMLElement} el The element the directive is bound to. This can be used to directly manipulate the DOM.
+   * @param {Object} binding An object containing the following properties.
+   * @param {Object} vnode The virtual node produced by Vue’s compiler.
+   */
   inserted: (el, binding, vnode) => {
     el.options = { rootMargin: '0px 0px 0px 0px', threshold: 0 }
     el.modifiers = binding.modifiers
@@ -44,12 +50,13 @@ Vue.directive('animate', {
     window.$observer.addExitCallback(el, onExit)
     window.$observer.observe(el, el.options)
   },
-  // if value changes, re-init observer
-  // componentUpdated: (el) => {
-  //   // destroy if once
-  //   // observer.destroy()
-  // },
-  // cleanup
+  /**
+   * UNBIND
+   * Called only once, when the directive is unbound from the element.
+   * @param {HTMLElement} el The element the directive is bound to. This can be used to directly manipulate the DOM.
+   * @param {Object} binding An object containing the following properties.
+   * @param {Object} vnode The virtual node produced by Vue’s compiler.
+   */
   unbind: (el, binding, vnode) => {
     window.$observer.unobserve(el, el.options)
   }
