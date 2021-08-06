@@ -110,11 +110,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$numberOfPrimaryItems: 3;
-$numberOfSecondaryItems: 5;
-$minLinkWidth: 75px;
-$maxLinkWidth: 100px;
-
 .site-header__nav {
   /* Positioning */
   position: relative;
@@ -149,12 +144,12 @@ $maxLinkWidth: 100px;
     transition: transform var(--trans-medium) var(--ease-back);
   }
 
-  @media (max-width: $lg) {
-    display: none;
-  }
-
   ::v-deep .abacus {
     transform: translate3d(0, -100%, 0);
+
+    @media (max-width: $lg) {
+      display: none;
+    }
 
     @include bp($xl) {
       transform: translate3d(0, 0, 0);
@@ -183,13 +178,13 @@ $maxLinkWidth: 100px;
 
     ::v-deep .abacus__item {
       width: 100px;
-      width: clamp(100px, 10vw, 175px);
+      width: clamp(100px, 10vw, 150px);
     }
   }
 
   @include bp($mx) {
     ::v-deep .abacus__item {
-      width: calc-vw(175px, $mx);
+      width: calc-vw(150px, $mx);
     }
   }
 }

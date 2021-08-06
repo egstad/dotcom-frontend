@@ -115,5 +115,8 @@ export default {
 
   // &.is-loading {}
   // &.has-errored {}
+  &.has-loaded {
+    background-color: transparent !important;
+  }
 }
 </style>

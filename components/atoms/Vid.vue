@@ -1,5 +1,5 @@
 <template>
-  <div class="vid__wrap" :style="{ background: background }">
+  <div class="vid__wrap">
     <video
       ref="video"
       class="vid"
@@ -8,6 +8,7 @@
         { 'has-loaded': hasLoaded },
         { 'has-errored': hasErrored }
       ]"
+      :style="{ background: background }"
       :data-src="source"
       :aria-label="alt"
       :autoplay="autoplay"
@@ -206,6 +207,9 @@ export default {
 
   // &.is-loading {}
   // &.has-loaded {}
-  // &.has-errored {}
+
+  &.has-loaded {
+    background-color: transparent !important;
+  }
 }
 </style>
