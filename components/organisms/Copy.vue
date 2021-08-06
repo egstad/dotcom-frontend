@@ -75,7 +75,7 @@ export default {
 
   em {
     font-variation-settings: 'ital' 1;
-    font-style: italic;
+    font-style: none;
   }
 
   li {
@@ -119,16 +119,6 @@ export default {
       top: -0.25em;
       left: 0.15em;
     }
-  }
-
-  ul,
-  ol,
-  p {
-    margin-bottom: 1em;
-  }
-
-  h2 {
-    font-size: clamp(32px, 2vw, 72px);
   }
 }
 </style>

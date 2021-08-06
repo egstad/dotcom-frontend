@@ -281,8 +281,8 @@ export default {
     text-align: center;
     font-size: 12px;
     font-feature-settings: 'ss04', 'ss05', 'ss06', 'ss07';
-    @media (min-width: $mx) {
-      font-size: calc-vw(12px, $mx);
+    @media (min-width: $navBreakpoint) {
+      font-size: calc-vw(12px, $navBreakpoint);
       line-height: calc-leading(36px, 12px);
     }
 

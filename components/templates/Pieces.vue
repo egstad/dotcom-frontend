@@ -1,10 +1,9 @@
 <template>
   <section class="pieces">
     <ul class="pieces__list">
-      <li v-for="piece in pieces" :key="piece._id" class="piece">
-        <Piece :piece="piece" />
-        <!-- <pre>{{ piece }}</pre> -->
-      </li>
+      <template v-for="piece in pieces">
+        <Piece :key="piece._id" :piece="piece" />
+      </template>
     </ul>
   </section>
 </template>
