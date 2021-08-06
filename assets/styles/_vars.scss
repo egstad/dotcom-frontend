@@ -5,7 +5,8 @@ $md: 500px;
 $lg: 700px;
 $xl: 1024px;
 $xx: 1300px;
-$mx: 2048px;
+$mx: 1600px;
+$navBreakpoint: 1920px;
 
 .site {
   // --aH: 0; // num:  0-360
@@ -93,7 +94,7 @@ $baseline: 16px;
 @mixin fluidScale(
   $sizeInPixels,
   $baselineInPixels: $baseline,
-  $breakpointInPixels: $xx
+  $breakpointInPixels: $mx
 ) {
   font-size: $sizeInPixels;
   line-height: $baselineInPixels;

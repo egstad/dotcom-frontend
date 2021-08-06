@@ -114,9 +114,9 @@ export default {
     --header-item-gap: 12px;
   }
 
-  @include bp($mx) {
-    --button-height: #{calc-vw(36px, $mx)};
-    --button-click-offset: #{calc-vw(16px, $mx)};
+  @include bp($navBreakpoint) {
+    --button-height: #{calc-vw(36px, $navBreakpoint)};
+    --button-click-offset: #{calc-vw(16px, $navBreakpoint)};
   }
 
   // @media (min-width: $xx) {

@@ -53,7 +53,7 @@
 import Pic from '@/components/atoms/Pic'
 import Vid from '@/components/atoms/Vid'
 import Theme from '@/components/atoms/Theme'
-import Copy from '@/components/atoms/Copy/Copy'
+import Copy from '@/components/organisms/Copy'
 import Slideshow from '@/components/organisms/SlideshowNew'
 
 export default {

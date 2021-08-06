@@ -11,11 +11,5 @@
   border-radius: 0.2em;
   background: var(--accent);
   color: var(--background);
-  font-family: 'Lars Mono';
-
-  // &::selection {
-  //   color: var(--foreground);
-  //   background: var(--background);
-  // }
 }
 </style>

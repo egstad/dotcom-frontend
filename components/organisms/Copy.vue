@@ -120,15 +120,5 @@ export default {
       left: 0.15em;
     }
   }
-
-  ul,
-  ol,
-  p {
-    margin-bottom: 1em;
-  }
-
-  h2 {
-    font-size: clamp(32px, 2vw, 72px);
-  }
 }
 </style>

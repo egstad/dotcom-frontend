@@ -50,8 +50,8 @@ export default {
   /* Display & Box Model */
   display: flex;
   width: auto;
-  max-width: 200px;
-  padding: 0.2em 1em;
+  max-width: 20em;
+  padding: 0.4em 1em;
   border-radius: 0.2em;
   text-transform: uppercase;
   overflow: hidden;
@@ -63,7 +63,8 @@ export default {
 
   /* Text */
   letter-spacing: 0.1em;
-  font-variation-settings: 'wght' 420, 'MONO' 1, 'ital' 0;
+  font-variation-settings: 'wght' 420, 'MONO' 1, 'ital' 0 !important;
+  font-style: normal;
   white-space: nowrap;
   text-overflow: ellipsis;
 
@@ -72,7 +73,7 @@ export default {
 
   &__text {
     position: relative;
-    top: 0.1em;
+    top: 0.075em;
   }
 
   @include transition {
