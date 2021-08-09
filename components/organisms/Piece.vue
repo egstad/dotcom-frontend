@@ -50,6 +50,11 @@
             />
             <!-- <pre :key="'pre-' + slice._key">{{ slice.options }}</pre> -->
           </template>
+
+          <template v-else-if="slice._type === 'svg'">
+            <PicSVG :key="'svg-' + slice._key" :data="slice.document" />
+            <!-- <pre :key="'pre-' + slice._key">{{ slice }}</pre> -->
+          </template>
         </template>
       </div>
     </article>
@@ -58,6 +63,7 @@
 
 <script>
 import Pic from '@/components/atoms/Pic'
+import PicSVG from '@/components/atoms/PicSVG'
 import Vid from '@/components/atoms/Vid'
 import Copy from '@/components/organisms/Copy'
 import Slideshow from '@/components/organisms/SlideshowNew'
@@ -67,7 +73,8 @@ export default {
     Slideshow,
     Pic,
     Vid,
-    Copy
+    Copy,
+    PicSVG
   },
   props: {
     piece: {
