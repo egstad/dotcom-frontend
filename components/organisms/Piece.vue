@@ -182,15 +182,19 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
 
     @include bp($md) {
       min-width: min(250px, 40vmax);
-      width: 50vw;
-      max-width: min(1024px, 50vh);
+      width: 40vw;
+      max-width: min(1024px, 60vh);
+    }
+
+    @media screen and (max-height: 800px) {
+      max-width: 500px;
     }
   }
 
   &.medium {
     @include bp($md) {
-      min-width: min(250px, 70vmax);
-      width: 70vw;
+      min-width: min(250px, 60vmax);
+      width: 60vw;
       max-width: 1024px * 1.25;
     }
   }
