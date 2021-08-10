@@ -14,7 +14,7 @@ export default {
   },
   mixins: [routeTransitionFade],
   async asyncData({ $sanityClient, store }) {
-    const queryLength = 20
+    const queryLength = 10
     const query = `
       *[_type == "work"][0]{
         _id,
@@ -55,7 +55,7 @@ export default {
     })
 
     return {
-      hasMorePostsToLoad: document.content.pieces.length > queryLength,
+      hasMorePostsToLoad: document.content.pieces.length >= queryLength,
       queryLength,
       document
     }
@@ -89,8 +89,6 @@ export default {
       this.fetchNextPage()
     },
     async fetchNextPage() {
-      if (!this.hasMorePostsToLoad) return
-
       this.lastQuery = this.document.content.pieces.length
       this.nextQuery = this.lastQuery + this.queryLength
       this.currentlyFetching = true
@@ -121,13 +119,14 @@ export default {
 
       const nextPosts = await this.$sanityClient.fetch(query)
 
+      // determine if there are more posts to load or not
+      if (nextPosts.content.pieces.length === 0) {
+        this.hasMorePostsToLoad = false
+      }
+
       // add items to array
       this.document.content.pieces.push(...nextPosts.content.pieces)
       this.currentlyFetching = false
-
-      // determine if there are more posts to load or not
-      if (nextPosts.content.pieces < this.queryLength)
-        this.hasMorePostsToLoad = false
     }
   }
 }

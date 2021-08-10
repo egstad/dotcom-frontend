@@ -50,6 +50,11 @@
             />
             <!-- <pre :key="'pre-' + slice._key">{{ slice.options }}</pre> -->
           </template>
+
+          <template v-else-if="slice._type === 'svg'">
+            <PicSVG :key="'svg-' + slice._key" :data="slice.document" />
+            <!-- <pre :key="'pre-' + slice._key">{{ slice }}</pre> -->
+          </template>
         </template>
       </div>
     </article>
@@ -58,6 +63,7 @@
 
 <script>
 import Pic from '@/components/atoms/Pic'
+import PicSVG from '@/components/atoms/PicSVG'
 import Vid from '@/components/atoms/Vid'
 import Copy from '@/components/organisms/Copy'
 import Slideshow from '@/components/organisms/SlideshowNew'
@@ -67,7 +73,8 @@ export default {
     Slideshow,
     Pic,
     Vid,
-    Copy
+    Copy,
+    PicSVG
   },
   props: {
     piece: {
@@ -175,15 +182,19 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
 
     @include bp($md) {
       min-width: min(250px, 40vmax);
-      width: 50vw;
-      max-width: min(1024px, 50vh);
+      width: 40vw;
+      max-width: min(1024px, 60vh);
+    }
+
+    @media screen and (max-height: 800px) {
+      max-width: 500px;
     }
   }
 
   &.medium {
     @include bp($md) {
-      min-width: min(250px, 70vmax);
-      width: 70vw;
+      min-width: min(250px, 60vmax);
+      width: 60vw;
       max-width: 1024px * 1.25;
     }
   }

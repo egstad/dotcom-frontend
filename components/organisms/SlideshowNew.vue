@@ -15,7 +15,7 @@ Todo:
       'slideshow',
       { 'is-hovered-next': hoverNext && !isTouch },
       { 'is-hovered-prev': hoverPrev && !isTouch },
-      { 'hide-ui': isPlaying && !hoverNext && !hoverPrev }
+      { 'hide-ui': !showUI }
     ]"
     :aria-live="ariaLive ? 'polite' : 'off'"
     :aria-label="`${ariaDescription} - Navigate with arrow keys`"
@@ -23,7 +23,7 @@ Todo:
     tabindex="0"
     @focus="onFocus"
     @blur="onBlur"
-    @click="goTo('next', $event)"
+    @click="showUI = !showUI"
     @keydown.self.right="goTo('next', $event)"
     @keydown.self.left="goTo('previous', $event)"
     @mouseenter.self="onFocus"
@@ -41,7 +41,7 @@ Todo:
       @keydown.self.left="goTo('previous', $event)"
     >
       <span class="pill">
-        <SlideshowArrow class="arrow" direction="right" />
+        <IconArrow class="arrow" direction="right" />
       </span>
     </button>
     <button
@@ -56,7 +56,7 @@ Todo:
       @keydown.self.left="goTo('previous', $event)"
     >
       <span class="pill">
-        <SlideshowArrow class="arrow" direction="left" />
+        <IconArrow class="arrow" direction="left" />
       </span>
     </button>
     <ul :style="[{ minHeight: `${slideHeight}px` }]" class="slides">
@@ -82,19 +82,18 @@ Todo:
         />
       </li>
     </ul>
-    <!-- <pre>{{ content[0] }}</pre> -->
   </section>
 </template>
 
 <script>
 import Pic from '@/components/atoms/Pic.vue'
-import SlideshowArrow from '@/components/atoms/Slideshow/SlideshowArrow.vue'
+import IconArrow from '@/components/atoms/Icons/IconArrows.vue'
 import IntersectionObserverAdmin from 'intersection-observer-admin'
 
 export default {
   components: {
     Pic,
-    SlideshowArrow
+    IconArrow
   },
   props: {
     content: {
@@ -136,10 +135,7 @@ export default {
       hasBeenInteractedWith: false,
       isTransitioning: false,
       autoplayInterval: null,
-
-      // animation
-      hidePrev: false,
-      hideNext: false,
+      showUI: false,
 
       // intersection observer for autoplay
       observerAutoplay: new IntersectionObserverAdmin()
@@ -341,7 +337,8 @@ export default {
     },
     onFocus(event, direction) {
       this.ariaLive = true
-      this.stopAutoplay()
+      this.showUI = true
+      // this.stopAutoplay()
 
       if (!direction) return
 
@@ -356,6 +353,7 @@ export default {
     },
     onBlur(event, direction) {
       this.ariaLive = false
+      this.showUI = false
 
       if (!direction && !this.hasBeenInteractedWith) {
         this.startAutoplay()
@@ -394,7 +392,8 @@ export default {
   width: 100%;
 
   &:focus-visible {
-    outline: 4px solid hsla(var(--aH), var(--aS), var(--aL), 100%);
+    outline: 4px solid var(--a11y-color);
+    outline-offset: 8px;
   }
 
   .slides {
@@ -422,59 +421,34 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    // svg arrows
-    .arrow {
-      stroke: var(--foreground);
-
-      @media screen and (prefers-reduced-motion: no-preference) {
-        transition: stroke var(--time) var(--ease);
-      }
-    }
+    cursor: pointer;
 
     &.next {
       right: 0;
-      cursor: e-resize;
-
-      .arrow {
-        position: relative;
-        left: 0.1em;
-      }
 
       &:focus-visible .pill {
-        background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
-        outline: 4px solid hsla(var(--a-h), var(--a-s), var(--a-l), 100%);
+        outline: 4px solid var(--a11y-color);
       }
     }
 
     &.prev {
       left: 0;
-      cursor: w-resize;
-
-      .arrow {
-        position: relative;
-        right: 0.1em;
-      }
 
       &:focus-visible .pill {
-        background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
-        outline: 4px solid hsla(var(--a-h), var(--a-s), var(--a-l), 100%);
+        outline: 4px solid var(--a11y-color);
       }
     }
 
     .pill {
       pointer-events: none;
-      background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 60%);
+      background-color: hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
       outline-offset: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-width: 44px;
-      min-height: 72px;
-      // width: clamp(44px, 1vw, 64px);
-      padding-top: 1.2em;
-      padding-bottom: 1.2em;
-      border-radius: 0.75em;
+      width: var(--button-height);
+      height: var(--button-height);
+      border-radius: var(--button-height);
       backdrop-filter: blur(15px);
       margin: 0;
 
@@ -483,9 +457,13 @@ export default {
           opacity 400ms ease-in-out;
       }
 
+      // svg
       .arrow {
-        width: 35%;
+        width: 100%;
         height: auto;
+        width: 14px;
+        height: 14px;
+        fill: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
       }
     }
   }
@@ -555,18 +533,10 @@ export default {
     .is-curr {
       mask-position: 100% 100%;
     }
-
-    .next .pill {
-      background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
-    }
   }
   &.is-hovered-prev {
     .is-curr {
       mask-position: 0% 100%;
-    }
-
-    .prev .pill {
-      background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
     }
   }
 
