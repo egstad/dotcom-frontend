@@ -13,25 +13,18 @@ export default {
     Pieces
   },
   mixins: [routeTransitionFade],
-  async asyncData({ $sanityClient, store }) {
+  async asyncData({ $sanityClient, params, store }) {
+    const uid = params.id
     const queryLength = 10
     const query = `
       *[_type == "work"][0]{
-        _id,
-        title,
-        theme{
-  			  "accent": accent.hsl,
-          "background": background.hsl,
-          "foreground": foreground.hsl,
-				},
-        social,
         content {
-          pieces[0...${queryLength}] {
+          pieces[("${uid}" in data->tags[]->tagName)][0...${queryLength}] {
             ...,
             "title": data->title,
             "titleOverride": title,
             "date": data->date,
-            size,
+            "tags": data->tags,
             "content": data->content[0] {
               ...,
               "paletteVideo": poster.asset->metadata.palette,
@@ -46,15 +39,15 @@ export default {
       }
     `
     const document = await $sanityClient.fetch(query)
-    const theme = {
-      background: document.theme.background,
-      foreground: document.theme.foreground,
-      accent: document.theme.accent
-    }
+    // const theme = {
+    //   background: document.theme.background,
+    //   foreground: document.theme.foreground,
+    //   accent: document.theme.accent
+    // }
 
     return {
       hasMorePostsToLoad: document.content.pieces.length >= queryLength,
-      theme,
+      // theme,
       queryLength,
       document
     }
@@ -66,12 +59,19 @@ export default {
       date: null
     }
   },
-  head() {
-    return this.$setPageMetadata(this.document.social)
-  },
+  // head() {
+  //   return this.$setPageMetadata(this.document.social)
+  // },
   computed: {
     preferredTheme() {
       return this.$store.state.device.preferredTheme
+    }
+  },
+  beforeMount() {
+    if (this.preferredTheme === 'dark') {
+      this.$store.commit('setCSSVars', 'dark')
+    } else {
+      this.$store.commit('setCSSVars', 'light')
     }
   },
   mounted() {
@@ -81,12 +81,6 @@ export default {
     // setTimeout(() => {
     this.$store.commit('setFilterVisibility', true)
     // }, 1000)
-
-    if (this.preferredTheme === 'dark') {
-      this.$store.commit('setCSSVars', 'dark')
-    } else {
-      this.$store.commit('setCSSVars', 'light')
-    }
   },
   beforeDestroy() {
     this.$store.commit('setFilterVisibility', false)
@@ -105,26 +99,26 @@ export default {
 
       // fetch items from sanity
       const query = `
-          *[_type == "work"][0]{
-            content {
-              pieces[${this.lastQuery}...${this.nextQuery}] {
+        *[_type == "work"][0]{
+          content {
+            pieces[("${this.$route.params.id}" in data->tags[]->tagName)][${this.lastQuery}...${this.nextQuery}] {
+              ...,
+              "title": data->title,
+              "titleOverride": title,
+              "date": data->date,
+              "tags": data->tags,
+              "content": data->content[0] {
                 ...,
-                "title": data->title,
-                "titleOverride": title,
-                "date": data->date,
-                size,
-                "content": data->content[0] {
+                "paletteVideo": poster.asset->metadata.palette,
+                "paletteImage": asset->metadata.palette,
+                "slides": slides[]{
                   ...,
-                  "paletteVideo": poster.asset->metadata.palette,
-                  "paletteImage": asset->metadata.palette,
-                  "slides": slides[]{
-                    ...,
-                    "paletteImage":asset->metadata.palette
-                  }
+                  "paletteImage":asset->metadata.palette
                 }
               }
             }
           }
+        }
         `
 
       const nextPosts = await this.$sanityClient.fetch(query)

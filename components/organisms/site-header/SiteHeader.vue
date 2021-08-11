@@ -56,22 +56,22 @@ export default {
         {
           title: '#Design',
           abbr: '#Dsgn',
-          path: '/'
+          path: '/work/design'
         },
         {
           title: '#Development',
           abbr: '#Devl',
-          path: '/work'
+          path: '/work/development'
         },
         {
           title: '#Typography',
           abbr: '#Type',
-          path: '/profile'
+          path: '/work/typography'
         },
         {
           title: '#Illustration',
           abbr: '#Illo',
-          path: '/testing-page'
+          path: '/work/illustration'
         }
       ]
     }
