@@ -127,7 +127,6 @@ export default {
 <style lang="scss" scoped>
 .slideshow {
   position: relative;
-  margin-top: 20vw;
 
   .button {
     position: absolute;

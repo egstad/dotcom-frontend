@@ -1,6 +1,15 @@
 const windowDimensions = {
   init() {
     this.set()
+
+    // page::mounted should exist on every page within the mounted() lifecycle hook
+    window.$nuxt.$on('page::mounted', () => {
+      windowDimensions.set()
+    })
+
+    window.$nuxt.$on('window::scrollStop', () => {
+      windowDimensions.set()
+    })
   },
   get() {
     return {

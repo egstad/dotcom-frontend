@@ -132,8 +132,17 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
 
   // space the full sized items out if they are siblings
   &.piece + .full {
-    margin-top: $paddingTopBottom;
+    margin-top: var(--button-click-offset);
   }
+
+  // &:not(.full).no-border {
+  //   margin-bottom: var(--button-click-offset);
+  //   // margin-top: 0;
+
+  //   // .piece__info {
+  //   //   border: 0;
+  //   // }
+  // }
 
   // space the full sized items out if they are siblings
   // &.full + .piece.full {
@@ -150,6 +159,7 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
 }
 
 .piece__content {
+  width: 100%;
   max-width: 200vmin;
 
   @include transition {
@@ -172,13 +182,21 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   }
 
   &.padded {
-    padding-left: var(--button-click-offset);
-    padding-right: var(--button-click-offset);
     padding-top: $paddingTopBottom;
+
+    ::v-deep .pic--svg svg {
+      padding-left: var(--button-click-offset);
+      padding-right: var(--button-click-offset);
+    }
+
+    @include bp($md) {
+      padding-left: var(--button-click-offset);
+      padding-right: var(--button-click-offset);
+    }
   }
 
   &.small {
-    width: 80vw;
+    width: 70vw;
 
     @include bp($md) {
       min-width: min(250px, 40vmax);
@@ -186,7 +204,7 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
       max-width: min(1024px, 60vh);
     }
 
-    @media screen and (max-height: 800px) {
+    @include bp(800px, max-height) {
       max-width: 500px;
     }
   }
@@ -228,7 +246,13 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   order: 2;
   border-bottom: 1px solid var(--foreground);
   width: 100%;
+  // padding-left: var(--button-click-offset);
+  // padding-right: var(--button-click-offset);
   width: calc(100% - var(--button-click-offset) * 2);
+
+  @media (prefers-color-scheme: dark) {
+    border-bottom: 1px solid hsla(var(--f-h), var(--f-s), var(--f-l), 40%);
+  }
 
   // small bp
   padding-top: $paddingTopBottom;
@@ -236,7 +260,8 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   align-items: baseline;
 
   @include bp($lg) {
-    padding-top: 0;
+    padding: 0;
+    // width: calc(100% - var(--button-click-offset) * 2);
     grid-template-columns: 10vw 1fr 10vw; // number, caption, date
     align-items: flex-end;
     height: $paddingTopBottom;
@@ -279,7 +304,8 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
       justify-content: center;
     }
 
-    > h2 {
+    > h2,
+    > p {
       width: 100%;
 
       em {

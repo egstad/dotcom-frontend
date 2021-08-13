@@ -43,7 +43,7 @@ export default {
 <style lang="scss" scoped>
 .link {
   position: relative;
-  display: inline-block;
+  // display: inline-block;
 }
 
 ::v-deep a {

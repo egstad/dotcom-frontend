@@ -46,15 +46,12 @@ export default {
       }
     `
     const document = await $sanityClient.fetch(query)
-    const theme = {
-      background: document.theme.background,
-      foreground: document.theme.foreground,
-      accent: document.theme.accent
-    }
+
+    store.commit('setCSSVars', 'light')
 
     return {
       hasMorePostsToLoad: document.content.pieces.length >= queryLength,
-      theme,
+
       queryLength,
       document
     }
@@ -69,11 +66,6 @@ export default {
   head() {
     return this.$setPageMetadata(this.document.social)
   },
-  computed: {
-    preferredTheme() {
-      return this.$store.state.device.preferredTheme
-    }
-  },
   mounted() {
     this.$nuxt.$emit('page::mounted')
     this.$nuxt.$on('window::scrollNearBottom', this.scrollHandler)
@@ -81,12 +73,6 @@ export default {
     // setTimeout(() => {
     this.$store.commit('setFilterVisibility', true)
     // }, 1000)
-
-    if (this.preferredTheme === 'dark') {
-      this.$store.commit('setCSSVars', 'dark')
-    } else {
-      this.$store.commit('setCSSVars', 'light')
-    }
   },
   beforeDestroy() {
     this.$store.commit('setFilterVisibility', false)

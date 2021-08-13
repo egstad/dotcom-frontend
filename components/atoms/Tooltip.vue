@@ -44,13 +44,14 @@ export default {
   /* Positioning */
   transform: translate3d(-50%, -150%, 0);
   position: absolute;
+  z-index: 10;
   left: 0;
   top: 0;
 
   /* Display & Box Model */
   display: flex;
   width: auto;
-  max-width: 20em;
+  max-width: 30em;
   padding: 0.4em 1em;
   border-radius: 0.2em;
   text-transform: uppercase;
@@ -73,7 +74,7 @@ export default {
 
   &__text {
     position: relative;
-    top: 0.075em;
+    top: 0.045em;
   }
 
   @include transition {

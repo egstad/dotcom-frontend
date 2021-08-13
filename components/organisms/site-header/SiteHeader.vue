@@ -41,11 +41,11 @@ export default {
         },
         {
           title: 'Work',
-          path: 'work'
+          path: '/work'
         },
         {
           title: 'About',
-          path: 'profile'
+          path: '/profile'
         }
       ],
       linksSecondary: [
@@ -120,7 +120,8 @@ export default {
       const hasScrolledUp = scrollDiff > 0 && scrollDiff > scrollOffset
       const nearTop = y < scrollOffset
       const nearBottomOffset = 25
-      const nearBottom = this.winHeight + y + nearBottomOffset >= this.docHeight
+      const nearBottom =
+        this.winHeight + y + nearBottomOffset >= document.body.clientHeight
 
       if (hasScrolledUp && !this.headerIsVisible) this.showNav()
       if (hasScrolledDown && this.headerIsVisible) this.hideNav()

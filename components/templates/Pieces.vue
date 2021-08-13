@@ -1,8 +1,18 @@
 <template>
   <section class="pieces">
     <ul class="pieces__list">
-      <template v-for="piece in pieces">
-        <Piece :key="piece._id" :piece="piece" />
+      <template v-for="(piece, pieceIndex) in pieces">
+        <Piece
+          :key="piece._id"
+          :piece="piece"
+          :class="{
+            'no-border':
+              pieces[pieceIndex + 1] && pieces[pieceIndex + 1].size === 'full'
+          }"
+        />
+        <!-- <pre v-if="pieces[pieceIndex + 1]" :key="piece._id + 'pre'">{{
+          pieces[pieceIndex + 1].size
+        }}</pre> -->
       </template>
     </ul>
   </section>

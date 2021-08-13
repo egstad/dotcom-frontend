@@ -1,5 +1,5 @@
 <template>
-  <div class="svg">
+  <div class="pic--svg">
     <!-- eslint-disable-next-line -->
     <div v-html="data"></div>
   </div>
@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.svg {
+.pic--svg {
   width: 100%;
   height: 100%;
 

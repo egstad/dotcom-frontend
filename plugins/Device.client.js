@@ -51,15 +51,6 @@ if (process.browser) {
     device.init()
     // tell nuxt that we're ready to rock
     window.$nuxt.$emit('device::initialized')
-
-    // page::mounted should exist on every page within the mounted() lifecycle hook
-    window.$nuxt.$on('page::mounted', () => {
-      windowDimensions.set()
-    })
-
-    window.$nuxt.$on('window::scrollStop', () => {
-      windowDimensions.set()
-    })
   })
 }
 

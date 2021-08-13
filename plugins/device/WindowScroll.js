@@ -25,7 +25,7 @@ const scroll = {
     const y = ev.detail.y
     const h = document.documentElement.scrollHeight
     const w = this.$nuxt.$store.state.device.winHeight
-    const o = w
+    const o = w + w
 
     // if near bottom
     if (y + w + o > h) {

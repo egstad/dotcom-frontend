@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+    <header class="pieces__header">
+      <h1 class="t-center">
+        <span>#</span>{{ $route.params.id }}<span>{{ count }}</span>
+      </h1>
+    </header>
     <Pieces :pieces="document.content.pieces" />
   </div>
 </template>
@@ -16,6 +21,7 @@ export default {
   async asyncData({ $sanityClient, params, store }) {
     const uid = params.id
     const queryLength = 10
+    const queryCount = `count(*[_type == "work"][0].content.pieces[("${uid}" in data->tags[]->tagName)])`
     const query = `
       *[_type == "work"][0]{
         content {
@@ -39,15 +45,19 @@ export default {
       }
     `
     const document = await $sanityClient.fetch(query)
+    const count = await $sanityClient.fetch(queryCount)
     // const theme = {
     //   background: document.theme.background,
     //   foreground: document.theme.foreground,
     //   accent: document.theme.accent
     // }
 
+    store.commit('setCSSVars', 'light')
+
     return {
       hasMorePostsToLoad: document.content.pieces.length >= queryLength,
       // theme,
+      count,
       queryLength,
       document
     }
@@ -65,13 +75,6 @@ export default {
   computed: {
     preferredTheme() {
       return this.$store.state.device.preferredTheme
-    }
-  },
-  beforeMount() {
-    if (this.preferredTheme === 'dark') {
-      this.$store.commit('setCSSVars', 'dark')
-    } else {
-      this.$store.commit('setCSSVars', 'light')
     }
   },
   mounted() {
@@ -137,7 +140,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-pre {
-  margin-top: 20vw;
+.pieces__header {
+  border-bottom: 1px solid #000;
+  border-top: 1px solid #000;
+  width: calc(100% - var(--button-click-offset) * 2);
+  margin: calc(var(--button-click-offset) * 2 + var(--button-height)) auto 0;
+  padding: 15vmin 0;
+
+  span {
+    font-variation-settings: 'wght' 0;
+  }
+
+  h1 {
+    font-size: clamp(44px, 5vw, 132px);
+    font-variation-settings: 'wght' 1000;
+    line-height: 0;
+  }
 }
 </style>
