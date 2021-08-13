@@ -77,11 +77,12 @@ export default {
       // if (newValue === undefined) return
       this.styleBead(newValue)
     },
-    route(newValue) {
-      // no route?
-      const routeNotListed = this.getIndexOfPath(newValue) === undefined
-      // highlight the first item
-      this.selectByIndex(routeNotListed ? 0 : this.getIndexOfPath(newValue))
+    route(newValue, oldValue) {
+      const isWork = newValue.includes('work')
+      const index = isWork ? 1 : this.getIndexOfPath(newValue)
+
+      // if route doesn't exist, highlight 'egstad'
+      this.selectByIndex(index === undefined ? 0 : index)
       this.styleBead()
     }
   },
