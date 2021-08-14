@@ -1,7 +1,19 @@
 <template>
-  <div class="vid__wrap">
+  <div
+    class="vid__wrap"
+    @mousemove="onPointerMove"
+    @pointerleave="onPointerLeave"
+  >
+    <transition name="meta" mode="out-in">
+      <button v-if="showUI" class="vid__playhead" @click="playToggle">
+        <span v-if="isPlaying">Pause</span>
+        <span v-else>Play</span>
+      </button>
+    </transition>
+
     <video
       ref="video"
+      v-touch="onTap"
       class="vid"
       :class="[
         { 'is-loading': !hasLoaded && !hasErrored },
@@ -14,16 +26,16 @@
       :autoplay="autoplay"
       :loop="loop"
       :muted="muted"
-      :controls="controls"
       :playsinline="playsinline"
       :width="width"
       :height="height"
       :poster="posterSource"
       tabindex="1"
       preload="metadata"
+      controlsList="nodownload"
+      @click.stop.prevent="playToggle"
       @keydown.space.prevent="!controls ? playToggle() : null"
       @keydown.enter="!controls ? playToggle() : null"
-      @click="!controls ? playToggle() : null"
       @error="onError($event)"
       @play="onPlay($event)"
       @pause="onPause($event)"
@@ -71,7 +83,10 @@ export default {
     return {
       hasLoaded: null,
       hasErrored: null,
-      isPlaying: null,
+      showUI: false,
+      UItimeout: null,
+      isPlaying: false,
+      isHovered: false,
       hasBeenInteractedWith: false,
       width: null,
       height: null,
@@ -113,13 +128,44 @@ export default {
     posterSource() {
       return `${this.posterReference.url}?q=60&auto=format`
     },
-    winHeight() {
-      return this.$store.state.device.winHeight
-    },
     background() {
       return this.palette && this.extension !== 'png'
         ? this.palette.dominant.background
         : null
+    }
+  },
+  watch: {
+    isPlaying(newValue, oldValue) {
+      if (newValue) {
+        clearTimeout(this.UItimeout)
+        this.UItimeout = setTimeout(() => {
+          this.showUI = false
+        }, 1250)
+      } else {
+        clearTimeout(this.UItimeout)
+        this.showUI = true
+      }
+    },
+    isHovered(newValue, oldValue) {
+      // if not playing, always show ui
+      if (!this.isPlaying) {
+        clearTimeout(this.UItimeout)
+        this.showUI = true
+        return
+      }
+
+      if (newValue) {
+        clearTimeout(this.UItimeout)
+        this.showUI = true
+        this.UItimeout = setTimeout(() => {
+          this.showUI = false
+        }, 1250)
+      } else {
+        clearTimeout(this.UItimeout)
+        this.UItimeout = setTimeout(() => {
+          this.showUI = false
+        }, 1250)
+      }
     }
   },
   created() {
@@ -129,6 +175,8 @@ export default {
   mounted() {
     // setup an observer to handle the lazyloading of this video
     this.observerLazyloadOptions = { rootMargin: `100% 0px` }
+
+    if (!this.autoplay && !this.isPlaying) this.showUI = true
 
     // lazyload the video
     window.$observer.addEnterCallback(this.$el, this.setSource)
@@ -178,6 +226,32 @@ export default {
     onEnd(ev) {
       this.$emit('end', ev)
     },
+    onTap(ev) {
+      // if not playing, always show ui
+      if (!this.isPlaying) {
+        this.showUI = true
+      } else {
+        this.toggleUI()
+      }
+    },
+    onPointerMove() {
+      this.isHovered = true
+
+      if (!this.isPlaying) return
+
+      // show it when cursor moves
+      clearTimeout(this.UItimeout)
+      this.showUI = true
+      this.UItimeout = setTimeout(() => {
+        this.showUI = false
+      }, 1250)
+    },
+    onPointerLeave() {
+      this.isHovered = false
+    },
+    toggleUI() {
+      this.showUI = !this.showUI
+    },
     setSource() {
       if (this.$refs.video.src) return
 
@@ -200,6 +274,10 @@ export default {
 </script>
 
 <style lang="scss">
+.vid__wrap {
+  position: relative;
+}
+
 .vid {
   display: block;
   width: 100%;
@@ -210,6 +288,23 @@ export default {
 
   &.has-loaded {
     background-color: transparent !important;
+  }
+
+  &__wrap {
+    position: relative;
+  }
+
+  &__playhead {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    z-index: 1;
+    width: calc(var(--button-height) * 2);
+    height: calc(var(--button-height) * 2);
+    border-radius: calc(var(--button-height) * 2);
+    border: 0;
+    appearance: none;
   }
 }
 </style>
