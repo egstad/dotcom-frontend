@@ -4,16 +4,22 @@
     @mousemove="onPointerMove"
     @pointerleave="onPointerLeave"
   >
-    <transition name="meta" mode="out-in">
-      <button v-if="showUI" class="vid__playhead" @click="playToggle">
-        <span v-if="isPlaying">Pause</span>
-        <span v-else>Play</span>
+    <transition name="ui" mode="out-in">
+      <button
+        v-if="
+          (showUI && controls) ||
+            (showUI && autoplay && !isPlaying && !controls)
+        "
+        class="vid__playhead"
+        @click="playToggle"
+      >
+        <IconStop v-show="isPlaying" />
+        <IconPlay v-show="!isPlaying" />
       </button>
     </transition>
 
     <video
       ref="video"
-      v-touch="onTap"
       class="vid"
       :class="[
         { 'is-loading': !hasLoaded && !hasErrored },
@@ -43,13 +49,36 @@
       @canplay="onLoad($event)"
       @loadedmetadata="onLoadedData($event)"
     ></video>
+
+    <transition name="ui" mode="out-in">
+      <div v-if="controls && showUI" class="vid__chrome">
+        <p class="t-1 t-mono time">{{ currentMins }}:{{ currentSecs }}</p>
+        <div
+          class="vid__timeline"
+          @click="skipTimelineToLocation"
+          @touchmove="skipTimelineToLocation"
+        >
+          <div
+            class="current"
+            :style="{ width: `${(currentTime / duration) * 100}%` }"
+          ></div>
+          <div class="length"></div>
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import { getImageAsset } from '@sanity/asset-utils'
+import IconPlay from '@/components/atoms/Icons/IconPlay.vue'
+import IconStop from '@/components/atoms/Icons/IconStop.vue'
 
 export default {
+  components: {
+    IconPlay,
+    IconStop
+  },
   props: {
     asset: {
       type: String,
@@ -83,6 +112,10 @@ export default {
     return {
       hasLoaded: null,
       hasErrored: null,
+      currentTime: null,
+      currentMins: null,
+      currentSecs: null,
+      duration: null,
       showUI: false,
       UItimeout: null,
       isPlaying: false,
@@ -166,6 +199,14 @@ export default {
           this.showUI = false
         }, 1250)
       }
+    },
+    currentTime(newValue) {
+      const timeLeft = this.duration - newValue
+      this.currentMins = Math.floor(timeLeft / 60)
+      this.currentSecs = this.leadingZero(
+        Math.floor(timeLeft - this.currentMins * 60),
+        2
+      )
     }
   },
   created() {
@@ -186,11 +227,15 @@ export default {
     window.$observer.addEnterCallback(this.$refs.video, this.autoplayInView)
     window.$observer.addExitCallback(this.$refs.video, this.autoplayOutOfView)
     window.$observer.observe(this.$refs.video, this.observerAutoplayOptions)
+
+    // update playhead on time
+    this.$refs.video.addEventListener('timeupdate', this.onTimeUpdate)
   },
   beforeDestroy() {
     // good bye, sweetie!
     window.$observer.unobserve(this.$refs.video, this.observerLazyloadOptions)
     window.$observer.unobserve(this.$refs.video, this.observerAutoplayOptions)
+    this.$refs.video.removeEventListener('timeupdate', this.onTimeUpdate)
   },
   methods: {
     play() {
@@ -204,8 +249,9 @@ export default {
       this.hasBeenInteractedWith = true
     },
     onLoadedData(ev) {
-      this.width = this.$el.videoWidth
-      this.height = this.$el.videoHeight
+      this.width = this.$refs.video.videoWidth
+      this.height = this.$refs.video.videoHeight
+      this.duration = this.$refs.video.duration
     },
     onLoad(ev) {
       this.hasLoaded = true
@@ -226,14 +272,6 @@ export default {
     onEnd(ev) {
       this.$emit('end', ev)
     },
-    onTap(ev) {
-      // if not playing, always show ui
-      if (!this.isPlaying) {
-        this.showUI = true
-      } else {
-        this.toggleUI()
-      }
-    },
     onPointerMove() {
       this.isHovered = true
 
@@ -248,6 +286,25 @@ export default {
     },
     onPointerLeave() {
       this.isHovered = false
+    },
+    onTimeUpdate(ev) {
+      this.currentTime = this.$refs.video.currentTime
+    },
+    skipTimelineToLocation(ev) {
+      let clickLocation = null
+      let videoWidth = null
+
+      if (ev.type === 'touchmove') {
+        const bcr = ev.target.getBoundingClientRect()
+        clickLocation = ev.targetTouches[0].clientX - bcr.x
+        videoWidth = bcr.width
+      } else {
+        clickLocation = ev.offsetX
+        videoWidth = ev.target.getBoundingClientRect().width
+      }
+
+      this.$refs.video.currentTime =
+        (clickLocation / videoWidth) * this.duration
     },
     toggleUI() {
       this.showUI = !this.showUI
@@ -268,15 +325,19 @@ export default {
     },
     autoplayOutOfView() {
       if (this.autoplay) this.pause()
+    },
+    leadingZero(num, size) {
+      num = num.toString()
+      while (num.length < size) num = '0' + num
+      return num
     }
   }
 }
 </script>
 
 <style lang="scss">
-.vid__wrap {
-  position: relative;
-}
+$bar-size: 2px;
+$bar-size-hover: 6px;
 
 .vid {
   display: block;
@@ -290,12 +351,16 @@ export default {
     background-color: transparent !important;
   }
 
+  // wraps all video elements
   &__wrap {
     position: relative;
   }
 
+  // playhead button
   &__playhead {
     position: absolute;
+    background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 70%);
+    backdrop-filter: blur(10px);
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
@@ -305,6 +370,116 @@ export default {
     border-radius: calc(var(--button-height) * 2);
     border: 0;
     appearance: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 1.7px 3.6px rgba(0, 0, 0, 0.024),
+      0 4.6px 10px rgba(0, 0, 0, 0.035), 0 11.2px 24.1px rgba(0, 0, 0, 0.046),
+      0 37px 80px rgba(0, 0, 0, 0.07);
+
+    @include transition {
+      transition: transform var(--trans-short) var(--ease-back);
+
+      &:hover {
+        transform: translate3d(-50%, -50%, 0) scale(1.125);
+      }
+    }
+
+    &:focus-visible {
+      outline-offset: 4px;
+      outline: 4px solid var(--a11y-color);
+    }
+
+    svg {
+      display: block;
+      width: 80%;
+      height: auto;
+      fill: var(--foreground);
+    }
   }
+
+  // time left and progress bar
+  &__chrome {
+    /* Positioning */
+    position: absolute;
+    bottom: calc(var(--button-click-offset) * 1.25);
+    left: var(--button-click-offset);
+
+    /* Display & Box Model */
+    width: 100%;
+    width: calc(100% - (var(--button-click-offset) * 2));
+    border-radius: 100vw;
+    padding: 0 var(--button-click-offset);
+
+    height: var(--button-height);
+    display: flex;
+    align-items: center;
+    background-color: hsla(var(--b-h), var(--b-s), var(--b-l), 70%);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1.7px 3.6px rgba(0, 0, 0, 0.024),
+      0 4.6px 10px rgba(0, 0, 0, 0.035), 0 11.2px 24.1px rgba(0, 0, 0, 0.046),
+      0 37px 80px rgba(0, 0, 0, 0.07);
+
+    .time {
+      color: var(--foreground);
+      margin-right: var(--button-click-offset);
+      position: relative;
+      transform: translateY(10%);
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
+    }
+  }
+
+  &__timeline {
+    position: relative;
+    cursor: crosshair;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+
+    .length,
+    .current {
+      height: $bar-size;
+      border-radius: $bar-size;
+    }
+
+    .length {
+      width: 100%;
+      background: hsla(var(--f-h), var(--f-s), var(--f-l), 25%);
+      position: absolute;
+      top: calc(50% - #{$bar-size * 0.5});
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .current {
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
+      background: var(--foreground);
+      transition: width 300ms linear;
+    }
+  }
+}
+
+.ui-enter-active,
+.ui-leave-active {
+  transition: opacity var(--trans-medium) var(--ease);
+}
+.ui-enter,
+.ui-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity var(--trans-short) var(--ease);
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
