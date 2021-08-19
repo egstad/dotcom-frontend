@@ -1,19 +1,32 @@
 <template>
   <div class="container">
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-    <Abacus :links="links" />
-    <pre>{{ document }}</pre>
-    <pre>{{ document }}</pre>
+    <br /><br /><br /><br />
+    <button @click="$store.commit('setCSSVars', 'dark')">dark</button>
+    <button @click="$store.commit('setCSSVars', 'light')">light</button>
+    <!-- <section>
+      <header class="header">
+        <Logo class="logo" />
+        <Bio class="bio" />
+      </header>
+    </section>
+    <Details /> -->
+    <Egg />
   </div>
 </template>
 
 <script>
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
-import Abacus from '@/components/organisms/Abacus.vue'
+import Egg from '@/components/organisms/pages/homepage/Egg'
+// import Logo from '@/components/organisms/pages/homepage/Logo'
+// import Bio from '@/components/organisms/pages/homepage/Bio'
+// import Details from '@/components/organisms/pages/homepage/Details'
 
 export default {
   components: {
-    Abacus
+    Egg
+    // Logo,
+    // Bio,
+    // Details
   },
   mixins: [routeTransitionFade],
   async asyncData({ $sanityClient, store }) {

@@ -29,6 +29,7 @@
     "intersection-observer-admin": "^0.3.2",
     "nuxt": "^2.15.4",
     "sanity-blocks-vue-component": "^0.1.0",
+    "three": "^0.131.3",
     "vue-flickity": "^1.2.1",
     "vue2-touch-events": "^3.2.2"
   },
