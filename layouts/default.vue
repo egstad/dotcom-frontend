@@ -147,6 +147,7 @@ export default {
     width: 100%;
     overflow: hidden;
     flex: 1 0 auto;
+    display: flex;
   }
 }
 

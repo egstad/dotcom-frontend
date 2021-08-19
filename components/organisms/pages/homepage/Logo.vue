@@ -140,15 +140,14 @@ $char-height: 28.25vw;
 
 .logo {
   padding: 0 var(--button-click-offset);
-  margin-top: 35vh;
+  margin-top: 45vh;
 
   @include bp($lg) {
-    margin-top: 45vh;
     margin-bottom: 1vw;
   }
 
   @include bp($xl) {
-    margin-top: 32vh;
+    margin-top: 42vh;
     margin-bottom: 0.5vw;
   }
 

@@ -1,8 +1,5 @@
 <template>
   <div class="container">
-    <br /><br /><br /><br />
-    <button @click="$store.commit('setCSSVars', 'dark')">dark</button>
-    <button @click="$store.commit('setCSSVars', 'light')">light</button>
     <section>
       <header class="header">
         <Logo class="logo" />
@@ -115,3 +112,10 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.container {
+  flex: 1;
+  align-self: flex-end;
+}
+</style>
