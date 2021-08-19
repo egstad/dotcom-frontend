@@ -1,89 +1,126 @@
 <template>
-  <h2 ref="text" class="para is-hidden">{{ text }}</h2>
+  <h2 ref="text" class="bio is-hidden">
+    {{ text }}
+  </h2>
 </template>
 
 <script>
 import gsap from 'gsap'
 import { SplitText } from '@/plugins/gsap/SplitText'
 
+if (process.client) {
+  gsap.registerPlugin(SplitText)
+}
+
 export default {
   data() {
     return {
-      timeline: null,
-      splitText: null,
-      splitWrap: null,
-      chars: null,
+      wordsInner: null,
+      wordsOuter: null,
       lines: null,
+      timeline: gsap.timeline(),
+      splitText: null,
       text:
-        'Hello world, I’m Jordan Egstad. I’m a graphic designer and web developer creating expressive and enduring brand identities, websites, apps, typefaces, and more.'
+        'Hello world, I’m Jordan Egstad. I’m a graphic designer and web developer creating expressive and enduring brand identities, websites, apps, typefaces, imagery, and more.'
     }
   },
   mounted() {
     this.initGSAP()
-    this.$app.$on('animate::bio', this.animateText)
+    this.$nuxt.$on('animate::bio', this.animateText)
   },
   methods: {
     initGSAP() {
-      this.timeline = gsap.timeline()
-      this.splitText = new SplitText(this.$refs.text, {
-        type: 'lines',
-        linesClass: 'line-child'
+      this.wordsOuter = new SplitText(this.$refs.text, {
+        type: 'words',
+        wordsClass: 'split-outer'
       })
-      this.splitWrap = new SplitText(this.$refs.text, {
-        type: 'lines',
-        linesClass: 'line-parent hidden'
+
+      this.wordsInner = new SplitText(this.$refs.text, {
+        type: 'words',
+        wordsClass: 'split-inner'
       })
-      this.lines = this.splitText.lines
     },
     animateText() {
-      this.$refs.text.classList.remove('is-hidden')
+      this.innerSplit = new SplitText()
 
-      this.timeline.from(
-        '.line-child',
-        {
-          duration: 0.8,
-          opacity: 0,
-          y: '100%',
-          ease: 'Power2.easeOut',
-          stagger: 0.15,
-          onStart: () => {
-            setTimeout(() => {
-              this.$app.$emit('animate::details')
-            }, 500)
-          },
-          onComplete: () => {
-            // split in reverse order of initialization
-            this.splitWrap.revert()
-            this.splitText.revert()
+      if (this.$refs.text) {
+        this.$refs.text.classList.remove('is-hidden')
+      }
 
-            setTimeout(() => {
-              this.$app.$emit('animate::links')
-            }, 500)
-          }
-        },
-        '+=0'
-      )
+      this.timeline.set(this.wordsInner.words, { opacity: 0, yPercent: 50 })
+
+      this.timeline.to(this.wordsInner.words, {
+        delay: 0.5,
+        duration: 0.5,
+        opacity: 1,
+        yPercent: 0,
+        stagger: 0.025,
+        onComplete: () => {
+          // this.wordsInner.revert()
+          // this.wordsOuter.revert()
+          this.$nuxt.$emit('animate::details')
+        }
+      })
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
-.para {
-  font-variation-settings: 'wght' 500;
-  line-height: 1;
-  font-size: 6.8vw;
+<style lang="scss">
+.bio {
+  width: calc(100% - var(--button-click-offset) * 2);
+  margin-left: var(--button-click-offset);
+
+  border-top: 1px solid var(--foreground);
+  border-bottom: 1px solid var(--foreground);
+  font-variation-settings: 'wght' 600;
+
+  font-size: 7vw;
+  line-height: 1.05;
+  margin-top: 2.25vw;
+  padding-top: 4vw;
+  padding-bottom: 4vw;
   letter-spacing: -0.04em;
-  padding-top: 0.2em;
-  padding-bottom: 0.4em;
+
+  @include bp($md) {
+    font-size: 6vw;
+    letter-spacing: -0.055em;
+    line-height: 0.97;
+    padding-top: 3vw;
+    padding-bottom: 3vw;
+  }
+
+  @include bp($lg) {
+    font-variation-settings: 'wght' 500;
+    font-size: calc(5.15vw - 1px);
+    letter-spacing: -0.055em;
+    padding-top: 1.6vw;
+    padding-bottom: 1.5vw;
+    margin-top: 0.2vw;
+  }
+
+  @include bp($xl) {
+    font-size: calc(4.38vw - 1px);
+  }
+
+  overflow: hidden;
 
   &.is-hidden {
     opacity: 0;
   }
 
-  @media (min-width: $md) {
-    line-height: 1;
-    font-size: 4.74vw;
+  > span,
+  > div {
+    position: relative;
+    margin: 0;
+    display: inline !important;
+  }
+
+  .split-outer {
+    overflow: hidden;
+  }
+  .split-inner {
+    display: inline-block;
   }
 }
 </style>

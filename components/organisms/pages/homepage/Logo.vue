@@ -23,10 +23,10 @@ export default {
   },
   mounted() {
     this.gsapInit()
-    this.$app.$on('animate::logo', this.animateText)
+    this.$nuxt.$on('animate::logo', this.animateText)
   },
   beforeDestroy() {
-    this.$app.$off('animate::logo', this.animateText)
+    this.$nuxt.$off('animate::logo', this.animateText)
   },
   methods: {
     gsapInit() {
@@ -43,11 +43,12 @@ export default {
     animateText(animationIndex) {
       this.timeline.to(this.chars, {
         duration: 0.8,
+        delay: 0.5,
         opacity: 1,
         stagger: 0.15,
         onStart: () => {
           setTimeout(() => {
-            this.$app.$emit('animate::bio')
+            this.$nuxt.$emit('animate::bio')
           }, 500)
         }
       })
@@ -66,9 +67,6 @@ export default {
           this.animSqueeze(startIndex)
           break
         case 2:
-          this.animBold(startIndex)
-          break
-        case 3:
           this.animSqueeze(startIndex)
           break
         default:
@@ -131,31 +129,6 @@ export default {
           each: multiplier + 0.05
         }
       })
-    },
-    animBold(startIndex) {
-      this.timeline.fromTo(
-        this.chars,
-        {
-          fontWeight: 550
-        },
-        {
-          duration: 0.2,
-          fontWeight: 800,
-          ease: 'expo.inOut',
-          stagger: {
-            grid: [1, 6],
-            yoyo: true,
-            repeat: 1,
-            from: startIndex,
-            axis: 'x',
-            each: 0.1,
-            onUpdate() {
-              this._targets[0].style.fontVariationSettings =
-                "'wght' " + this._targets[0].style.fontWeight
-            }
-          }
-        }
-      )
     }
   }
 }
@@ -163,51 +136,51 @@ export default {
 
 <style lang="scss" scoped>
 $kern-offset: 0.5vw;
-$char-height: 23vw;
+$char-height: 28.25vw;
 
 .logo {
+  padding: 0 var(--button-click-offset);
+  margin-top: 39vmax;
+
+  @include bp($lg) {
+    margin-top: 18.5vmax;
+  }
+
   &-text {
     cursor: pointer !important;
     position: relative;
-    height: $char-height;
-    line-height: 0.725;
-    left: 0;
+    height: 20vw;
+    line-height: 20vw;
     width: 100%;
-    color: var(--color-accent);
-    text-indent: -0.095em;
+    color: var(--foreground);
+    text-indent: -0.075em;
     user-select: none;
-    font-size: calc(31.5vw - #{24px});
+    font-size: calc(#{$char-height} - (var(--button-click-offset) * 0.5));
   }
 
   .char {
+    font-variation-settings: 'wght' 700;
+    font-weight: normal;
     position: absolute;
-    height: $char-height;
     opacity: 0;
-    font-variation-settings: 'wght' 550;
-    font-weight: 550;
-
-    @media screen and (min-width: $md) {
-      font-variation-settings: 'wght' 500;
-      font-weight: 500;
-    }
 
     &[data-index='0'] {
       left: 0;
     }
     &[data-index='1'] {
-      left: 15.7vw - $kern-offset;
+      left: 0.54em;
     }
     &[data-index='2'] {
-      left: 34.2vw - $kern-offset;
+      left: 1.23em;
     }
     &[data-index='3'] {
-      left: 49.5vw - $kern-offset;
+      left: 1.81em;
     }
     &[data-index='4'] {
-      left: 61vw - $kern-offset;
+      left: 2.25em;
     }
     &[data-index='5'] {
-      left: 78.5vw - $kern-offset;
+      left: 2.9em;
     }
   }
 }

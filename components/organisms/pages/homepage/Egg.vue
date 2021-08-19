@@ -3,7 +3,7 @@
     <div ref="eggball" class="eggball">
       <canvas ref="canvas"></canvas>
     </div>
-    <video
+    <!-- <video
       ref="video"
       src="/egg/vid.mp4"
       style="display:none"
@@ -11,7 +11,7 @@
       muted
       loop
       autoplay
-    ></video>
+    ></video> -->
   </div>
 </template>
 
@@ -79,10 +79,10 @@ export default {
       this.target = new THREE.Vector2()
       this.scene = new THREE.Scene()
 
-      // const texture = new THREE.TextureLoader().load('egg/head.jpg')
-      const texture = new THREE.VideoTexture(this.$refs.video)
+      const texture = new THREE.TextureLoader().load('egg/head.jpg')
+      // const texture = new THREE.VideoTexture(this.$refs.video)
       const material = new THREE.MeshBasicMaterial({ map: texture })
-      this.$refs.video.play()
+      // this.$refs.video.play()
 
       const radius = 100
       const widthSegments = 64

@@ -11,28 +11,13 @@
 }
 
 .t-2 {
-  @include fluidScale(16px, $baseline * 1.25);
-  letter-spacing: 0.02em;
+  @include fluidScale(15px, $baseline * 1.25);
+  font-variation-settings: 'wght' 500;
 }
 
 .t-3 {
-  @include fluidScale(18px, $baseline * 1.5);
+  @include fluidScale(28px, $baseline * 2);
   letter-spacing: 0.01em;
-}
-
-.t-4 {
-  @include fluidScale(27px, $baseline * 2);
-  letter-spacing: -0.01em;
-}
-
-.t-5 {
-  @include fluidScale(44px, $baseline * 3);
-  letter-spacing: -0.015em;
-}
-
-.t-6 {
-  @include fluidScale(62px, $baseline * 4);
-  letter-spacing: -0.03em;
 }
 
 .t-mono {

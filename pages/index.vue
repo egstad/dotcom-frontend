@@ -3,13 +3,13 @@
     <br /><br /><br /><br />
     <button @click="$store.commit('setCSSVars', 'dark')">dark</button>
     <button @click="$store.commit('setCSSVars', 'light')">light</button>
-    <!-- <section>
+    <section>
       <header class="header">
         <Logo class="logo" />
         <Bio class="bio" />
       </header>
     </section>
-    <Details /> -->
+    <Details />
     <Egg />
   </div>
 </template>
@@ -17,16 +17,16 @@
 <script>
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
 import Egg from '@/components/organisms/pages/homepage/Egg'
-// import Logo from '@/components/organisms/pages/homepage/Logo'
-// import Bio from '@/components/organisms/pages/homepage/Bio'
-// import Details from '@/components/organisms/pages/homepage/Details'
+import Logo from '@/components/organisms/pages/homepage/Logo'
+import Bio from '@/components/organisms/pages/homepage/Bio'
+import Details from '@/components/organisms/pages/homepage/Details'
 
 export default {
   components: {
-    Egg
-    // Logo,
-    // Bio,
-    // Details
+    Egg,
+    Logo,
+    Bio,
+    Details
   },
   mixins: [routeTransitionFade],
   async asyncData({ $sanityClient, store }) {
@@ -104,10 +104,13 @@ export default {
       ]
     }
   },
+
   head() {
     return this.$setPageMetadata(this.document.social)
   },
   mounted() {
+    this.$nuxt.$emit('animate::logo')
+
     this.$nuxt.$emit('page::mounted')
   }
 }
