@@ -56,12 +56,17 @@ export default {
   padding-bottom: 5vw;
 
   @include bp($md) {
-    padding-top: 3vw;
-    padding-bottom: 3vw;
+    padding-top: 3.5vw;
+    padding-bottom: 3.5vw;
   }
 
   @include bp($lg) {
     grid-template-columns: repeat(3, 1fr);
+    padding-top: 2vw;
+    padding-bottom: 2vw;
+  }
+
+  @include bp($xl) {
     padding-top: 1.5vw;
     padding-bottom: 1.5vw;
   }

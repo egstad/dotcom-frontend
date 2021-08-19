@@ -17,7 +17,7 @@
         <nuxt />
       </main>
 
-      <SiteFooter />
+      <!-- <SiteFooter /> -->
     </div>
 
     <SiteMenu class="site-menu" />
@@ -28,7 +28,7 @@
 
 <script>
 import SiteHeader from '@/components/organisms/site-header/SiteHeader'
-import SiteFooter from '@/components/organisms/site-footer/SiteFooter'
+// import SiteFooter from '@/components/organisms/site-footer/SiteFooter'
 import SiteMenu from '@/components/organisms/site-menu/SiteMenu'
 // import Debug from '@/components/templates/Debug'
 import Scrim from '@/components/templates/Scrim'
@@ -36,7 +36,7 @@ import Scrim from '@/components/templates/Scrim'
 export default {
   components: {
     SiteHeader,
-    SiteFooter,
+    // SiteFooter,
     SiteMenu,
     // LazyTime
     Scrim

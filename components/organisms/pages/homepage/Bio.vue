@@ -85,7 +85,7 @@ export default {
   @include bp($md) {
     font-size: 6vw;
     letter-spacing: -0.055em;
-    line-height: 0.97;
+    line-height: 1;
     padding-top: 3vw;
     padding-bottom: 3vw;
   }
@@ -94,13 +94,16 @@ export default {
     font-variation-settings: 'wght' 500;
     font-size: calc(5.15vw - 1px);
     letter-spacing: -0.055em;
-    padding-top: 1.6vw;
-    padding-bottom: 1.5vw;
+    padding-top: 2vw;
+    padding-bottom: 2vw;
     margin-top: 0.2vw;
   }
 
   @include bp($xl) {
+    line-height: 0.97;
     font-size: calc(4.38vw - 1px);
+    padding-top: 1.5vw;
+    padding-bottom: 1.5vw;
   }
 
   overflow: hidden;
