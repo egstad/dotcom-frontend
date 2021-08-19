@@ -11,10 +11,14 @@
             (showUI && autoplay && !isPlaying && !controls)
         "
         class="vid__playhead"
+        tabindex="0"
+        :aria-label="isPlaying ? 'Stop video' : 'Play video'"
         @click="playToggle"
+        @keyup.right="skipTo(5)"
+        @keyup.left="skipTo(-5)"
       >
-        <IconStop v-show="isPlaying" />
-        <IconPlay v-show="!isPlaying" />
+        <IconStop v-if="isPlaying" />
+        <IconPlay v-else />
       </button>
     </transition>
 
@@ -36,22 +40,35 @@
       :width="width"
       :height="height"
       :poster="posterSource"
-      tabindex="1"
+      tabindex="0"
       preload="metadata"
       controlsList="nodownload"
       @click.stop.prevent="playToggle"
-      @keydown.space.prevent="!controls ? playToggle() : null"
-      @keydown.enter="!controls ? playToggle() : null"
+      @keyup.space.prevent="!controls ? playToggle() : null"
+      @keyup.enter="playToggle()"
+      @keyup.right="skipTo(5)"
+      @keyup.left="skipTo(-5)"
       @error="onError($event)"
       @play="onPlay($event)"
       @pause="onPause($event)"
       @ended="onEnd($event)"
       @canplay="onLoad($event)"
       @loadedmetadata="onLoadedData($event)"
+      @focus="showUI = true"
     ></video>
 
     <transition name="ui" mode="out-in">
-      <div v-if="controls && showUI" class="vid__chrome">
+      <div
+        v-show="controls && showUI && currentTime"
+        class="vid__chrome"
+        tabindex="0"
+        aria-label="Scrub the video timeline with your arrowkeys"
+        @keyup.space.prevent="!controls ? playToggle() : null"
+        @keyup.enter="playToggle()"
+        @keyup.right="skipTo(5)"
+        @keyup.left="skipTo(-5)"
+        @focus="showUI = true"
+      >
         <p class="t-1 t-mono time">{{ currentMins }}:{{ currentSecs }}</p>
         <div
           class="vid__timeline"
@@ -330,6 +347,10 @@ export default {
       num = num.toString()
       while (num.length < size) num = '0' + num
       return num
+    },
+    skipTo(perc) {
+      const offset = this.duration * (perc * 0.01)
+      this.$refs.video.currentTime = this.currentTime + offset
     }
   }
 }
@@ -343,6 +364,11 @@ $bar-size-hover: 6px;
   display: block;
   width: 100%;
   height: auto;
+
+  &:focus-visible {
+    outline-offset: -4px;
+    outline: 4px solid var(--a11y-color);
+  }
 
   // &.is-loading {}
   // &.has-loaded {}
@@ -420,6 +446,11 @@ $bar-size-hover: 6px;
     box-shadow: 0 1.7px 3.6px rgba(0, 0, 0, 0.024),
       0 4.6px 10px rgba(0, 0, 0, 0.035), 0 11.2px 24.1px rgba(0, 0, 0, 0.046),
       0 37px 80px rgba(0, 0, 0, 0.07);
+
+    &:focus-visible {
+      outline-offset: 4px;
+      outline: 4px solid var(--a11y-color);
+    }
 
     .time {
       color: var(--foreground);
