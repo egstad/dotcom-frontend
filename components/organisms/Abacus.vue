@@ -221,6 +221,10 @@ export default {
       }
     }
 
+    .is-hovered ::v-deep .abacus__link {
+      color: var(--background);
+    }
+
     .is-active ::v-deep .abacus__link {
       color: var(--background);
 

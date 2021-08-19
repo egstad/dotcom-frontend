@@ -50,43 +50,28 @@ export default {
       links: [
         {
           title: 'All',
-          path: '/works'
+          path: '/work'
         },
         {
           title: '#Design',
           abbr: '#Dsgn',
-          path: '/'
+          path: '/work/design'
         },
         {
           title: '#Development',
           abbr: '#Devl',
-          path: '/work'
+          path: '/work/development'
         },
         {
           title: '#Typography',
           abbr: '#Type',
-          path: '/profile'
+          path: '/work/typography'
         },
         {
           title: '#Illustration',
           abbr: '#Illo',
-          path: '/testing-page'
+          path: '/work/illustration'
         }
-        // {
-        //   title: '#Development',
-        //   abbr: '#Devl',
-        //   path: '/work/development'
-        // },
-        // {
-        //   title: '#Typography',
-        //   abbr: '#Type',
-        //   path: '/work/development'
-        // },
-        // {
-        //   title: '#Illustration',
-        //   abbr: '#Illo',
-        //   path: '/testing-page'
-        // }
       ]
     }
   },
@@ -294,9 +279,11 @@ export default {
   color: var(--background);
   /* Text */
   font-size: clamp(32px, 5vh, 96px);
-  margin: 0.125em;
+  margin: 0.25em;
   text-transform: uppercase;
   text-decoration: none;
+  font-variation-settings: 'wght' 300, 'MONO' 1000, 'ital' 0;
+  letter-spacing: 0.05em;
 
   @media screen and (min-height: 600px) {
     font-size: clamp(28px, 5vmin, 200px);
