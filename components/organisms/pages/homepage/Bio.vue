@@ -110,7 +110,7 @@ export default {
 
     font-size: 6.75vw;
     line-height: 1.05;
-    padding-top: 4vw;
+    padding-top: 3.5vw;
     padding-bottom: 4vw;
     letter-spacing: -0.04em;
 
@@ -118,15 +118,15 @@ export default {
       font-size: 6.15vw;
       letter-spacing: -0.05em;
       line-height: 1;
-      padding-top: 3vw;
-      padding-bottom: 3vw;
+      padding-top: 2.25vw;
+      padding-bottom: 3.5vw;
     }
 
     @include bp($lg) {
       font-variation-settings: 'wght' 550;
       font-size: calc(5.15vw - 1px);
-      padding-top: 1.8vw;
-      padding-bottom: 2vw;
+      padding-top: 1.6vw;
+      padding-bottom: 2.2vw;
       margin-top: 0.2vw;
     }
 
@@ -135,7 +135,7 @@ export default {
       font-size: calc(4.2vw - 1px);
       letter-spacing: -0.055em;
       padding-top: 1.1vw;
-      padding-bottom: 1.3vw;
+      padding-bottom: 1.75vw;
     }
 
     overflow: hidden;

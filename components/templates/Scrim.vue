@@ -1,15 +1,18 @@
 <template>
   <transition @leave="leave">
-    <div v-if="!layoutHasMounted && isShowing" ref="scrim" class="scrim">
-      <div ref="text" class="scrim__text">
-        <span
-          v-for="(letter, index) in loadingText"
-          :key="`letter${index}`"
-          ref="letter"
-          class="scrim__letter"
-          >{{ letter }}</span
-        >
-      </div>
+    <div
+      v-if="!layoutHasMounted && isShowing && $route.name !== 'index'"
+      ref="scrim"
+      class="scrim"
+    >
+      <h1 ref="text" class="scrim-text" @mousedown="reanimate($event)">
+        <span class="char">E</span>
+        <span class="char">G</span>
+        <span class="char">S</span>
+        <span class="char">T</span>
+        <span class="char">A</span>
+        <span class="char">D</span>
+      </h1>
     </div>
   </transition>
 </template>
@@ -24,6 +27,7 @@ export default {
       isShowing: true,
       loadTimeout: null,
       loadDuration: 1500,
+      chars: null,
       tl: gsap.timeline()
     }
   },
@@ -46,7 +50,7 @@ export default {
     }
   },
   mounted() {
-    if (!this.$nuxt.context.isDev) this.animateLetters()
+    this.animateLetters()
   },
   beforeDestroy() {
     clearTimeout(this.loadTimeout)
@@ -94,29 +98,34 @@ export default {
       })
     },
     animateLetters() {
-      if (this.hideAnimations) return
+      if (this.hideAnimations || !this.$refs.text) return
 
-      this.tl.fromTo(
-        this.$refs.letter,
-        {
-          opacity: 0
-        },
-        {
-          delay: this.loadDuration * 0.25 * 0.001,
-          duration: this.loadDuration * 0.75 * 0.001,
-          ease: 'Power3.inOut',
-          opacity: 1,
-          stagger: {
-            each: 0.1
-          }
+      this.chars = this.$refs.text.querySelectorAll('.char')
+
+      // add a data-prop for accessing
+      this.chars.forEach((el, index) => {
+        el.setAttribute('data-index', index)
+      })
+
+      this.tl.to(this.chars, {
+        duration: 0.8,
+        delay: 0.5,
+        opacity: 1,
+        stagger: 0.15,
+        onStart: () => {
+          setTimeout(() => {
+            this.$nuxt.$emit('animate::bio')
+          }, 500)
         }
-      )
+      })
     }
   }
 }
 </script>
 
 <style lang="scss">
+$char-height: 28.25vw;
+
 .scrim {
   /* Positioning */
   position: fixed;
@@ -133,6 +142,10 @@ export default {
   justify-content: center;
   opacity: 1;
 
+  @include bp($xl) {
+    justify-content: flex-end;
+  }
+
   /* Color */
   background-color: var(--foreground);
   color: var(--background);
@@ -140,33 +153,49 @@ export default {
   /* Other */
   user-select: none;
 
-  @include bp($xl) {
-    align-items: center;
-  }
+  &-text {
+    font-family: var(--sans);
+    position: relative;
+    line-height: 1;
+    width: 100%;
+    color: var(--background);
+    text-indent: -0.075em;
+    user-select: none;
+    height: calc(#{$char-height - 5.75vw} - (var(--button-click-offset) * 0.5));
+    font-size: calc(#{$char-height} - (var(--button-click-offset) * 0.5));
+    cursor: pointer !important;
+    transform: translateX(var(--button-click-offset));
 
-  &__text {
-    /* Positioning */
-    transform: translateX(-0.11em);
-
-    /* Display & Box Model */
-    display: flex;
-
-    /* Text */
-    font-family: var(--mono);
-    font-size: 24vw;
-    text-transform: uppercase;
-    letter-spacing: -0.08em;
-
-    /* Other */
-    pointer-events: none;
-
-    @include bp($xl) {
-      font-size: clamp(96px, 40vmin, 200px) !important;
+    @include transition {
+      transition: color var(--transition-page);
     }
   }
 
-  &__letter {
+  .char {
+    font-variation-settings: 'wght' 700;
+    position: absolute;
+    top: -4.5vw;
     opacity: 0;
+    height: $char-height;
+
+    &[data-index='0'] {
+      left: 0;
+    }
+    &[data-index='1'] {
+      left: 0.552em;
+    }
+    &[data-index='2'] {
+      left: 1.23em;
+    }
+    &[data-index='3'] {
+      left: 1.8em;
+    }
+    &[data-index='4'] {
+      left: 2.27em;
+    }
+    &[data-index='5'] {
+      left: 2.9em;
+    }
   }
 }
 </style>

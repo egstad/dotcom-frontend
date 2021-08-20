@@ -129,7 +129,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-pre {
-  margin-top: 20vw;
+// this class applies to the very first item, if it's size is full that is
+::v-deep .extra-padding {
+  margin-top: calc(var(--button-height) + var(--button-click-offset) * 2);
+
+  @include bp($lg) {
+    margin-top: 0;
+  }
 }
 </style>

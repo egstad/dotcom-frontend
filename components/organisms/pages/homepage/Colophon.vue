@@ -20,7 +20,7 @@
     <div class="t-1 tech">
       <strong>TECHNOLOGY</strong> • Nuxt.js, Sanity.io, Netlify, Github, and a
       S3 bucket (used as a video CDN) are what make this site possible. All code
-      is open-sourced and available here.
+      is open-sourced.
     </div>
 
     <footer class="t-1 footer">
@@ -38,16 +38,16 @@ export default {
       isShowing: false,
       connectLinks: [
         {
-          text: 'Email',
-          url: 'mailto:jordan@egstad.com'
-        },
-        {
           text: 'Instagram',
           url: 'https://instagram.com/jordanegstad'
         },
         {
           text: 'Are.na',
           url: 'https://are.na/jordan-egstad'
+        },
+        {
+          text: 'Twitter',
+          url: 'https://twitter.com/jordanegstad'
         }
       ]
     }
@@ -88,7 +88,8 @@ export default {
   }
 
   @include transition {
-    transition: opacity var(--trans-medium) var(--trans-delay) var(--ease);
+    transition: opacity var(--trans-medium) var(--trans-delay) var(--ease),
+      border-color var(--transition-page);
   }
 
   &.is-hidden {
@@ -109,6 +110,10 @@ export default {
     grid-column: span 1;
     border: 0;
     margin-bottom: 1vw;
+  }
+
+  @include transition {
+    transition: border-color var(--transition-page);
   }
 }
 
@@ -220,6 +225,10 @@ export default {
   @include bp($xl) {
     grid-column: span 3;
     border-top: 1px solid var(--foreground);
+  }
+
+  @include transition {
+    transition: border-color var(--transition-page);
   }
 }
 </style>

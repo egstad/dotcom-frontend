@@ -5,16 +5,16 @@
       development for some of the world’s best brands. Each of my projects is
       approached with a sense of curiosity, care, and most importantly, play.
       This ethos, and the generative process it informs, consistently leads
-      brands to discerning solutions that feel uniquely, and uncompromisingly,
-      "them".
+      brands to discerning solutions that feel uniquely and uncompromisingly
+      “them”.
     </p>
     <p class="t-2">
       I most recently led design and development on Instrument’s brand team,
-      where I helped attract world-class talent and brands. During my six years
-      there, I was fortunate enough to serve brands like Amazon, Dwell, Dropbox,
-      Ebay, Facebook, Google, Harper’s Bazaar, Hot Wheels, Levi’s, Nike,
-      Patagonia, Sequoia Capital, Sonos, Stumptown Coffee, TEDx, Twitter, Umpqua
-      Bank, and more.
+      where I helped them attract world-class talent and clients. During my six
+      years there, I worked on a variety of projects for Amazon, Dwell, Ebay,
+      Facebook, Google, Harper’s Bazaar, Hot Wheels, Levi’s, Nike, Patagonia,
+      Sequoia Capital, Sonos, Stumptown Coffee, TEDx, Twitter, Umpqua Bank, and
+      more.
     </p>
     <p class="t-2">
       Currently, I live in Portland, Oregon and work with Loom as their

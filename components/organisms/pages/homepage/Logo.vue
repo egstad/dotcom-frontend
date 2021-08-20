@@ -45,7 +45,7 @@ export default {
             h: 32,
             s: 0.72,
             l: 0.95,
-            a: 0.2
+            a: 0.1
           }
         },
         // khaki
@@ -66,7 +66,7 @@ export default {
             h: 216,
             s: 0.66,
             l: 0.93,
-            a: 0.2
+            a: 0.1
           }
         },
         // red
@@ -87,7 +87,7 @@ export default {
             h: 137,
             s: 0.32,
             l: 0.93,
-            a: 0.2
+            a: 0.1
           }
         },
         // olive
@@ -108,7 +108,7 @@ export default {
             h: 126,
             s: 0.22,
             l: 0.88,
-            a: 0.2
+            a: 0.1
           }
         },
         // green
@@ -129,7 +129,7 @@ export default {
             h: 72,
             s: 0.19,
             l: 0.95,
-            a: 0.2
+            a: 0.1
           }
         },
         // yellow
@@ -150,7 +150,7 @@ export default {
             h: 0,
             s: 0.95,
             l: 0.47,
-            a: 0.2
+            a: 0.1
           }
         },
         // pink
@@ -171,7 +171,7 @@ export default {
             h: 0,
             s: 0.95,
             l: 0.47,
-            a: 0.2
+            a: 0.1
           }
         },
         // gray
@@ -192,7 +192,7 @@ export default {
             h: 44,
             s: 0.69,
             l: 0.26,
-            a: 0.2
+            a: 0.1
           }
         },
         // blue
@@ -213,7 +213,7 @@ export default {
             h: 209,
             s: 0.3,
             l: 0.8,
-            a: 0.2
+            a: 0.1
           }
         },
         // black
@@ -225,16 +225,121 @@ export default {
             a: 1
           },
           foreground: {
-            h: 47,
-            s: 0.14,
-            l: 0.87,
+            h: 54,
+            s: 0.4,
+            l: 0.86,
             a: 1
           },
           accent: {
-            h: 47,
-            s: 0.14,
-            l: 0.87,
-            a: 0.2
+            h: 54,
+            s: 0.4,
+            l: 0.86,
+            a: 0.1
+          }
+        },
+        // cyan
+        {
+          background: {
+            h: 169,
+            s: 1,
+            l: 0.81,
+            a: 1
+          },
+          foreground: {
+            h: 266,
+            s: 0.91,
+            l: 0.79,
+            a: 1
+          },
+          accent: {
+            h: 266,
+            s: 0.91,
+            l: 0.79,
+            a: 0.1
+          }
+        },
+        // pink/red
+        {
+          background: {
+            h: 309,
+            s: 0.92,
+            l: 0.52,
+            a: 1
+          },
+          foreground: {
+            h: 347,
+            s: 1,
+            l: 0.44,
+            a: 1
+          },
+          accent: {
+            h: 347,
+            s: 1,
+            l: 0.44,
+            a: 0.1
+          }
+        },
+        // orange/gray
+        {
+          background: {
+            h: 19,
+            s: 1,
+            l: 0.5,
+            a: 1
+          },
+          foreground: {
+            h: 202,
+            s: 0.21,
+            l: 0.68,
+            a: 1
+          },
+          accent: {
+            h: 202,
+            s: 0.21,
+            l: 0.68,
+            a: 0.1
+          }
+        },
+        // yellow/blue
+        {
+          background: {
+            h: 52,
+            s: 0.99,
+            l: 0.56,
+            a: 1
+          },
+          foreground: {
+            h: 223,
+            s: 0.87,
+            l: 0.42,
+            a: 1
+          },
+          accent: {
+            h: 223,
+            s: 0.87,
+            l: 0.42,
+            a: 0.1
+          }
+        },
+        // lavendar/yellow
+        {
+          background: {
+            h: 248,
+            s: 1,
+            l: 0.85,
+            a: 1
+          },
+          foreground: {
+            h: 65,
+            s: 1,
+            l: 0.49,
+            a: 1
+          },
+          accent: {
+            h: 65,
+            s: 1,
+            l: 0.49,
+            a: 0.1
           }
         },
         // white
@@ -255,13 +360,15 @@ export default {
             h: 40,
             s: 0.4,
             l: 0.14,
-            a: 0.2
+            a: 0.1
           }
         }
       ],
       hintTimeout: null,
       hintTimeoutReset: null,
-      numOfClicks: 0
+      hintIntervalDurattion: 5000,
+      numOfClicks: 0,
+      isTransitioning: false
     }
   },
   mounted() {
@@ -287,7 +394,7 @@ export default {
     animateText(animationIndex) {
       this.timeline.to(this.chars, {
         duration: 0.8,
-        delay: 0.5,
+        delay: 0,
         opacity: 1,
         stagger: 0.15,
         onStart: () => {
@@ -298,6 +405,8 @@ export default {
       })
     },
     reanimate(ev) {
+      if (this.isTransitioning) return
+
       // which character is clicked? start there
       const startIndex = parseFloat(ev.target.dataset.index)
 
@@ -316,7 +425,7 @@ export default {
           this.animTheme()
           break
         case 3:
-          this.animFall(startIndex)
+          this.animVariableType(startIndex)
           break
         case 4:
           this.animFade(startIndex)
@@ -329,12 +438,17 @@ export default {
       }
     },
     animWave(startIndex) {
+      this.isTransitioning = true
+
       this.timeline.to(this.chars, {
         duration: 0.2,
         y: window.innerHeight * -0.05,
         ease: 'Power3.inOut',
-        transformOrigin: 'center center',
-
+        onComplete: () => {
+          gsap.set(this.chars, { clearProps: 'y' })
+          this.isTransitioning = false
+        },
+        // transformOrigin: 'center center',
         stagger: {
           grid: [1, 6],
           yoyo: true,
@@ -346,6 +460,7 @@ export default {
       })
     },
     animRotate(startIndex) {
+      this.isTransitioning = true
       const rotation = Math.round(Math.random() * 24 * 15)
       const plusOrMinus = Math.random() < 0.5 ? -1 : 1
 
@@ -353,7 +468,11 @@ export default {
         duration: 0.5,
         scaleX: 0.65,
         rotation: plusOrMinus * rotation,
-        transformOrigin: 'center center',
+        // transformOrigin: 'center center',
+        onComplete: () => {
+          gsap.set(this.chars, { clearProps: 'rotation' })
+          this.isTransitioning = false
+        },
         ease: 'Power2.easeInOut',
         stagger: {
           grid: [1, 6],
@@ -367,6 +486,7 @@ export default {
       })
     },
     animSqueeze(startIndex) {
+      this.isTransitioning = true
       const multiplier = parseInt(startIndex) * 0.01
 
       this.timeline.to(this.chars, {
@@ -374,6 +494,10 @@ export default {
         scaleX: 0.1,
         transformOrigin: 'left center',
         ease: 'expo.inOut',
+        onComplete: () => {
+          gsap.set(this.chars, { clearProps: 'transformOrigin, scaleX' })
+          this.isTransitioning = false
+        },
         stagger: {
           grid: [1, 6],
           yoyo: true,
@@ -384,7 +508,9 @@ export default {
         }
       })
     },
-    animFall(startIndex) {
+    animVariableType(startIndex) {
+      this.isTransitioning = true
+
       this.timeline.fromTo(
         this.chars,
         {
@@ -394,6 +520,10 @@ export default {
           duration: 0.75,
           '--font-width': 0,
           ease: 'expo.inOut',
+          onComplete: () => {
+            gsap.set(this.chars, { clearProps: '--font-width' })
+            this.isTransitioning = false
+          },
           stagger: {
             grid: [1, 6],
             yoyo: true,
@@ -438,11 +568,15 @@ export default {
     },
     animFade(startIndex) {
       const multiplier = parseInt(startIndex) * 0.01
+      this.isTransitioning = true
 
       this.timeline.to(this.chars, {
         duration: 0.5,
         opacity: 0.25,
         ease: 'expo.inOut',
+        onComplete: () => {
+          this.isTransitioning = false
+        },
         stagger: {
           grid: [1, 6],
           yoyo: true,
@@ -454,6 +588,8 @@ export default {
       })
     },
     animTheme() {
+      this.isTransitioning = true
+
       this.themesIndex =
         this.themesIndex === this.themes.length - 1 ? 0 : this.themesIndex + 1
 
@@ -470,6 +606,7 @@ export default {
             'egg::updateTheme',
             this.themes[this.themesIndex].background
           )
+          this.isTransitioning = false
         }
       })
 
@@ -480,7 +617,7 @@ export default {
     initHintTimeout() {
       this.hintTimeout = setInterval(() => {
         this.wiggleLetter()
-      }, 4000)
+      }, this.hintIntervalDurattion)
     },
     handleTimeouts() {
       clearInterval(this.hintTimeout)
@@ -489,7 +626,7 @@ export default {
       // wait a few secs and then start the hint process again
       this.hintTimeoutReset = setTimeout(() => {
         this.initHintTimeout()
-      }, 8000)
+      }, this.hintIntervalDurattion * 1.5)
     },
     wiggleLetter() {
       const shuffleNum = Math.round(Math.random() * (this.chars.length - 1))
@@ -502,7 +639,10 @@ export default {
           duration: 1,
           rotation: 7.5,
           skewX: 3.75,
-          ease: 'myWiggle'
+          ease: 'myWiggle',
+          onComplete: () => {
+            gsap.set(this.chars, { clearProps: 'rotation, skewX' })
+          }
         })
       }
     }

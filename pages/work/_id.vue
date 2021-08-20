@@ -282,7 +282,7 @@ $padding: 12vmin;
 
   .full {
     text-transform: lowercase;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.06em;
     font-size: 20vw;
     font-size: clamp(72px, 15vw, 335px);
 

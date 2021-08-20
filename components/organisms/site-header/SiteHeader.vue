@@ -44,8 +44,8 @@ export default {
           path: '/work'
         },
         {
-          title: 'About',
-          path: '/profile'
+          title: 'Email',
+          path: 'mailto:jordan@egstad.com?subject=Hello, Egstad!'
         }
       ],
       linksSecondary: [

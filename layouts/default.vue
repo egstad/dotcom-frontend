@@ -10,6 +10,7 @@
       { isMenuOpen }
     ]"
   >
+    <Scrim />
     <SiteHeader class="site-header" />
 
     <div class="site-content" :style="mainStyle">
@@ -20,7 +21,6 @@
 
     <SiteMenu class="site-menu" />
     <!-- <Debug /> -->
-    <Scrim />
   </div>
 </template>
 

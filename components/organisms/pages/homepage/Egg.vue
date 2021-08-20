@@ -1,5 +1,5 @@
 <template>
-  <div ref="eggcarton" class="eggcarton" @pointerup="relocateEggball">
+  <div ref="eggcarton" class="eggcarton" @click="relocateEggball">
     <div ref="eggball" class="eggball">
       <canvas ref="canvas"></canvas>
     </div>
@@ -50,6 +50,7 @@ export default {
     window.addEventListener('resize', this.onWindowResize)
 
     this.meshMoveTimeout = setTimeout(() => {
+      this.$store.commit('setHeaderVisibility', true)
       this.relocateEggball(true)
     }, this.meshMoveDuration)
   },
@@ -189,36 +190,39 @@ export default {
       }
     },
     setEggballRollVelocity(isFirstTime) {
+      this.updateEggballCoords()
+
       // x difference
-      const xd = this.eggBallCoords.xNew - this.eggBallCoords.x
+      const xd = this.eggBallCoords.x - this.eggBallCoords.xNew
       // x planes in window
       const xp = window.innerWidth / 24
       // y difference
-      const yd = this.eggBallCoords.yNew - this.eggBallCoords.y
+      const yd = this.eggBallCoords.y - this.eggBallCoords.yNew
       // y planes in document
-      const yp = window.innerHeight / 12
+      const yp = window.innerHeight / 24
 
       // i fuqd up. somehow these are backwards. but it works. so wutever.
       gsap.to(this.mesh.rotation, {
         duration: 1.5,
         ease: 'Power4.easeOut',
-        // y: 5,
-        // x: 0
-        y: isFirstTime === true ? 5 : Math.round((xd / xp) * 0.2),
-        x: isFirstTime === true ? 0 : Math.round((yd / yp) * 0.6)
+        x: isFirstTime === true ? 6.75 : Math.round((xd / xp) * 0.2),
+        y: isFirstTime === true ? -1 : Math.round((yd / yp) * 0.2)
       })
+
+      gsap.to(
+        this.$refs.eggcarton,
+        {
+          duration: 1.5,
+          ease: 'Power4.easeOut',
+          x: this.eggBallCoords.xNew,
+          y: this.eggBallCoords.yNew
+        },
+        '-=1.5'
+      )
     },
     relocateEggball(isFirst) {
       clearTimeout(this.meshMoveTimeout)
-      this.updateEggballCoords()
       this.setEggballRollVelocity(isFirst)
-
-      gsap.to(this.$refs.eggcarton, {
-        duration: 1.5,
-        ease: 'Power4.easeOut',
-        x: this.eggBallCoords.xNew,
-        y: this.eggBallCoords.yNew
-      })
     },
     getRandomInt(min, max) {
       return Math.floor(Math.random() * max) + min

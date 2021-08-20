@@ -256,7 +256,19 @@ export default {
   },
   methods: {
     play() {
-      this.$refs.video.play()
+      const playPromise = this.$refs.video.play()
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then((_) => {
+            // Automatic playback started!
+            // Show playing UI.
+          })
+          .catch((error) => {
+            /* eslint-disable-next-line */
+            console.warn(error)
+          })
+      }
     },
     pause() {
       this.$refs.video.pause()

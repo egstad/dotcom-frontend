@@ -5,10 +5,16 @@
         <Piece
           :key="piece._id"
           :piece="piece"
-          :class="{
-            'no-border':
-              pieces[pieceIndex + 1] && pieces[pieceIndex + 1].size === 'full'
-          }"
+          :class="[
+            {
+              'extra-padding':
+                pieceIndex === 0 && pieces[pieceIndex].size === 'full'
+            },
+            {
+              'no-border':
+                pieces[pieceIndex + 1] && pieces[pieceIndex + 1].size === 'full'
+            }
+          ]"
         />
         <!-- <pre v-if="pieces[pieceIndex + 1]" :key="piece._id + 'pre'">{{
           pieces[pieceIndex + 1].size

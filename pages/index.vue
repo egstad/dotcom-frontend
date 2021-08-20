@@ -120,5 +120,7 @@ export default {
 .container {
   flex: 1;
   align-self: flex-end;
+  // background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/2560px-President_Barack_Obama.jpg');
+  // background-size: cover;
 }
 </style>

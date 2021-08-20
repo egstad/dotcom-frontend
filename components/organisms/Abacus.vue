@@ -15,33 +15,42 @@
       @mouseenter="onHover($event, i)"
       @mouseleave="onLeave"
     >
-      <nuxt-link
-        ref="link"
-        class="abacus__link t-1 t-mono"
-        :to="link.path"
-        @click.native="onClick"
-        @focus.native="onFocus($event, i)"
-        @blur.native="init"
-      >
-        <template v-if="link.abbr">
-          <span class="abacus__text">
-            <span class="--full">{{ link.title }}</span>
-            <abbr class="--abbr">{{ link.abbr }}</abbr>
-          </span>
-        </template>
-        <template v-else>
+      <template v-if="link.path.includes('mailto:')">
+        <a class="abacus__link t-1 t-mono" :href="link.path">
           <span class="abacus__text">
             {{ link.title }}
           </span>
-        </template>
-      </nuxt-link>
+        </a>
+      </template>
+      <template v-else>
+        <nuxt-link
+          ref="link"
+          class="abacus__link t-1 t-mono"
+          :to="link.path"
+          @click.native="onClick"
+          @focus.native="onFocus($event, i)"
+          @blur.native="init"
+        >
+          <template v-if="link.abbr">
+            <span class="abacus__text">
+              <span class="--full">{{ link.title }}</span>
+              <abbr class="--abbr">{{ link.abbr }}</abbr>
+            </span>
+          </template>
+          <template v-else>
+            <span class="abacus__text">
+              {{ link.title }}
+            </span>
+          </template>
+        </nuxt-link>
+      </template>
     </li>
 
     <div v-show="showBead" ref="bead" class="abacus__bead"></div>
     <div class="abacus__row"></div>
 
     <audio ref="click">
-      <source src="mp3/click.mp3" type="audio/mpeg" />
+      <source src="/mp3/click.mp3" type="audio/mpeg" />
     </audio>
   </ul>
 </template>
@@ -210,7 +219,20 @@ export default {
     playClickSound() {
       this.$refs.click.currentTime = 0
       this.$refs.click.volume = 0.3
-      this.$refs.click.play()
+
+      const playPromise = this.$refs.click.play()
+
+      if (playPromise !== undefined) {
+        playPromise
+          .then((_) => {
+            // Automatic playback started!
+            // Show playing UI.
+          })
+          .catch((error) => {
+            /* eslint-disable-next-line */
+            console.warn(error)
+          })
+      }
     }
   }
 }
@@ -321,7 +343,7 @@ export default {
   &__text {
     @extend .t-mono;
     position: relative;
-    top: 0.07em;
+    top: 0.02em;
 
     > .--full {
       display: none;
