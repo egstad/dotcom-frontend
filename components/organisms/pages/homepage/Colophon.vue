@@ -1,5 +1,5 @@
 <template>
-  <div class="colophon">
+  <div class="colophon" :class="{ 'is-hidden': !isShowing }">
     <nav class="links">
       <a
         v-for="(link, linkIndex) in connectLinks"
@@ -12,19 +12,20 @@
     </nav>
 
     <div class="t-1 design">
-      <strong>DESIGN</strong> • This website is set in Methaphor, a typeface I
-      drew for readabilty. This site was designed in Figma in 2021 and is
-      open-sourced here.
+      <strong>DESIGN</strong> • This website is set in ‘Metaphor’, a variable
+      typeface I drew and selected for its ease of readabilty and clear shapes.
+      The monospaced type is is System85.
     </div>
 
     <div class="t-1 tech">
       <strong>TECHNOLOGY</strong> • Nuxt.js, Sanity.io, Netlify, Github, and a
-      S3 bucket (used as a video CDN) are what make this site possible.
+      S3 bucket (used as a video CDN) are what make this site possible. All code
+      is open-sourced and available here.
     </div>
 
     <footer class="t-1 footer">
       <h6>
-        Egstad&nbsp;&copy;&nbsp;<span>2010-{{ date }}</span>
+        &copy;&nbsp;Copyright&nbsp;<span>2010-{{ date }}</span>
       </h6>
     </footer>
   </div>
@@ -34,6 +35,7 @@
 export default {
   data() {
     return {
+      isShowing: false,
       connectLinks: [
         {
           text: 'Email',
@@ -55,6 +57,12 @@ export default {
       const date = new Date()
       return date.getFullYear()
     }
+  },
+  mounted() {
+    this.$nuxt.$on('animate::details', () => (this.isShowing = true))
+  },
+  beforeDestroy() {
+    this.$nuxt.$off('animate::details')
   }
 }
 </script>
@@ -77,6 +85,14 @@ export default {
 
     padding-top: 1vw;
     // padding-bottom: 1vw;
+  }
+
+  @include transition {
+    transition: opacity var(--trans-medium) var(--trans-delay) var(--ease);
+  }
+
+  &.is-hidden {
+    opacity: 0;
   }
 }
 
@@ -130,6 +146,11 @@ export default {
 
   @include bp($xx) {
     padding: 0 2.5em;
+  }
+
+  &:focus-visible {
+    outline-offset: 4px;
+    outline: 4px solid var(--a11y-color);
   }
 
   &:last-child {

@@ -1,5 +1,5 @@
 <template>
-  <div ref="eggcarton" class="eggcarton" @mousedown="relocateEggball">
+  <div ref="eggcarton" class="eggcarton" @pointerup="relocateEggball">
     <div ref="eggball" class="eggball">
       <canvas ref="canvas"></canvas>
     </div>
@@ -27,8 +27,8 @@ export default {
       camera: null,
       mesh: null,
       raf: null,
-      meshMoveInterval: null,
-      meshMoveDuration: 1700,
+      meshMoveTimeout: null,
+      meshMoveDuration: 2500,
       eggBallCoords: null,
       filmLocation: null,
       cachedFogColor: null
@@ -48,12 +48,10 @@ export default {
     this.init()
     this.animate()
     window.addEventListener('resize', this.onWindowResize)
-    // this.$nuxt.$on('window::resize', this.onWindowResize)
 
-    this.meshMoveInterval = setInterval(
-      this.relocateEggball,
-      this.meshMoveDuration
-    )
+    this.meshMoveTimeout = setTimeout(() => {
+      this.relocateEggball(true)
+    }, this.meshMoveDuration)
   },
   beforeDestroy() {
     // kill the animation loop
@@ -66,7 +64,7 @@ export default {
 
     // window.removeEventListener('mousemove', this.onMouseMove)
     // this.$app.$off('updatePosition')
-    clearInterval(this.meshMoveInterval)
+    clearTimeout(this.meshMoveTimeout)
   },
   methods: {
     init() {
@@ -190,7 +188,7 @@ export default {
         )
       }
     },
-    setEggballRollVelocity() {
+    setEggballRollVelocity(isFirstTime) {
       // x difference
       const xd = this.eggBallCoords.xNew - this.eggBallCoords.x
       // x planes in window
@@ -204,14 +202,16 @@ export default {
       gsap.to(this.mesh.rotation, {
         duration: 1.5,
         ease: 'Power4.easeOut',
-        y: Math.round((xd / xp) * 0.2),
-        x: Math.round((yd / yp) * 0.6)
+        // y: 5,
+        // x: 0
+        y: isFirstTime === true ? 5 : Math.round((xd / xp) * 0.2),
+        x: isFirstTime === true ? 0 : Math.round((yd / yp) * 0.6)
       })
     },
-    relocateEggball() {
-      clearInterval(this.meshMoveInterval)
+    relocateEggball(isFirst) {
+      clearTimeout(this.meshMoveTimeout)
       this.updateEggballCoords()
-      this.setEggballRollVelocity()
+      this.setEggballRollVelocity(isFirst)
 
       gsap.to(this.$refs.eggcarton, {
         duration: 1.5,

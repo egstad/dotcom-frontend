@@ -456,7 +456,6 @@ $bar-size-hover: 6px;
       color: var(--foreground);
       margin-right: var(--button-click-offset);
       position: relative;
-      transform: translateY(10%);
       position: relative;
       z-index: 1;
       pointer-events: none;

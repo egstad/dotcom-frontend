@@ -39,6 +39,10 @@
 
     <div v-show="showBead" ref="bead" class="abacus__bead"></div>
     <div class="abacus__row"></div>
+
+    <audio ref="click">
+      <source src="mp3/click.mp3" type="audio/mpeg" />
+    </audio>
   </ul>
 </template>
 
@@ -108,6 +112,8 @@ export default {
     onHover(ev, index) {
       this.hoveredIndex = index
       this.showBead = true
+
+      this.playClickSound()
     },
     selectByIndex(index) {
       this.lastIndex = this.activeIndex
@@ -122,6 +128,7 @@ export default {
     },
     onFocus(ev, index) {
       this.hoveredIndex = index
+      this.playClickSound()
     },
     onClick() {
       this.hasClickedLink = true
@@ -199,6 +206,11 @@ export default {
       }
 
       this.$el.addEventListener('animationend', onEnd)
+    },
+    playClickSound() {
+      this.$refs.click.currentTime = 0
+      this.$refs.click.volume = 0.3
+      this.$refs.click.play()
     }
   }
 }
@@ -340,6 +352,8 @@ export default {
     pointer-events: none;
     background-color: hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
     width: 100%;
+    box-shadow: 0 1.3px 5.3px rgba(0, 0, 0, 0.061),
+      0 4.5px 17.9px rgba(0, 0, 0, 0.089), 0 20px 80px rgba(0, 0, 0, 0.15);
 
     @include transition {
       transition: background-color var(--transition-page);

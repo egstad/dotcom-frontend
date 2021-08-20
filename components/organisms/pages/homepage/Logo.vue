@@ -13,6 +13,12 @@
 
 <script>
 import gsap from 'gsap'
+import { CustomEase } from '@/plugins/gsap/CustomEase'
+import { CustomWiggle } from '@/plugins/gsap/CustomWiggle'
+
+if (process.client) {
+  gsap.registerPlugin(CustomEase, CustomWiggle)
+}
 
 export default {
   data() {
@@ -252,11 +258,15 @@ export default {
             a: 0.2
           }
         }
-      ]
+      ],
+      hintTimeout: null,
+      hintTimeoutReset: null,
+      numOfClicks: 0
     }
   },
   mounted() {
     this.gsapInit()
+    this.initHintTimeout()
     this.$nuxt.$on('animate::logo', this.animateText)
   },
   beforeDestroy() {
@@ -290,8 +300,10 @@ export default {
     reanimate(ev) {
       // which character is clicked? start there
       const startIndex = parseFloat(ev.target.dataset.index)
-      // number of animations
-      // const shuffleNum = Math.round(Math.random() * 2)
+
+      this.numOfClicks++
+
+      this.handleTimeouts()
 
       switch (startIndex) {
         case 0:
@@ -379,7 +391,7 @@ export default {
           '--font-width': 700
         },
         {
-          duration: 0.2,
+          duration: 0.75,
           '--font-width': 0,
           ease: 'expo.inOut',
           stagger: {
@@ -464,6 +476,35 @@ export default {
       setTimeout(() => {
         this.$store.commit('setIsTransitioning', false)
       }, 750)
+    },
+    initHintTimeout() {
+      this.hintTimeout = setInterval(() => {
+        this.wiggleLetter()
+      }, 4000)
+    },
+    handleTimeouts() {
+      clearInterval(this.hintTimeout)
+      clearTimeout(this.hintTimeoutReset)
+
+      // wait a few secs and then start the hint process again
+      this.hintTimeoutReset = setTimeout(() => {
+        this.initHintTimeout()
+      }, 8000)
+    },
+    wiggleLetter() {
+      const shuffleNum = Math.round(Math.random() * (this.chars.length - 1))
+
+      // Create a wiggle with 6 oscillations (default type:"easeOut")
+      CustomWiggle.create('myWiggle', { wiggles: 5 })
+
+      if (!document.hidden) {
+        gsap.to(this.chars[shuffleNum], {
+          duration: 1,
+          rotation: 7.5,
+          skewX: 3.75,
+          ease: 'myWiggle'
+        })
+      }
     }
   }
 }

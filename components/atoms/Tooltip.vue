@@ -76,7 +76,6 @@ export default {
 
   &__text {
     position: relative;
-    top: 0.045em;
   }
 
   @include transition {
