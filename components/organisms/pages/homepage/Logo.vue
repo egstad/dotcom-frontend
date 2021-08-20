@@ -440,7 +440,7 @@ export default {
       this.$ga.event({
         eventCategory: 'Logo Interaction',
         eventAction: 'click',
-        eventLabel: `The "${this.chars[startIndex]}" was clicked. eventValue = index of letter clicked`,
+        eventLabel: `The "${this.chars[startIndex].innerHTML}" was clicked. eventValue = index of letter clicked`,
         eventValue: startIndex
       })
     },
