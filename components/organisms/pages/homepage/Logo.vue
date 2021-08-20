@@ -407,6 +407,8 @@ export default {
     reanimate(ev) {
       if (this.isTransitioning) return
 
+      let gaEventInteraction = null
+
       // which character is clicked? start there
       const startIndex = parseFloat(ev.target.dataset.index)
 
@@ -417,21 +419,27 @@ export default {
       switch (startIndex) {
         case 0:
           this.animWave(startIndex)
+          gaEventInteraction = 'animWave()'
           break
         case 1:
           this.animRotate(startIndex)
+          gaEventInteraction = 'animRotate()'
           break
         case 2:
           this.animTheme()
+          gaEventInteraction = 'animTheme()'
           break
         case 3:
           this.animVariableType(startIndex)
+          gaEventInteraction = 'animVariableType()'
           break
         case 4:
           this.animFade(startIndex)
+          gaEventInteraction = 'animFade()'
           break
         case 5:
           this.animSqueeze(startIndex)
+          gaEventInteraction = 'animSqueeze()'
           break
         default:
           break
@@ -440,8 +448,7 @@ export default {
       this.$ga.event({
         eventCategory: 'Logo Interaction',
         eventAction: 'click',
-        eventLabel: `The "${this.chars[startIndex].innerHTML}" was clicked. eventValue = index of letter clicked`,
-        eventValue: startIndex
+        eventLabel: `The "${this.chars[startIndex].innerHTML}" was clicked and fired "${gaEventInteraction}"`
       })
     },
     animWave(startIndex) {
