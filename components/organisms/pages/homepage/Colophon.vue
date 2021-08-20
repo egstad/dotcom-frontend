@@ -7,6 +7,7 @@
         :href="link.url"
         class="pill t-1"
         target="_blank"
+        @click="onClick"
         >{{ link.text }}</a
       >
     </nav>
@@ -63,6 +64,15 @@ export default {
   },
   beforeDestroy() {
     this.$nuxt.$off('animate::details')
+  },
+  methods: {
+    onClick(ev) {
+      this.$ga.event({
+        eventCategory: 'Homepage Link Clicked',
+        eventAction: 'click',
+        eventLabel: `${ev.target.innerHTML} was clicked`
+      })
+    }
   }
 }
 </script>

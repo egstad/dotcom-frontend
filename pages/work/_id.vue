@@ -179,6 +179,12 @@ export default {
       // add items to array
       this.document.content.pieces.push(...nextPosts.content.pieces)
       this.currentlyFetching = false
+
+      this.$ga.event({
+        eventCategory: 'Work Loaded',
+        eventAction: 'scroll',
+        eventLabel: `"${this.nextQuery}" items were loaded on the '/work/${this.$route.params.id}' page`
+      })
     },
     animateHeader() {
       let transOverCalled = false

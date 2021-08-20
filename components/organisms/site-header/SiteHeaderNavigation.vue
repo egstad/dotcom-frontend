@@ -100,9 +100,23 @@ export default {
     scrollToTop() {
       if (process.client) {
         window.scrollTo({ top: 0, behavior: 'smooth' })
+
+        this.$ga.event({
+          eventCategory: 'Scroll-to-top clicked',
+          eventAction: 'click',
+          eventLabel: `Scroll to top was clicked at ${document.documentElement.scrollY}px`
+        })
       }
     },
     onFilterClick() {
+      this.$ga.event({
+        eventCategory: 'Filter Clicked',
+        eventAction: 'click',
+        eventLabel: `The filter has ${
+          this.$store.state.menuIsOpen ? 'closed' : 'open'
+        }`
+      })
+
       this.$store.commit('setMenuVisibility', !this.$store.state.menuIsOpen)
     }
   }
