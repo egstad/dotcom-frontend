@@ -31,7 +31,7 @@ export default {
       meshMoveDuration: 1700,
       eggBallCoords: null,
       filmLocation: null,
-      themeCurrentIndex: 0
+      cachedFogColor: null
     }
   },
   computed: {
@@ -41,7 +41,7 @@ export default {
   },
   watch: {
     theme(newValue, oldValue) {
-      this.updateFog()
+      this.updateFog(newValue, oldValue)
     }
   },
   mounted() {
@@ -59,6 +59,8 @@ export default {
     // kill the animation loop
     cancelAnimationFrame(this.raf)
     // teardown resize event
+    this.$nuxt.$off('egg::updateTheme', this.updateFog)
+
     // this.$nuxt.$off('window::resize', this.onWindowResize)
     window.removeEventListener('resize', this.onWindowResize)
 
@@ -114,20 +116,43 @@ export default {
       this.raf = requestAnimationFrame(this.animate)
       this.renderer.render(this.scene, this.camera)
     },
-    updateFog() {
-      const theme = this.$store.state.cssVars
-      const fogColor = new THREE.Color(
-        `hsl(${theme['--b-h']}, ${theme['--b-s']}, ${theme['--b-l']})`
-      )
+    updateFog(newTheme, oldTheme) {
+      // if no theme provided, set fog to current color
+      if (!newTheme && !oldTheme) {
+        const currentTheme = this.$store.state.cssVars
+        const fogColor = new THREE.Color(
+          `hsl(${currentTheme['--b-h']}, ${currentTheme['--b-s']}, ${currentTheme['--b-l']})`
+        )
 
-      this.scene.fog = new THREE.Fog(fogColor, 400, 530)
-      // console.log(this.scene.fog.color, fogColor)
-      // gsap.to(this.scene.fog.color, {
-      //   duration: 1,
-      //   r: fogColor.r,
-      //   g: fogColor.g,
-      //   b: fogColor.b
-      // })
+        this.scene.fog = new THREE.Fog(fogColor, 420, 515)
+      } else {
+        const initial = new THREE.Color(
+          `hsl(${oldTheme['--b-h']}, ${oldTheme['--b-s']}, ${oldTheme['--b-l']})`
+        )
+        const nextTheme = new THREE.Color(
+          `hsl(${newTheme['--b-h']}, ${newTheme['--b-s']}, ${newTheme['--b-l']})`
+        )
+        gsap.to(initial, {
+          delay:
+            parseFloat(
+              getComputedStyle(
+                document.querySelector('.site')
+              ).getPropertyValue('--trans-delay')
+            ) * 0.001,
+          duration:
+            parseFloat(
+              getComputedStyle(
+                document.querySelector('.site')
+              ).getPropertyValue('--trans-long')
+            ) * 0.001,
+          r: nextTheme.r,
+          g: nextTheme.g,
+          b: nextTheme.b,
+          onUpdate: (e) => {
+            this.scene.fog = new THREE.Fog(initial, 420, 515)
+          }
+        })
+      }
     },
     onWindowResize() {
       // update camera
@@ -176,7 +201,8 @@ export default {
       const yp = window.innerHeight / 12
 
       // i fuqd up. somehow these are backwards. but it works. so wutever.
-      gsap.to(this.mesh.rotation, 1.5, {
+      gsap.to(this.mesh.rotation, {
+        duration: 1.5,
         ease: 'Power4.easeOut',
         y: Math.round((xd / xp) * 0.2),
         x: Math.round((yd / yp) * 0.6)
@@ -187,7 +213,8 @@ export default {
       this.updateEggballCoords()
       this.setEggballRollVelocity()
 
-      gsap.to(this.$refs.eggcarton, 1.5, {
+      gsap.to(this.$refs.eggcarton, {
+        duration: 1.5,
         ease: 'Power4.easeOut',
         x: this.eggBallCoords.xNew,
         y: this.eggBallCoords.yNew

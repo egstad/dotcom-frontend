@@ -6,25 +6,42 @@
 
 .t-1 {
   @include fluidScale(12px, $baseline);
+  font-family: var(--sans);
   font-variation-settings: 'wght' 450;
   letter-spacing: 0.02em;
 }
 
 .t-2 {
+  font-family: var(--sans);
   @include fluidScale(15px, $baseline * 1.25);
   font-variation-settings: 'wght' 500;
 }
 
 .t-3 {
+  font-family: var(--sans);
   @include fluidScale(28px, $baseline * 2);
   letter-spacing: 0.01em;
 }
 
 .t-mono {
-  font-variation-settings: 'wght' 420, 'MONO' 1, 'ital' 0;
+  font-family: 'System85';
   letter-spacing: 0.1em;
 }
 
 .t-center {
   text-align: center;
+}
+
+@font-face {
+  font-family: 'EG Metaphor';
+  font-style: normal;
+  font-display: swap;
+  src: url('~assets/fonts/EG.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'System85';
+  font-style: normal;
+  font-display: swap;
+  src: url('~assets/fonts/S85.ttf') format('truetype');
 }

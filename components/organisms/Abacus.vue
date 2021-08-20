@@ -307,6 +307,7 @@ export default {
 
   // span inside &__link
   &__text {
+    @extend .t-mono;
     position: relative;
     top: 0.07em;
 

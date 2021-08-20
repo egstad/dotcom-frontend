@@ -14,7 +14,12 @@
       :aria-modal="menuIsOpen"
     >
       <ul class="menu__list">
-        <li v-for="(link, i) in links" :key="i" ref="item" class="menu__item">
+        <li
+          v-for="(link, i) in links"
+          :key="i"
+          ref="item"
+          class="menu__item t-mono"
+        >
           <nuxt-link ref="link" class="menu__link" :to="link.path">
             <template v-if="link.abbr">
               <span v-if="largeBreakpoint">{{ link.title }}</span>
@@ -27,10 +32,10 @@
         </li>
       </ul>
 
-      <footer class="menu__footer">
+      <!-- <footer class="menu__footer">
         <p>Thanks for looking!</p>
         <p>&copy;2010-{{ new Date().getFullYear() }}</p>
-      </footer>
+      </footer> -->
     </div>
   </transition>
 </template>

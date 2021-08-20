@@ -7,6 +7,7 @@
       </header>
     </section>
     <Details />
+    <Colophon />
     <Egg />
   </div>
 </template>
@@ -17,13 +18,15 @@ import Egg from '@/components/organisms/pages/homepage/Egg'
 import Logo from '@/components/organisms/pages/homepage/Logo'
 import Bio from '@/components/organisms/pages/homepage/Bio'
 import Details from '@/components/organisms/pages/homepage/Details'
+import Colophon from '@/components/organisms/pages/homepage/Colophon'
 
 export default {
   components: {
     Egg,
     Logo,
     Bio,
-    Details
+    Details,
+    Colophon
   },
   mixins: [routeTransitionFade],
   async asyncData({ $sanityClient, store }) {

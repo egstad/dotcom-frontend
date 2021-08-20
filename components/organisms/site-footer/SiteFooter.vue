@@ -1,6 +1,6 @@
 <template>
   <footer class="site-footer">
-    Egstad
+    <h5 class="t-1">Egstad</h5>
   </footer>
 </template>
 
@@ -9,18 +9,7 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
-// padding based on grid: .vue;
-$grid-gap: 16px;
-
 .site-footer {
-  padding: ($grid-gap * 2) 0 $grid-gap;
-
-  @include bp($md) {
-    padding: calc-vw($grid-gap * 2, $md) 0 calc-vw($grid-gap, $md);
-  }
-}
-
-li {
-  text-transform: lowercase;
+  padding: var(--button-click-offset);
 }
 </style>

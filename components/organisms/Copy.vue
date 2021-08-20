@@ -70,11 +70,10 @@ export default {
 <style lang="scss" scoped>
 .copy {
   strong {
-    font-variation-settings: 'wght' 1000, 'MONO' 0, 'ital' 0;
+    font-variation-settings: 'wght' 1000;
   }
 
   em {
-    font-variation-settings: 'ital' 1;
     font-style: none;
   }
 
