@@ -67,17 +67,11 @@ export default {
     const document = await $sanityClient.fetch(query)
     const social = await $sanityClient.fetch(querySocial)
     const count = await $sanityClient.fetch(queryCount)
-    // const theme = {
-    //   background: document.theme.background,
-    //   foreground: document.theme.foreground,
-    //   accent: document.theme.accent
-    // }
 
     store.commit('setCSSVars', 'light')
 
     return {
       hasMorePostsToLoad: document.content.pieces.length >= queryLength,
-      // theme,
       count,
       queryLength,
       document,
