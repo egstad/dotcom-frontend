@@ -436,6 +436,13 @@ export default {
         default:
           break
       }
+
+      this.$ga.event({
+        eventCategory: 'Logo Interaction',
+        eventAction: 'click',
+        eventLabel: `The "${this.chars[startIndex]}" was clicked. eventValue = index of letter clicked`,
+        eventValue: startIndex
+      })
     },
     animWave(startIndex) {
       this.isTransitioning = true
