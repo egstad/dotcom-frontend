@@ -15,13 +15,21 @@
     <div class="t-1 design">
       <strong>DESIGN</strong> • This website is set in ‘Metaphor’, a variable
       typeface I drew and selected for its ease of readabilty and clear shapes.
-      The monospaced type is is System85.
+      The monospaced type is is
+      <a
+        href="https://www.colophon-foundry.org/typefaces/system85/"
+        target="_blank"
+        >System85</a
+      >.
     </div>
 
     <div class="t-1 tech">
       <strong>TECHNOLOGY</strong> • Nuxt.js, Sanity.io, Netlify, Github, and a
       S3 bucket (used as a video CDN) are what make this site possible. All code
-      is open-sourced.
+      is open-sourced
+      <a href="https://github.com/egstad/dotcom-frontend" target="_blank">
+        here</a
+      >.
     </div>
 
     <footer class="t-1 footer">
@@ -214,6 +222,10 @@ export default {
 
   strong {
     font-variation-settings: 'wght' 1000;
+  }
+
+  a {
+    color: inherit;
   }
 }
 
