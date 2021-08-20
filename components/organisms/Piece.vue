@@ -297,6 +297,7 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   ::v-deep .piece__title {
     width: 100%;
     padding-right: 3em;
+    font-family: var(--sans);
 
     @include bp($lg) {
       padding-right: 0;

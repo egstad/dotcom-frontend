@@ -228,6 +228,7 @@ $padding: 12vmin;
   text-transform: uppercase;
   display: flex;
   justify-content: center;
+  font-family: var(--sans);
 
   .text {
     display: flex;
