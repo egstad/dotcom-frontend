@@ -61,7 +61,11 @@ export default {
         }
       }
     `
+
+    const querySocial = `*[_type == "work"][0].social`
+
     const document = await $sanityClient.fetch(query)
+    const social = await $sanityClient.fetch(querySocial)
     const count = await $sanityClient.fetch(queryCount)
     // const theme = {
     //   background: document.theme.background,
@@ -76,7 +80,8 @@ export default {
       // theme,
       count,
       queryLength,
-      document
+      document,
+      social
     }
   },
   data() {
@@ -88,9 +93,10 @@ export default {
       showNumber: false
     }
   },
-  // head() {
-  //   return this.$setPageMetadata(this.document.social)
-  // },
+  head() {
+    this.social.socialTitle = this.capitalize(this.$route.params.id)
+    return this.$setPageMetadata(this.social)
+  },
   computed: {
     preferredTheme() {
       return this.$store.state.device.preferredTheme
@@ -217,6 +223,9 @@ export default {
           }
         }
       )
+    },
+    capitalize(string) {
+      return string[0].toUpperCase() + string.slice(1)
     }
   }
 }
