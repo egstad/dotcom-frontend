@@ -19,6 +19,7 @@
     "@egstad/detect-motion": "^1.0.4",
     "@egstad/detect-scroll": "^1.0.10",
     "@egstad/detect-theme": "^1.4.0",
+    "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/pwa": "^3.0.0-0",
     "@sanity/asset-utils": "^1.1.4",
     "@sanity/block-content-to-html": "^2.0.0",

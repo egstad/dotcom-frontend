@@ -112,8 +112,14 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     // Doc: https://github.com/nuxt-community/style-resources-module
-    '@nuxtjs/style-resources'
+    '@nuxtjs/style-resources',
+    // Doc: https://google-analytics.nuxtjs.org/
+    '@nuxtjs/google-analytics'
   ],
+
+  googleAnalytics: {
+    id: 'UA-127604100-1'
+  },
 
   styleResources: {
     hoistUseStatements: true,
