@@ -161,6 +161,13 @@ html {
   overflow-x: hidden;
   overflow-y: scroll;
   position: relative;
-  font-family: var(--mono);
   scroll-behavior: smooth;
+}
+
+hr {
+  display: block;
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid var(--foreground);
 }

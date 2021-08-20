@@ -39,6 +39,8 @@ export default {
 // tick for every list item
 // for more, check out <Piece/>
 .pieces {
+  width: 100vw;
+
   &__list {
     counter-reset: pieces;
 

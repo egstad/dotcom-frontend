@@ -41,6 +41,8 @@ export default {
 
 <style lang="scss" scoped>
 .tooltip {
+  @extend .t-mono;
+
   /* Positioning */
   transform: translate3d(-50%, -150%, 0);
   position: absolute;
@@ -74,7 +76,6 @@ export default {
 
   &__text {
     position: relative;
-    top: 0.045em;
   }
 
   @include transition {

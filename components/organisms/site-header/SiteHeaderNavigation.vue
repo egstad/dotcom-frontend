@@ -177,14 +177,15 @@ export default {
     width: auto;
 
     ::v-deep .abacus__item {
+      // width: 50px;
       width: 100px;
-      width: clamp(100px, 10vw, 150px);
+      width: clamp(100px, 10vw, 125px);
     }
   }
 
   @include bp($mx) {
     ::v-deep .abacus__item {
-      width: calc-vw(150px, $mx);
+      width: calc-vw(125px, $mx);
     }
   }
 }

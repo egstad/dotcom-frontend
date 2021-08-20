@@ -228,6 +228,7 @@ $padding: 12vmin;
   text-transform: uppercase;
   display: flex;
   justify-content: center;
+  font-family: var(--sans);
 
   .text {
     display: flex;
@@ -242,16 +243,20 @@ $padding: 12vmin;
 
     &::after {
       content: attr(data-count);
-      font-variation-settings: 'wght' 100, 'MONO' 1000, 'ital' 0;
-      // font-variation-settings: 'wght' 0;
+      font-variation-settings: 'wght' 100;
+      font-variant-numeric: tabular-nums;
       position: absolute;
-      top: 0.84em;
-      right: 0;
+      top: 1.1em;
+      right: 0.125em;
       transform: translateX(115%);
       font-size: 25%;
-      letter-spacing: 0;
+      letter-spacing: -0.075em;
       line-height: 0;
       opacity: 0;
+
+      @include bp($navBreakpoint) {
+        right: -0.1em;
+      }
 
       @include transition {
         transition: opacity var(--trans-medium) var(--ease);
@@ -285,7 +290,7 @@ $padding: 12vmin;
       display: inline-block;
     }
 
-    @include bp($navBreakpoint, max-width) {
+    @include bp($navBreakpoint - 1px, max-width) {
       display: none;
     }
   }

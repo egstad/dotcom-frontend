@@ -1,19 +1,32 @@
 <template>
   <div class="container">
-    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
-    <Abacus :links="links" />
-    <pre>{{ document }}</pre>
-    <pre>{{ document }}</pre>
+    <section>
+      <header class="header">
+        <Logo class="logo" />
+        <Bio class="bio" />
+      </header>
+    </section>
+    <Details />
+    <Colophon />
+    <Egg />
   </div>
 </template>
 
 <script>
 import { routeTransitionFade } from '@/assets/js/mixins/RouteTransition'
-import Abacus from '@/components/organisms/Abacus.vue'
+import Egg from '@/components/organisms/pages/homepage/Egg'
+import Logo from '@/components/organisms/pages/homepage/Logo'
+import Bio from '@/components/organisms/pages/homepage/Bio'
+import Details from '@/components/organisms/pages/homepage/Details'
+import Colophon from '@/components/organisms/pages/homepage/Colophon'
 
 export default {
   components: {
-    Abacus
+    Egg,
+    Logo,
+    Bio,
+    Details,
+    Colophon
   },
   mixins: [routeTransitionFade],
   async asyncData({ $sanityClient, store }) {
@@ -91,11 +104,21 @@ export default {
       ]
     }
   },
+
   head() {
     return this.$setPageMetadata(this.document.social)
   },
   mounted() {
+    this.$nuxt.$emit('animate::logo')
+
     this.$nuxt.$emit('page::mounted')
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.container {
+  flex: 1;
+  align-self: flex-end;
+}
+</style>

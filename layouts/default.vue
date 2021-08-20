@@ -16,8 +16,6 @@
       <main class="site-main">
         <nuxt />
       </main>
-
-      <SiteFooter />
     </div>
 
     <SiteMenu class="site-menu" />
@@ -28,7 +26,6 @@
 
 <script>
 import SiteHeader from '@/components/organisms/site-header/SiteHeader'
-import SiteFooter from '@/components/organisms/site-footer/SiteFooter'
 import SiteMenu from '@/components/organisms/site-menu/SiteMenu'
 // import Debug from '@/components/templates/Debug'
 import Scrim from '@/components/templates/Scrim'
@@ -36,7 +33,6 @@ import Scrim from '@/components/templates/Scrim'
 export default {
   components: {
     SiteHeader,
-    SiteFooter,
     SiteMenu,
     // LazyTime
     Scrim
@@ -107,6 +103,8 @@ export default {
   --ease-back: cubic-bezier(0.375, 0.39, 0, 1.175);
   --transition-page: var(--trans-long) var(--trans-delay) var(--ease);
   --a11y-color: rgba(15, 86, 240, 0.8);
+  --mono: 'S85', monospace;
+  --sans: 'EG Metaphor', sans-serif;
 
   // site header and abacuses
   --header-item-gap: 8px;
@@ -141,12 +139,12 @@ export default {
   &-content {
     display: flex;
     flex-direction: column;
-    font-family: 'comic sans' !important;
   }
   &-main {
     width: 100%;
     overflow: hidden;
     flex: 1 0 auto;
+    display: flex;
   }
 }
 
@@ -187,22 +185,11 @@ export default {
   }
 
   // Floating Action Button
-  ::v-deep .fab {
-    .fab__wrapper {
-      @include transition {
-        transition: background-color var(--transition-page),
-          color var(--transition-page);
-      }
+  ::v-deep .fab__wrapper {
+    @include transition {
+      transition: background-color var(--transition-page),
+        color var(--transition-page);
     }
   }
-}
-
-@font-face {
-  font-family: 'S85';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url('~assets/fonts/ABCD.woff2') format('woff2');
-  font-feature-settings: 'ss04', 'ss05', 'ss06', 'ss07';
 }
 </style>

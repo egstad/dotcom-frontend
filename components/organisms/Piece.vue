@@ -9,7 +9,7 @@
         />
         <h2 v-else class="piece__title">{{ title }}</h2>
 
-        <time v-if="date" :datetime="date" class="piece__date t-mono">{{
+        <time v-if="date" :datetime="date" class="piece__date">{{
           date.substring(0, 4)
         }}</time>
       </header>
@@ -297,6 +297,7 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   ::v-deep .piece__title {
     width: 100%;
     padding-right: 3em;
+    font-family: var(--sans);
 
     @include bp($lg) {
       padding-right: 0;
@@ -309,12 +310,11 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
       width: 100%;
 
       em {
-        font-variation-settings: 'wght' 600, 'ital' 0;
         color: hsl(var(--f-h), var(--f-s), var(--f-l), 50%);
       }
 
       a {
-        font-variation-settings: 'wght' 600, 'ital' 1000;
+        font-variation-settings: 'wght' 600;
       }
     }
   }
@@ -323,7 +323,9 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   ::v-deep .piece__title.--alt > *,
   .piece__title:not(.--alt) {
     &::before {
-      @extend .t-mono;
+      font-variation-settings: 'wght' 600;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.055em;
 
       @include bp($lg, max-width) {
         content: counters(piece, '.', decimal-leading-zero);
@@ -334,7 +336,6 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
 
   // on larger screens, position the counter in left column
   &::before {
-    @extend .t-mono;
     content: counters(piece, '.', decimal-leading-zero);
     display: none;
 
@@ -346,8 +347,9 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   // numbers should be monospaced, thank yew
   &::before,
   .piece__date {
-    font-variation-settings: 'wght' 350, 'MONO' 1000;
-    letter-spacing: 0;
+    font-variation-settings: 'wght' 350;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.055em;
   }
 
   .piece__date {
