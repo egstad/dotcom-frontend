@@ -104,7 +104,7 @@ export default {
         this.$ga.event({
           eventCategory: 'Scroll-to-top clicked',
           eventAction: 'click',
-          eventLabel: `Scroll to top was clicked at ${document.documentElement.scrollY}px`
+          eventLabel: `Scroll to top was clicked at ${window.scrollY}px`
         })
       }
     },
