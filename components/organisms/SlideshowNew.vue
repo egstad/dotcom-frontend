@@ -390,6 +390,7 @@ export default {
 .slideshow {
   position: relative;
   width: 100%;
+  outline: none;
 
   &:focus-visible {
     outline: 4px solid var(--a11y-color);
