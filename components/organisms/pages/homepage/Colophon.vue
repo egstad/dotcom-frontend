@@ -13,14 +13,13 @@
     </nav>
 
     <div class="t-1 design">
-      <strong>DESIGN</strong> • This website is set in ‘Metaphor’, a variable
-      typeface I drew and selected for its ease of readabilty and clear shapes.
-      The monospaced type is is
-      <a
+      <strong>DESIGN</strong> • This primary font used is called “Metaphor”, a
+      variable typeface I drew for ease of readability on screens. The
+      monospaced font is “<a
         href="https://www.colophon-foundry.org/typefaces/system85/"
         target="_blank"
         >System85</a
-      >.
+      >” by Colophon.
     </div>
 
     <div class="t-1 tech">

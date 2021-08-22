@@ -46,6 +46,7 @@ export default {
 // for more, check out <Piece/>
 .pieces {
   width: 100vw;
+  padding-bottom: calc(var(--button-click-offset) * 2 + var(--button-height));
 
   &__list {
     counter-reset: pieces;

@@ -9,20 +9,22 @@
       “them”.
     </p>
     <p class="t-2">
-      I most recently led design and development on Instrument’s brand team,
-      where I helped them attract world-class talent and clients. During my six
-      years there, I worked on a variety of projects for Amazon, Dwell, Ebay,
-      Facebook, Google, Harper’s Bazaar, Hot Wheels, Levi’s, Nike, Patagonia,
-      Sequoia Capital, Sonos, Stumptown Coffee, TEDx, Twitter, Umpqua Bank, and
-      more.
+      I most recently led design and development on
+      <a href="https://instrument.com" target="_blank">Instrument’s</a> brand
+      team, where I helped them attract world-class talent and clients. During
+      my six years there, I worked on a variety of projects for Amazon, Dwell,
+      Ebay, Facebook, Google, Harper’s Bazaar, Hot Wheels, Levi’s, Nike,
+      Patagonia, Sequoia Capital, Sonos, Stumptown Coffee, TEDx, Twitter, Umpqua
+      Bank, and more.
     </p>
     <p class="t-2">
-      Currently, I live in Portland, Oregon and work with Loom as their
-      Principal Brand Designer. Loom’s video messaging tool has helped over
-      10,000,000 people come together virtually to effectively communicate ideas
-      in an ever-increasingly remote world. Speaking of communications, if you’d
-      like to get in touch regarding a project, or if you just want to talk
-      shop, don’t be shy.
+      Currently, I live in Portland, Oregon and work with
+      <a href="https://loom.com" target="_blank">Loom</a> as their Principal
+      Brand Designer. Loom’s video messaging tool has helped over 10,000,000
+      people come together virtually to effectively communicate ideas in an
+      ever-increasingly remote world. Speaking of communications, if you’d like
+      to get in touch regarding a project, or if you just want to talk shop,
+      don’t be shy.
     </p>
   </div>
 </template>
@@ -83,6 +85,13 @@ export default {
 
     @include bp($xx) {
       font-size: 1.04vw;
+    }
+
+    a {
+      color: inherit;
+      text-underline-offset: 0.05em;
+
+      // text-decoration: none;
     }
   }
 }
