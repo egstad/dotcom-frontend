@@ -256,7 +256,7 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
 
   // small bp
   padding-top: $paddingTopBottom;
-  grid-template-columns: 1fr auto; // caption, date
+  grid-template-columns: 1fr; // caption, date
   align-items: baseline;
 
   @include bp($lg) {
@@ -296,7 +296,6 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   .piece__title,
   ::v-deep .piece__title {
     width: 100%;
-    padding-right: 3em;
     font-family: var(--sans);
 
     @include bp($lg) {
@@ -323,7 +322,7 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   ::v-deep .piece__title.--alt > *,
   .piece__title:not(.--alt) {
     &::before {
-      font-variation-settings: 'wght' 600;
+      font-variation-settings: 'wght' 350;
       font-variant-numeric: tabular-nums;
       letter-spacing: -0.055em;
 
@@ -354,8 +353,10 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
 
   .piece__date {
     justify-self: flex-end;
+    display: none;
 
     @include bp($lg) {
+      display: block;
       align-self: flex-end;
     }
   }

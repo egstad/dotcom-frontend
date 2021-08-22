@@ -47,6 +47,7 @@ export default {
 }
 
 ::v-deep a {
+  display: table-cell;
   color: inherit;
   text-decoration-color: hsl(var(--a-h), var(--a-s), var(--a-l), 100%);
   text-underline-offset: 1.5em;
