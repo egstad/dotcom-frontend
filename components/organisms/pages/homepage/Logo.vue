@@ -674,7 +674,7 @@ $char-height: 28.25vw;
   position: relative;
   z-index: 0;
   padding: 0 var(--button-click-offset);
-  margin-top: 45vh;
+  margin-top: 49.5vh;
   margin-bottom: 4vw;
 
   @include bp($md) {
@@ -686,7 +686,7 @@ $char-height: 28.25vw;
   }
 
   @include bp($xl) {
-    margin-top: 47.5vh;
+    margin-top: 49.5vh;
     margin-bottom: 1vw;
   }
 

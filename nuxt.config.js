@@ -137,9 +137,9 @@ export default {
      ** You can extend webpack config here
      */
     extend(config, ctx) {},
-    vendor: ['three'],
     transpile: [
       'gsap',
+      'three',
       'three/examples/jsm/controls/OrbitControls',
       'three/examples/jsm/lights/LightProbeGenerator'
     ]

@@ -124,7 +124,7 @@ export default {
 
     @include bp($lg) {
       font-variation-settings: 'wght' 550;
-      font-size: calc(5.15vw - 1px);
+      font-size: calc(5.12vw - 1px);
       padding-top: 1.6vw;
       padding-bottom: 2.2vw;
       margin-top: 0.2vw;
@@ -132,7 +132,7 @@ export default {
 
     @include bp($xl) {
       line-height: 0.97;
-      font-size: calc(4.2vw - 1px);
+      font-size: calc(4.15vw - 1px);
       letter-spacing: -0.055em;
       padding-top: 1.1vw;
       padding-bottom: 1.75vw;
