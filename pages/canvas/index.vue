@@ -38,7 +38,7 @@ export default {
         {
           text: 'Various Codepens',
           destination:
-            'https://codepen.io/collection/bNwbYR?cursor=ZD0wJm89MCZwPTEmdj04',
+            'https://codepen.io/collection/bNwbYR?cursor=ZD0wJm89MCZwPTEmdj00',
           type: 'external'
         }
       ]
