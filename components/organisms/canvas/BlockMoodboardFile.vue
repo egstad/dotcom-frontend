@@ -1,19 +1,26 @@
 <template>
   <div :class="['file', `file--${type}`]">
-    <video
-      v-if="type === 'video'"
-      ref="video"
-      muted
-      autoplay
-      playsinline
-      loop
-      :src="file.asset"
-    ></video>
+    <div :class="['file-wrap', `file--size-${size}`]">
+      <video
+        v-if="type === 'video'"
+        ref="video"
+        muted
+        autoplay
+        playsinline
+        loop
+        :src="file.asset"
+      ></video>
 
-    <img v-else ref="img" :src="file.asset" @dragstart.prevent />
+      <img v-else ref="img" :src="file.asset" @dragstart.prevent />
 
-    <!-- <pre>{{ file }}</pre>
+      <!-- <pre>{{ file }}</pre>
     <button @click="removeFile(fileIndex)">Delete</button> -->
+    </div>
+
+    <nav>
+      <button @click="resize">+</button>
+      <button @click="$emit('remove')">–</button>
+    </nav>
   </div>
 </template>
 
@@ -33,6 +40,12 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      draggable: null,
+      size: 0
+    }
+  },
   computed: {
     type() {
       let type
@@ -48,6 +61,9 @@ export default {
       }
 
       return type
+    },
+    element() {
+      return this.type === 'video' ? this.$refs.video : this.$refs.img
     }
   },
   mounted() {
@@ -56,7 +72,7 @@ export default {
     // const gridWidth = window.innerWidth * 0.12
     // const gridHeight = window.innerHeight * 0.12
 
-    Draggable.create(this.$el, {
+    this.draggable = Draggable.create(this.$el, {
       type: 'x,y',
       edgeResistance: 0.65,
       bounds: '.files',
@@ -70,7 +86,7 @@ export default {
       //     return Math.round(endValue / gridHeight) * gridHeight
       //   }
       // },
-      onPressInit: (e) => {
+      onDragStart: (e) => {
         if (this.type === 'video') this.$refs.video.pause()
 
         gsap.to(this.$el, {
@@ -100,6 +116,29 @@ export default {
         xPerc: ((x / window.innerWidth) * 100).toFixed(3),
         yPerc: ((y / window.innerHeight) * 100).toFixed(3)
       }
+    },
+    resize() {
+      switch (this.size) {
+        case 0:
+          this.size++
+          break
+
+        case 1:
+          this.size++
+          break
+
+        case 2:
+          this.size++
+          break
+
+        default:
+          this.size = 0
+          break
+      }
+
+      this.$nextTick(() => {
+        this.draggable[0].applyBounds()
+      })
     }
   }
 }
@@ -107,14 +146,46 @@ export default {
 
 <style>
 .file {
-  width: clamp(200px, 40vw, 400px);
   position: absolute;
   top: 0;
   left: 0;
 }
 
+.file-wrap {
+  position: relative;
+  transition: width 250ms ease-in-out;
+}
+
+.file--size-0 {
+  width: clamp(200px, 40vw, 400px);
+}
+.file--size-1 {
+  width: clamp(200px, 50vw, 500px);
+}
+.file--size-2 {
+  width: clamp(200px, 60vw, 600px);
+}
+.file--size-3 {
+  width: clamp(200px, 70vw, 700px);
+}
+
 .file--video {
   width: clamp(200px, 60vw, 600px);
+}
+
+nav {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+
+nav button {
+  appearance: none;
+  border: 0;
+  border-radius: 0;
+  background: 0;
+  cursor: pointer;
 }
 
 video,

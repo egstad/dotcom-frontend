@@ -8,8 +8,12 @@
     <div :class="['drag', { active: dropperIsVisible }]" @drop="dragFile"></div>
 
     <ul class="files">
-      <li v-for="(file, fileIndex) in files" :key="fileIndex">
-        <File :file="file" @update="onUpdateCoords($event, fileIndex)" />
+      <li v-for="(file, fileIndex) in files" :key="file.name">
+        <File
+          :file="file"
+          @update="onUpdateCoords($event, fileIndex)"
+          @remove="removeFile(fileIndex)"
+        />
       </li>
     </ul>
   </div>
