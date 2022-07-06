@@ -119,7 +119,7 @@ export default {
   height: 100%;
 
   /* Other */
-  ::v-deep svg {
+  :deep(svg) {
     display: flex;
     width: 14px;
     height: 14px;

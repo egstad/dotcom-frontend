@@ -164,7 +164,8 @@ export default {
       transition: background-color var(--transition-page);
     }
 
-    ::v-deep .menu__link {
+    // ::v-deep .menu__link {
+    :deep(.menu__link) {
       @include transition {
         transition: background-color var(--transition-page),
           color var(--transition-page);
@@ -173,7 +174,8 @@ export default {
   }
 
   // disable hovers
-  ::v-deep .abacus {
+  // ::v-deep .abacus {
+  :deep(.abacus) {
     pointer-events: none;
 
     // match page transition
@@ -185,7 +187,8 @@ export default {
   }
 
   // Floating Action Button
-  ::v-deep .fab__wrapper {
+  // ::v-deep .fab__wrapper {
+  :deep(.fab__wrapper) {
     @include transition {
       transition: background-color var(--transition-page),
         color var(--transition-page);

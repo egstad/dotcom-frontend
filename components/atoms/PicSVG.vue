@@ -21,7 +21,7 @@ export default {
   width: 100%;
   height: 100%;
 
-  ::v-deep svg {
+  :deep(svg) {
     width: 100% !important;
     height: auto;
   }
