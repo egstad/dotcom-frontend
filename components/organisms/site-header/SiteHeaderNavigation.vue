@@ -158,7 +158,8 @@ export default {
     transition: transform var(--trans-medium) var(--ease-back);
   }
 
-  ::v-deep .abacus {
+  // ::v-deep .abacus {
+  :deep(.abacus) {
     transform: translate3d(0, -100%, 0);
 
     @media (max-width: $lg) {
@@ -190,7 +191,8 @@ export default {
   @include bp($lg) {
     width: auto;
 
-    ::v-deep .abacus__item {
+    // ::v-deep .abacus__item {
+    :deep(.abacus__item) {
       // width: 50px;
       width: 100px;
       width: clamp(100px, 10vw, 125px);
@@ -198,7 +200,8 @@ export default {
   }
 
   @include bp($mx) {
-    ::v-deep .abacus__item {
+    // ::v-deep .abacus__item {
+    :deep(.abacus__item) {
       width: calc-vw(125px, $mx);
     }
   }

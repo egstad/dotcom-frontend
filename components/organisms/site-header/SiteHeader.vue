@@ -162,8 +162,10 @@ export default {
       background-color var(--trans-short) var(--trans-delay) var(--ease);
   }
 
-  ::v-deep .nav__primary,
-  ::v-deep .nav__secondary {
+  // ::v-deep .nav__primary
+  // ::v-deep .nav__secondary
+  :deep(.nav__primary),
+  :deep(.nav__secondary) {
     transform: translate3d(0, calc(-150% - var(--button-click-offset)), 0);
   }
 
@@ -171,16 +173,20 @@ export default {
   &.headerIsPeaking {
     box-shadow: none;
 
-    ::v-deep .nav__primary,
-    ::v-deep .nav__secondary {
+    // ::v-deep .nav__primary,
+    // ::v-deep .nav__secondary {
+    :deep(.nav__primary),
+    :deep(.nav__secondary) {
       transform: translate3d(0, 0, 0);
     }
   }
 
   // offset delay to avoid unwanted animation
   &.headerIsPeaking {
-    ::v-deep .nav__primary,
-    ::v-deep .nav__secondary {
+    // ::v-deep .nav__primary,
+    // ::v-deep .nav__secondary {
+    :deep(.nav__primary),
+    :deep(.nav__secondary) {
       transition-delay: 150ms;
     }
   }

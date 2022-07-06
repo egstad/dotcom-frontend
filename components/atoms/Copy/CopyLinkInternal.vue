@@ -43,7 +43,7 @@ export default {
   position: relative;
 }
 
-::v-deep a {
+:deep(a) {
   color: inherit;
   text-decoration-color: hsl(var(--a-h), var(--a-s), var(--a-l), 100%);
   text-decoration-thickness: 0.08em;

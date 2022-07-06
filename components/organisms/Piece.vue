@@ -184,7 +184,8 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   &.padded {
     padding-top: $paddingTopBottom;
 
-    ::v-deep .pic--svg svg {
+    // ::v-deep .pic--svg svg {
+    :deep(.pic--svg svg) {
       padding-left: var(--button-click-offset);
       padding-right: var(--button-click-offset);
     }
@@ -285,16 +286,19 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   }
 
   // strip default styles
-  ::v-deep p {
+  // ::v-deep p {
+  :deep(p) {
     margin-bottom: 0;
   }
 
-  ::v-deep a {
+  // ::v-deep a {
+  :deep(a) {
     text-decoration: none;
   }
 
   .piece__title,
-  ::v-deep .piece__title {
+  // ::v-deep .piece__title {
+  :deep(.piece__title) {
     width: 100%;
     font-family: var(--sans);
 
@@ -319,7 +323,8 @@ $paddingTopBottom: clamp(var(--button-click-offset), 10vw, 72px);
   }
 
   // place the counter inline for mobile devices
-  ::v-deep .piece__title.--alt > *,
+  // ::v-deep .piece__title.--alt > *,
+  :deep(.piece__title.--alt > *),
   .piece__title:not(.--alt) {
     &::before {
       font-variation-settings: 'wght' 350;

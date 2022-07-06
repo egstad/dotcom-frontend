@@ -176,17 +176,20 @@ $size: 60%;
 //   }
 // }
 
-::v-deep.flickity-enabled {
+// ::v-deep.flickity-enabled {
+:deep(.flickity-enabled) {
   position: relative;
 }
 
-::v-deep.flickity-viewport {
+// ::v-deep.flickity-viewport {
+:deep(.flickity-viewport) {
   overflow: hidden;
   position: relative;
   height: 100%;
 }
 
-::v-deep.flickity-slider {
+// ::v-deep.flickity-slider {
+:deep(.flickity-slider) {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -194,7 +197,8 @@ $size: 60%;
 
 /* draggable */
 
-::v-deep.flickity-enabled.is-draggable {
+// ::v-deep.flickity-enabled.is-draggable {
+:deep(.flickity-enabled.is-draggable) {
   -webkit-tap-highlight-color: transparent;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -202,20 +206,23 @@ $size: 60%;
   user-select: none;
 }
 
-::v-deep.flickity-enabled.is-draggable .flickity-viewport {
+// ::v-deep.flickity-enabled.is-draggable .flickity-viewport {
+:deep(.flickity-enabled.is-draggable .flickity-viewport) {
   cursor: move;
   cursor: -webkit-grab;
   cursor: grab;
 }
 
-::v-deep.flickity-enabled.is-draggable .flickity-viewport.is-pointer-down {
+// ::v-deep.flickity-enabled.is-draggable .flickity-viewport.is-pointer-down {
+:deep(.flickity-enabled.is-draggable .flickity-viewport.is-pointer-down) {
   cursor: -webkit-grabbing;
   cursor: grabbing;
 }
 
 /* ---- flickity-button ---- */
 
-::v-deep .flickity-button {
+// ::v-deep .flickity-button {
+:deep(.flickity-button) {
   position: absolute;
   background: hsla(0, 0%, 100%, 0.75);
   border: none;
@@ -223,34 +230,40 @@ $size: 60%;
   top: 50%;
 }
 
-::v-deep .flickity-button:hover {
+// ::v-deep .flickity-button:hover {
+:deep(.flickity-button:hover) {
   background: white;
   cursor: pointer;
 }
 
-::v-deep .flickity-button:focus {
+// ::v-deep .flickity-button:focus {
+:deep(.flickity-button:focus) {
   // outline: none;
   box-shadow: 0 0 0 5px #19f;
 }
 
-::v-deep .flickity-button:active {
+// ::v-deep .flickity-button:active {
+:deep(.flickity-button:active) {
   opacity: 0.6;
 }
 
-::v-deep .flickity-button:disabled {
+// ::v-deep .flickity-button:disabled {
+:deep(.flickity-button:disabled) {
   opacity: 0.3;
   cursor: auto;
   /* prevent disabled button from capturing pointer up event. #716 */
   pointer-events: none;
 }
 
-::v-deep .flickity-button-icon {
+// ::v-deep .flickity-button-icon {
+:deep(.flickity-button-icon) {
   fill: currentColor;
 }
 
 /* ---- previous/next buttons ---- */
 
-::v-deep .flickity-prev-next-button {
+// ::v-deep .flickity-prev-next-button {
+:deep(.flickity-prev-next-button) {
   top: 50%;
   width: 44px;
   height: 44px;
@@ -259,23 +272,28 @@ $size: 60%;
   transform: translateY(-50%);
 }
 
-::v-deep .flickity-prev-next-button.previous {
+// ::v-deep .flickity-prev-next-button.previous {
+:deep(.flickity-prev-next-button.previous) {
   left: 10px;
 }
-::v-deep .flickity-prev-next-button.next {
+// ::v-deep .flickity-prev-next-button.next {
+:deep(.flickity-prev-next-button.next) {
   right: 10px;
 }
 /* right to left */
-::v-deep .flickity-rtl .flickity-prev-next-button.previous {
+// ::v-deep .flickity-rtl .flickity-prev-next-button.previous {
+:deep(.flickity-rtl .flickity-prev-next-button.previous) {
   left: auto;
   right: 10px;
 }
-::v-deep .flickity-rtl .flickity-prev-next-button.next {
+// ::v-deep .flickity-rtl .flickity-prev-next-button.next {
+:deep(.flickity-rtl .flickity-prev-next-button.next) {
   right: auto;
   left: 10px;
 }
 
-::v-deep .flickity-prev-next-button .flickity-button-icon {
+// ::v-deep .flickity-prev-next-button .flickity-button-icon {
+:deep(.flickity-prev-next-button .flickity-button-icon) {
   display: none;
   position: absolute;
   left: 20%;
@@ -318,12 +336,14 @@ $size: 60%;
 
 /* flickity-fade */
 
-::v-deep .flickity-enabled.is-fade .flickity-slider .slideshow {
+// ::v-deep .flickity-enabled.is-fade .flickity-slider .slideshow {
+:deep(.flickity-enabled.is-fade .flickity-slider .slideshow) {
   pointer-events: none;
   z-index: 0;
 }
 
-::v-deep .flickity-enabled.is-fade .flickity-slider > .is-selected {
+// ::v-deep .flickity-enabled.is-fade .flickity-slider > .is-selected {
+:deep(.flickity-enabled.is-fade .flickity-slider > .is-selected) {
   pointer-events: auto;
   z-index: 1;
 }

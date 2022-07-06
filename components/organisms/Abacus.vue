@@ -255,11 +255,13 @@ export default {
       }
     }
 
-    .is-hovered ::v-deep .abacus__link {
+    // .is-hovered ::v-deep .abacus__link {
+    .is-hovered :deep(.abacus__link) {
       color: var(--background);
     }
 
-    .is-active ::v-deep .abacus__link {
+    // .is-active ::v-deep .abacus__link {
+    .is-active :deep(.abacus__link) {
       color: var(--background);
 
       @include transition {
@@ -270,7 +272,8 @@ export default {
 
   // quickly transition text color when the bead is moving
   &.beadIsTransitioning {
-    ::v-deep .abacus__link {
+    // ::v-deep .abacus__link {
+    :deep(.abacus__link) {
       @include transition {
         transition: color var(--trans-short) var(--ease);
       }
@@ -289,12 +292,13 @@ export default {
     display: flex;
     flex: 1;
 
-    ::v-deep &.is-active:not(.is-hovered) .abacus__link {
+    // ::v-deep &.is-active:not(.is-hovered) .abacus__link {
+    &.is-active:not(.is-hovered) .abacus__link {
       color: hsla(var(--b-h), var(--b-s), var(--b-l), 100%);
     }
 
-    &.is-hovered ::v-deep .abacus__link,
-    &.is-active ::v-deep .abacus__link {
+    &.is-hovered :deep(.abacus__link),
+    &.is-active :deep(.abacus__link) {
       color: hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
     }
   }
