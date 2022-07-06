@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" data-nosnippet>
     <section>
       <header class="header">
         <Logo class="logo" />
