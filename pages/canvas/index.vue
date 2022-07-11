@@ -61,7 +61,7 @@ export default {
       links: [
         {
           text: 'Moodboard',
-          destination: 'canvas/block-moodboard'
+          destination: 'canvas/moodboard'
         },
         {
           text: 'Misc. Codepens',

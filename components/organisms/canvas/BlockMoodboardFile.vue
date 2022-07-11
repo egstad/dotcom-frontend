@@ -9,17 +9,23 @@
         playsinline
         loop
         :src="file.asset"
+        class="asset"
       ></video>
 
-      <img v-else ref="img" :src="file.asset" @dragstart.prevent />
+      <img
+        v-else
+        ref="img"
+        :src="file.asset"
+        class="asset"
+        @dragstart.prevent
+      />
 
       <!-- <pre>{{ file }}</pre>
     <button @click="removeFile(fileIndex)">Delete</button> -->
     </div>
 
     <nav>
-      <button @click="resize">+</button>
-      <button @click="$emit('remove')">–</button>
+      <button class="t-mono t-1" @click="remove($event)">delete</button>
     </nav>
   </div>
 </template>
@@ -76,6 +82,7 @@ export default {
       type: 'x,y',
       edgeResistance: 0.65,
       bounds: '.files',
+      trigger: this.$el.querySelector('.asset'),
       inertia: true,
       // liveSnap: true,
       // snap: {
@@ -91,7 +98,7 @@ export default {
 
         gsap.to(this.$el, {
           scale: 1.05,
-          duration: 0.3,
+          duration: 0.15,
           ease: 'power4.inOut'
         })
       },
@@ -116,6 +123,17 @@ export default {
         xPerc: ((x / window.innerWidth) * 100).toFixed(3),
         yPerc: ((y / window.innerHeight) * 100).toFixed(3)
       }
+    },
+    remove(ev) {
+      gsap.to(this.$el, {
+        y: window.innerHeight * 3,
+        duration: 1,
+        rotate: Math.random() * 350 + 10,
+        ease: 'power4.in',
+        onComplete: () => {
+          this.$emit('remove', ev)
+        }
+      })
     },
     resize() {
       switch (this.size) {
@@ -144,33 +162,40 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .file {
   position: absolute;
   top: 0;
   left: 0;
+  resize: both;
+  overflow: auto;
+  padding: 4px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  transition: border-color 0.3s ease-out;
+  min-width: 200px;
+  min-height: 200px;
+  width: clamp(200px, 20vmax, 1660px);
+
+  &::-webkit-resizer {
+    background-color: transparent;
+  }
+
+  &:hover {
+    border-color: hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
+
+    nav button {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
 }
 
 .file-wrap {
   position: relative;
   transition: width 250ms ease-in-out;
-}
-
-.file--size-0 {
-  width: clamp(200px, 40vw, 400px);
-}
-.file--size-1 {
-  width: clamp(200px, 50vw, 500px);
-}
-.file--size-2 {
-  width: clamp(200px, 60vw, 600px);
-}
-.file--size-3 {
-  width: clamp(200px, 70vw, 700px);
-}
-
-.file--video {
-  width: clamp(200px, 60vw, 600px);
+  width: 100%;
+  height: 100%;
 }
 
 nav {
@@ -183,15 +208,25 @@ nav {
 nav button {
   appearance: none;
   border: 0;
-  border-radius: 0;
+  border-radius: 100vw;
   background: 0;
+  font-size: 1em;
+  height: 2em;
+  line-height: 0;
+  padding: 0 0.8em;
   cursor: pointer;
+  background: hsla(var(--f-h), var(--f-s), var(--f-l), 100%);
+  margin: 1em;
+  text-transform: uppercase;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-out;
 }
 
-video,
-img {
+.asset {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
 }
 </style>

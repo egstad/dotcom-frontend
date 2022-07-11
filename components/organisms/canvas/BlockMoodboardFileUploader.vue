@@ -7,8 +7,14 @@
     <!-- <input type="file" multiple @change="uploadFile" /> -->
     <div :class="['drag', { active: dropperIsVisible }]" @drop="dragFile"></div>
 
+    <transition name="fade">
+      <div v-if="!files.length" class="placeholder t-3">
+        Drag and drop image or video
+      </div>
+    </transition>
+
     <ul class="files">
-      <li v-for="(file, fileIndex) in files" :key="file.name">
+      <li v-for="(file, fileIndex) in files" :key="`${file.name}}`">
         <File
           :file="file"
           @update="onUpdateCoords($event, fileIndex)"
@@ -92,6 +98,20 @@ export default {
 </script>
 
 <style scoped>
+.placeholder {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  padding: clamp(2em, 4vw, 5em);
+  border: 0.1em solid hsla(var(--a-h), var(--a-s), var(--a-l), 20%);
+  box-shadow: hsla(var(--a-h), var(--a-s), var(--a-l), 25%) 0 0 10vmax;
+  border-radius: clamp(1em, 2vw, 2.5em);
+  transform-origin: center center;
+  text-align: center;
+  width: clamp(200px, 80%, 40ch);
+}
+
 ul,
 li {
   padding: 0;
@@ -116,5 +136,16 @@ li {
 .files {
   width: 100vw;
   height: 100vh;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease-out, transform 0.2s ease-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translate3d(-50%, -50%, 0) scale(0.9);
 }
 </style>
